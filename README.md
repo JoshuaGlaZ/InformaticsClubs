@@ -2,7 +2,7 @@
 
 ## Overview
 
-The **Informatics eSport Club Management System** is a full-stack web application developed for managing an eSport club named Informatics. This project serves as the capstone for the Full-Stack Programming course (1604C051) and integrates multiple technologies and competencies to create a comprehensive system for managing club members, teams, games, events, and achievements.
+The **Informatics eSport Club Management System** is a full-stack web application developed for managing an eSport club named Informatics. This project serves as the capstone for the Full-Stack Programming course and achieves comprehensive system for managing club members, teams, games, events, and achievements.
 
 ## Features
 
@@ -21,14 +21,6 @@ The **Informatics eSport Club Management System** is a full-stack web applicatio
     - Admin approval for member team applications.
 
 - **Technical Stack**:
-  - **Frontend**: HTML, CSS, JavaScript, Responsive Web Design (RWD)
-  - **Backend**: PHP, MySQL, AJAX
+  - **Frontend**: HTML, CSS, JavaScript
+  - **Backend**: PHP
   - **Database**: MySQL
-
-## Getting Started
-
-### Prerequisites
-
-- PHP 7.4 or higher
-- MySQL 5.7 or higher
-- A web server such as Apache or Nginx
