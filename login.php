@@ -3,7 +3,7 @@ session_start();
 if (isset($_SESSION['error'])) {
   echo "<script>alert('" . $_SESSION['error'] . "');</script>";
   unset($_SESSION['error']);
-}
+} 
 ?>
 
 
@@ -22,7 +22,7 @@ if (isset($_SESSION['error'])) {
     <div class="noise-bg"></div>
 
     <!-- Sign In Form -->
-    <div class="signin">
+    <div class="signin" style="display: <?php echo !isset($_SESSION['hide_signin']) || !$_SESSION['hide_signin'] ? 'flex' : 'none'; ?>;">
       <div class="content">
         <h2>Sign In</h2>
         <form method="POST" action="signin.php">
@@ -44,7 +44,7 @@ if (isset($_SESSION['error'])) {
     </div>
 
     <!-- Sign Up Form -->
-    <div class="signup">
+    <div class="signup" style="display: <?php echo isset($_SESSION['hide_signin']) && $_SESSION['hide_signin'] ? 'flex' : 'none'; ?>;">
       <div class="content">
         <h2>Sign Up</h2>
         <form method="POST" action="signup.php" onsubmit="return validatePassword();">
@@ -102,6 +102,8 @@ if (isset($_SESSION['error'])) {
         return true;
       }
     }
+
+    document.querySelector('.signup').style.display = <?php echo isset($_SESSION['hide_signin']) ? 'flex' : 'none';?>;
 
     signupForm.style.display = 'none';
   </script>
