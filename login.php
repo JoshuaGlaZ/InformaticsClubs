@@ -36,7 +36,8 @@ if (isset($_SESSION['error'])) {
             <input type="password" name="password" required> <i>Password</i>
           </div>
            <div class="inputBox remember-me">
-            <input type="checkbox" name="remember_me" id="remember_me">
+            <input type="checkbox" name="remember_me" id="remember_me" <?php
+              echo (isset($_COOKIE['remember_me']) && $_COOKIE['remember_me'] === $_SESSION['remember_me_token']) ? 'checked' : '';?>>
             <label for="remember_me">Remember Me</label>
           </div>
 
