@@ -1,4 +1,5 @@
 <?php
+session_start();
 include 'db.php';
 
 if (isset($_POST['submit'])) {
@@ -11,9 +12,23 @@ if (isset($_POST['submit'])) {
   $stmt->store_result();
 
   if ($stmt->num_rows > 0) {
-      echo "Sign in successful! Hi " . $username . "!";
+    $_SESSION['username'] = $username;
+    if (isset($_POST['remember_me'])) {
+      $token = bin2hex(random_bytes(16));
+      $hashedToken = hash('sha256', $token);
+      setcookie('remember_me', $hashedToken, time() + (86400 * 30), "/"); // 30 days
+      // setcookie('remember_me', $hashedToken, [
+      //   'expires' => time() + (86400 * 30),
+      //   'path' => '/',
+      //   'secure' => true,  // Only send over HTTPS
+      //   'httponly' => true,  // Prevent JavaScript access
+      //   'samesite' => 'Strict'  // Prevent CSRF
+      // ]);
+      $_SESSION['remember_me_token'] = $hashedToken;
+    }
+    header("Location: after_login.php");
+    exit();
   } else {
-    session_start();
     $_SESSION['error'] = 'Invalid username or password';
     header("Location: login.php");
     exit();
@@ -22,4 +37,3 @@ if (isset($_POST['submit'])) {
   $stmt->close();
   $conn->close();
 }
-?>

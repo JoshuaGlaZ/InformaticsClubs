@@ -26,7 +26,6 @@ section {
   align-items: center;
   gap: 2px;
   flex-wrap: wrap;
-  overflow: hidden;
 }
 
 section .signin,
@@ -43,7 +42,6 @@ section .signup {
 }
 
 section .content {
-  position: relative;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -62,16 +60,15 @@ section .content {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 25px;
+  gap: 20px;
 }
 
-.content form .inputBox {
-  position: relative;
+form .inputBox {
   width: 100%;
+  position: relative;
 }
 
-.content form .inputBox input {
-  position: relative;
+form .inputBox input {
   width: 100%;
   background: #333;
   border: none;
@@ -83,7 +80,17 @@ section .content {
   font-size: 1em;
 }
 
-.content form .inputBox i {
+form .inputBox input#remember_me {
+  width: auto;
+  margin: 0 10px;
+}
+
+form .inputBox label[for="remember_me"] {
+  color: #e9e0e0;
+  margin-left: 5px;
+}
+
+form .inputBox i {
   position: absolute;
   left: 0;
   padding: 15px 10px;
@@ -93,42 +100,54 @@ section .content {
   pointer-events: none;
 }
 
-.content form .inputBox input:focus~i,
-.content form .inputBox input:valid~i {
+form .inputBox input:focus~i,
+form .inputBox input:valid~i {
   transform: translateY(-7.5px);
   font-size: 0.8em;
   color: #fff;
 }
 
-.content form .links {
-  position: relative;
+form .links {
   width: 100%;
   display: flex;
   justify-content: space-between;
 }
 
-.content form .links a {
-  color: #fff;
+form .links a {
+  color: #e9e0e0;
   text-decoration: none;
   cursor: default;
 }
 
-.content form .links a:nth-child(2) {
+form .links a:nth-child(2) {
   color: #00d4ff;
   font-weight: 600;
+  font-weight: bold;
+  transition: color 0.3s ease, transform 0.3s ease;
 }
 
-.content form .inputBox input[type="submit"] {
+form .links a:nth-child(2):hover {
+  color: #218ed7;
+  transform: scale(1.1);
+  text-decoration: underline;
+}
+
+form .inputBox input[type="submit"] {
   padding: 0.5em 0 0.75em;
   border: 2px solid #828282;
-  outline: none;
   background: transparent;
   color: #fff;
   font-weight: 600;
   font-size: 1.35em;
   letter-spacing: 0.05em;
   cursor: pointer;
+  transition: color 0.3s ease, transform 0.3s ease;
 }
+
+input[type="submit"]:hover {
+  transform: scale(1.05);
+}
+
 
 input[type="submit"]:active {
   opacity: 0.6;

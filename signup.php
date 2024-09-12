@@ -15,7 +15,6 @@ if (isset($_POST['submit'])) {
 
   if ($stmt->num_rows > 0) {
     $_SESSION['error'] = 'Username already taken';
-    $_SESSION['hide_signin'] = true;
     header("Location: login.php");
     exit();
   } else {
@@ -23,7 +22,8 @@ if (isset($_POST['submit'])) {
     $stmt->bind_param("ssss", $firstname, $lastname, $username, $password);
 
     if ($stmt->execute()) {
-      echo "Sign up successful!";
+      header("Location: after_login.php");
+      exit();
     } else {
       echo "Error: " . $stmt->error;
     }

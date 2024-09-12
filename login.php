@@ -3,7 +3,7 @@ session_start();
 if (isset($_SESSION['error'])) {
   echo "<script>alert('" . $_SESSION['error'] . "');</script>";
   unset($_SESSION['error']);
-} 
+}
 ?>
 
 
@@ -15,6 +15,7 @@ if (isset($_SESSION['error'])) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login IC</title>
   <link rel="stylesheet" href="./login.css">
+  <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -22,18 +23,25 @@ if (isset($_SESSION['error'])) {
     <div class="noise-bg"></div>
 
     <!-- Sign In Form -->
-    <div class="signin" style="display: <?php echo !isset($_SESSION['hide_signin']) || !$_SESSION['hide_signin'] ? 'flex' : 'none'; ?>;">
+    <div class="signin">
       <div class="content">
         <h2>Sign In</h2>
         <form method="POST" action="signin.php">
           <div class="inputBox">
-            <input type="text" name="username" required> <i>Username</i>
+            <input type="text" name="username" value="<?php 
+              echo (isset($_COOKIE['remember_me']) && $_COOKIE['remember_me'] === $_SESSION['remember_me_token']) ? $_SESSION['username'] : ''; 
+              ?>"required> <i>Username</i>
           </div>
           <div class="inputBox">
             <input type="password" name="password" required> <i>Password</i>
           </div>
+           <div class="inputBox remember-me">
+            <input type="checkbox" name="remember_me" id="remember_me">
+            <label for="remember_me">Remember Me</label>
+          </div>
+
           <div class="links">
-            <a href="#">Forgot Password?</a>
+            <a href="#">Don't have an account?</a>
             <a href="#" id="toggle-signup">Sign Up</a>
           </div>
           <div class="inputBox">
@@ -44,7 +52,7 @@ if (isset($_SESSION['error'])) {
     </div>
 
     <!-- Sign Up Form -->
-    <div class="signup" style="display: <?php echo isset($_SESSION['hide_signin']) && $_SESSION['hide_signin'] ? 'flex' : 'none'; ?>;">
+    <div class="signup">
       <div class="content">
         <h2>Sign Up</h2>
         <form method="POST" action="signup.php" onsubmit="return validatePassword();">
@@ -76,36 +84,36 @@ if (isset($_SESSION['error'])) {
   </section>
 
   <script>
-    const toggleSignup = document.getElementById('toggle-signup');
-    const toggleSignin = document.getElementById('toggle-signin');
-    const signinForm = document.querySelector('.signin');
-    const signupForm = document.querySelector('.signup');
+    $(document).ready(function () {
+      const toggleSignup = $('#toggle-signup');
+      const toggleSignin = $('#toggle-signin');
+      const signinForm = $('.signin');
+      const signupForm = $('.signup');
 
-    toggleSignup.addEventListener('click', () => {
-      signinForm.style.display = 'none';
-      signupForm.style.display = 'flex';
-    });
+      $(toggleSignup).click(function () {
+        signinForm.hide();
+        signupForm.css('display', 'flex');
+      });
 
-    toggleSignin.addEventListener('click', () => {
-      signupForm.style.display = 'none';
-      signinForm.style.display = 'flex';
-    });
+      $(toggleSignin).click(function () {
+        signupForm.hide();
+        signinForm.css('display', 'flex');
+      });
 
-    function validatePassword() {
-      var password = document.getElementById("password").value;
-      var confirmPassword = document.getElementById("confirmpassword").value;
+      function validatePassword() {
+        var password = $("#password").val();
+        var confirmPassword = $("#confirmpassword").val();
 
-      if (password !== confirmPassword) {
-        alert("Passwords do not match!");
-        return false;
-      } else {
-        return true;
+        if (password !== confirmPassword) {
+          alert("Passwords do not match!");
+          return false;
+        } else {
+          return true;
+        }
       }
-    }
 
-    document.querySelector('.signup').style.display = <?php echo isset($_SESSION['hide_signin']) ? 'flex' : 'none';?>;
-
-    signupForm.style.display = 'none';
+      $(signupForm).hide();
+    });
   </script>
 </body>
 
