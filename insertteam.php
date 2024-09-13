@@ -1,4 +1,4 @@
-ss<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -9,22 +9,11 @@ ss<!DOCTYPE html>
     <form method="POST" enctype="multipart/form-data" action="insertteam_proses.php">
         <label>Team Name</label>
         <input type="text" name="teamName"><br>
+
         <label>Game Name</label><br>
         <select name="game" id="game">
         <?php
-            $servername = "localhost";
-            $username = "root";
-            $password = "";
-            $dbname = "esport";
-
-            $conn = new mysqli($servername, $username, $password, $dbname);
-
-            if ($conn->connect_error) {
-                die("Failed to connect to MySQL: " . $conn->connect_error);
-              }
-            else {
-                "Connection Success";
-            }
+            include 'db.php';
 
             $sql = "SELECT * FROM game ";
             $stmt = $mysqli->prepare($sql);
@@ -40,6 +29,8 @@ ss<!DOCTYPE html>
             $conn->close();
         ?>
         </select>
+        <input type="submit" name="submit" value="Insert">
+
     </form>
 </body>
 </html>
