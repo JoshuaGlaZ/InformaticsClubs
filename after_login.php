@@ -19,4 +19,5 @@ echo "<table border ='1'>";
 ?>
 
 <a href="logout.php">Logout</a>
+<br><br>
 <a href="insertteam.php">Insert Team</a>
