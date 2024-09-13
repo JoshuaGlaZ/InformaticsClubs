@@ -16,7 +16,7 @@
             include 'db.php';
 
             $sql = "SELECT * FROM game ";
-            $stmt = $mysqli->prepare($sql);
+            $stmt = $conn->prepare($sql);
             $stmt->execute();
             $result = $stmt->get_result();
 
