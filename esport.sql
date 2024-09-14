@@ -116,11 +116,7 @@ CREATE TABLE `game` (
 
 LOCK TABLES `game` WRITE;
 /*!40000 ALTER TABLE `game` DISABLE KEYS */;
-INSERT INTO `game` VALUES 
-(1,'Valorant','FPS Game'),
-(2,'DotA','RTS Game'),
-(3,'PUBG','Battle Royale Game'),
-(4,'eFootball','Football Simulator Game');
+INSERT INTO `game` VALUES (1,'Valorant','FPS Game'),(2,'DotA','RTS Game'),(3,'PUBG','Battle Royale Game'),(4,'eFootball','Football Simulator Game');
 /*!40000 ALTER TABLE `game` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -178,12 +174,7 @@ CREATE TABLE `member` (
 
 LOCK TABLES `member` WRITE;
 /*!40000 ALTER TABLE `member` DISABLE KEYS */;
-INSERT INTO `member` VALUES 
-(1,'admin','','admin','admin','admin'),
-(2,'A','111','usera','123','member'),
-(3,'B','222','userb','123','member'),
-(4,'C','333','userc','123','member'),
-(5,'D','444','userd','123','member');
+INSERT INTO `member` VALUES (1,'admin','','admin','admin','admin'),(2,'A','111','usera','123','member'),(3,'B','222','userb','123','member'),(4,'C','333','userc','123','member'),(5,'D','444','userd','123','member');
 /*!40000 ALTER TABLE `member` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -201,7 +192,7 @@ CREATE TABLE `team` (
   PRIMARY KEY (`idteam`),
   KEY `fk_team_game1_idx` (`idgame`),
   CONSTRAINT `fk_team_game1` FOREIGN KEY (`idgame`) REFERENCES `game` (`idgame`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -210,6 +201,7 @@ CREATE TABLE `team` (
 
 LOCK TABLES `team` WRITE;
 /*!40000 ALTER TABLE `team` DISABLE KEYS */;
+INSERT INTO `team` VALUES (1,2,'Rtu'),(3,3,'OOO');
 /*!40000 ALTER TABLE `team` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -250,4 +242,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-09-13 15:45:04
+-- Dump completed on 2024-09-14  9:10:31

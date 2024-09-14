@@ -10,7 +10,7 @@
         <label>Team Name</label>
         <input type="text" name="teamName"><br>
 
-        <label>Game Name</label><br>
+        <label>Game Name</label>
         <select name="game" id="game">
         <?php
             include 'db.php';
@@ -28,7 +28,7 @@
             }
             $conn->close();
         ?>
-        </select>
+        </select><br>
         <input type="submit" name="submit" value="Insert">
 
     </form>
