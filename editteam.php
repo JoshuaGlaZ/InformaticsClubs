@@ -45,6 +45,7 @@ if (isset($_GET['id'])) {
 
         <label>Game Name:</label>
         <select name="game" required>
+        <option value="null">-</option>
         <?php
             include 'db.php';
             $sql2 = "SELECT * FROM game";

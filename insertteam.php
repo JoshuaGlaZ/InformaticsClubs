@@ -12,6 +12,7 @@
 
         <label>Game Name</label>
         <select name="game" id="game">
+        <option value="null">-</option>
         <?php
             include 'db.php';
 
