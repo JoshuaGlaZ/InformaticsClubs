@@ -26,14 +26,16 @@ if (isset($_POST['submit'])) {
       // ]);
       $_SESSION['remember_me_token'] = $hashedToken;
     }
+    $stmt->close();
+    $conn->close();
     header("Location: after_login.php");
     exit();
   } else {
     $_SESSION['error'] = 'Invalid username or password';
+    $stmt->close();
+    $conn->close();
     header("Location: login.php");
     exit();
   }
 
-  $stmt->close();
-  $conn->close();
 }
