@@ -135,6 +135,43 @@ while ($row3 = $result3->fetch_assoc()) {
 }
 
 
+$sql4 = "SELECT idevent, name AS event_name, date,  description AS event_desc FROM event";
+$stmt4 = $conn->prepare($sql4);
+$stmt4->execute();
+$result4 = $stmt4->get_result();
+
+echo "<table border ='1'>";
+echo "<tr>
+            <th>ID Event</th>
+            <th>Event</th>
+            <th>Date</th>
+            <th>Description</th>
+            <th colspan = 2 >Action</th>
+        </tr>";
+
+while ($row4 = $result4->fetch_assoc()) {
+  echo "<tr>";
+  $idevent = $row4['idevent'];
+
+  echo "<td>" . $idevent . "</td>";
+  echo "<td>" . $row4['event_name'] . "</td>";
+  echo "<td>" . $row4['date'] . "</td>";
+  echo "<td>" . $row4['event_desc'] . "</td>";
+  // echo "<td>";    
+  //     $sql2 = "SELECT * 
+  //     FROM detail_pemain as DP INNER JOIN pemain as p
+  //     ON DP.idpemain=P.idpemain
+  //     WHERE DP.idmovie=?";
+  //     $stmt2 = $conn->prepare($sql2);
+  //     $stmt2->bind_param("i", $idmovie);
+  //     $stmt2->execute();
+  //     $result2 = $stmt2->get_result();
+  // echo "</td>";
+  echo "<td><a href = 'editevent.php?id=$idevent'>Edit</td>";
+  echo "<td><a href = 'deleteevent.php?id=$idevent'>Delete</td>";
+  echo "</tr>";
+}
+
 ?>
 
 <a href="logout.php">Logout</a>
@@ -142,3 +179,7 @@ while ($row3 = $result3->fetch_assoc()) {
 <a href="insertteam.php">Insert Team</a>
 <br><br>
 <a href="insertgame.php">Insert Game</a>
+<br><br>
+<a href="insertachievement.php">Insert Achievement</a>
+<br><br>
+<a href="insertevent.php">Insert Event</a>

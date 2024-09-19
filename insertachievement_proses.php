@@ -14,7 +14,7 @@
         $stmt2->bind_param("isss", $teamid, $achievename, $achievedate, $achievedesk);
 
         if($stmt2->execute()){
-            header("Location: after_login.php");
+            header("Location: admin_homepage.php");
             exit();
             }
             else{

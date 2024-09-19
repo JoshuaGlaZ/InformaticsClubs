@@ -13,7 +13,7 @@ if(isset($_POST['submit'])){
     $stmt->bind_Param("sssi", $eventname, $eventdate, $eventdesc, $idevent );
 
     if($stmt->execute()){  
-        header("Location: after_login.php");
+        header("Location: admin_homepage.php");
         exit() ;
     }
     else{

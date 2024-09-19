@@ -17,7 +17,7 @@ if (isset($_GET['id'])) {
     $stmt->close();
     $conn->close();
 
-    header("Location: after_login.php");
+    header("Location: admin_homepage.php");
     exit();
 } else {
     echo "No team ID provided!";

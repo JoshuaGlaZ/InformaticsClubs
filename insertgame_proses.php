@@ -21,4 +21,4 @@
     }
 ?>
 <br>
-<a href="after_login.php">Back to Home</a>
+<a href="admin_homepage.php">Back to Home</a>

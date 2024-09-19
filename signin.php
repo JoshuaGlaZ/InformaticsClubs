@@ -28,7 +28,7 @@ if (isset($_POST['submit'])) {
     }
     $stmt->close();
     $conn->close();
-    header("Location: after_login.php");
+    header("Location: admin_homepage.php");
     exit();
   } else {
     $_SESSION['error'] = 'Invalid username or password';

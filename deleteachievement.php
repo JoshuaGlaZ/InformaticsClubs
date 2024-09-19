@@ -9,7 +9,7 @@ if(isset($_POST['id'])){
     $stmt->bind_param("i", $idachievement);
 
     if ($stmt->execute()){ 
-        header("Location: after_login.php");
+        header("Location: admin_homepage.php");
         exit();
     }
     else{

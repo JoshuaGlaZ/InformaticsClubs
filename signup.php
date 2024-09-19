@@ -22,7 +22,7 @@ if (isset($_POST['submit'])) {
     $stmt->bind_param("ssss", $firstname, $lastname, $username, $password);
 
     if ($stmt->execute()) {
-      header("Location: after_login.php");
+      header("Location: admin_homepage.php");
       exit();
     } else {
       echo "Error: " . $stmt->error;

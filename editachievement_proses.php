@@ -13,7 +13,7 @@ if(isset($_POST['submit'])){
     $stmt->bind_param("isssi", $idteam, $namaachieve, $achievendate, $achievedesk, $idachievement);
 
     if($stmt->execute()){
-    header("Location: after_login.php");
+    header("Location: admin_homepage.php");
         exit();
     }
     else{

@@ -10,7 +10,7 @@ if (isset($_POST['submit']))
     $stmt2 = $conn->prepare($sql);
     $stmt2->bind_param("sss", $eventname, $eventdate, $eventdesc);
     if($stmt2->execute()){
-        header("Location: after_login.php");
+        header("Location: admin_homepage.php");
         exit();
         }
         else{
