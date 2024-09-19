@@ -85,6 +85,14 @@ form .inputBox input#remember_me {
   margin: 0 10px;
 }
 
+form .inputBox svg {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
 form .inputBox label[for="remember_me"] {
   color: #e9e0e0;
   margin-left: 5px;
