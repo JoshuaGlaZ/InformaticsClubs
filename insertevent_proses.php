@@ -10,6 +10,8 @@ if (isset($_POST['submit'])) {
   $stmt2 = $conn->prepare($sql);
   $stmt2->bind_param("sss", $name, $date, $description);
   if ($stmt2->execute()) {
+    $stmt2->close();
+    $conn->close();
     header("Location: admin_homepage.php");
     exit();
   } else {

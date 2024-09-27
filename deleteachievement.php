@@ -1,7 +1,7 @@
 <?php
 include 'db.php';
 
-if (isset($_POST['id'])) {
+if (isset($_GET['id'])) {
   $idachievement = $_GET['id'];
 
   $sql = "DELETE FROM achievement where idachievement = ?";
@@ -9,6 +9,8 @@ if (isset($_POST['id'])) {
   $stmt->bind_param("i", $idachievement);
 
   if ($stmt->execute()) {
+    $stmt->close();
+    $conn->close();
     header("Location: admin_homepage.php");
     exit();
   } else {

@@ -3,7 +3,7 @@ include 'db.php';
 
 if (isset($_POST['submit'])) {
   $teamid = $_POST['idteam'];
-  $achievename = $_POST['name '];
+  $achievename = $_POST['name'];
   $achievedate = $_POST['date'];
   $achievedesk = $_POST['description'];
 
@@ -14,6 +14,8 @@ if (isset($_POST['submit'])) {
   $stmt2->bind_param("isss", $teamid, $achievename, $achievedate, $achievedesk);
 
   if ($stmt2->execute()) {
+    $stmt2->close();
+    $conn->close();
     header("Location: admin_homepage.php");
     exit();
   } else {
