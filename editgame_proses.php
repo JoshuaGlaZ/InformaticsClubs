@@ -2,26 +2,25 @@
 include 'db.php';
 
 if (isset($_POST['submit'])) {
-    $idgame = $_POST['idgame'];
-    $gameName = $_POST['gameName'];
-    $desc = $_POST['desc'];
+  $idgame = $_POST['idgame'];
+  $gameName = $_POST['gameName'];
+  $desc = $_POST['desc'];
 
-    $sql = "UPDATE game SET name = ?, description = ? WHERE idgame = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssi", $gameName, $desc, $idgame);
-    
-    if ($stmt->execute()) {
-        echo "Game updated successfully!";
-    } else {
-        echo "Error updating Game: " . $conn->error;
-    }
+  $sql = "UPDATE game SET name = ?, description = ? WHERE idgame = ?";
+  $stmt = $conn->prepare($sql);
+  $stmt->bind_param("ssi", $gameName, $desc, $idgame);
 
-    $stmt->close();
-    $conn->close();
+  if ($stmt->execute()) {
+    echo "Game updated successfully!";
+  } else {
+    echo "Error updating Game: " . $conn->error;
+  }
 
-    header("Location: admin_homepage.php");
-    exit();
+  $stmt->close();
+  $conn->close();
+
+  header("Location: admin_homepage.php");
+  exit();
 } else {
-    echo "Invalid request!";
+  echo "Invalid request!";
 }
-?>

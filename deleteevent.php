@@ -6,7 +6,7 @@ if(isset($_POST['id'])){
 
     $sql = "DELETE FROM event where idevent =?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("", $idevent);
+    $stmt->bind_param("i", $idevent);
     
     if($stmt->execute()){
         header("Location: admin_homepage.php");
