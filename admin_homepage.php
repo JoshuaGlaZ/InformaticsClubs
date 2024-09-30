@@ -152,10 +152,12 @@ if (!in_array($table, $allowed_tables)) {
           if (isset($_GET['detail'])) {
             if ($_GET['detail'] == 'achievement') {
               # code...
-              $sql = "SELECT t.idteam, t.name AS team_name, g.name AS game_name, g.description as game_desc ,a.name AS achievement_name, a.description as achievement_desc
-                    FROM team t 
-                    INNER JOIN game g ON t.idgame = g.idgame
-                    LEFT JOIN achievement a ON t.idteam = a.idteam where t.idteam =" . $_GET['id'];
+              $sql = "SELECT t.idteam, t.name AS team_name, g.name AS game_name, g.description as game_desc,
+          a.name AS achievement_name, a.description as achievement_desc, a.date AS achievement_date
+          FROM team t 
+          INNER JOIN game g ON t.idgame = g.idgame
+          LEFT JOIN achievement a ON t.idteam = a.idteam
+          WHERE t.idteam =" . $_GET['id'];
             } elseif ($_GET['detail'] == 'event') {
               # code...
               $sql = 'SELECT t.idteam, t.name AS team_name, e.name AS event_name, e.description as event_desc, e.date as held_on
@@ -185,7 +187,8 @@ if (!in_array($table, $allowed_tables)) {
                         <th>Game</th>
                         <th>Game Description</th>
                         <th>Achievement</th>
-                        <th>Achievement Description</th>";
+                        <th>Achievement Description</th>
+                        <th>Tanggal Achievement</th>";
             } else {
               echo "<th>ID Team</th>
                         <th>Team</th>
@@ -211,6 +214,7 @@ if (!in_array($table, $allowed_tables)) {
 
                 echo "<td>" . $row['achievement_name'] . "</td>";
                 echo "<td>" . $row['achievement_desc'] . "</td>";
+                echo "<td>". $row['achievement_date'] . "</td>";
 
                 // echo "<td><a href='editteam.php?id=$idteam' class='edit'>Edit</a></td>";
                 // echo "<td><a href='deleteteam.php?id=$idteam' class='delete'>Delete</a></td>";
