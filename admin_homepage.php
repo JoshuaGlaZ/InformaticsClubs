@@ -47,7 +47,7 @@ if (!in_array($table, $allowed_tables)) {
     </ul>
   </div>
   <div id="content">
-    <div class="card">
+    <div class="card" <?= ((isset($_GET['detail'])) ? 'hidden' : '') ?>>
       <div id="card-header">
         <h2><?php echo ucfirst($table); ?> Table</h2>
         <button id="insertButton">Add New <?php echo ucfirst($table); ?></button>
@@ -79,7 +79,7 @@ if (!in_array($table, $allowed_tables)) {
                 $fields[] = $field->name;
               }
             }
-            echo "<th colspan='2'>Action</th>";
+            echo "<th colspan='".(($table == 'team') ? '4' : '2')."'>Action</th>";
             echo '</tr>';
 
             while ($row = $result->fetch_assoc()) {
@@ -88,6 +88,13 @@ if (!in_array($table, $allowed_tables)) {
                 echo "<td>" . htmlspecialchars($row[$field_name]) . "</td>";
               }
               $id = $row['id' . $table];
+              if ($table == 'team') {
+                # code...
+                echo "<td><a class='detail' href='admin_homepage.php?table=" . $table . "&detail=achievement&id=" . $id . "'>Team Achievement</button></td>";
+                echo "<td><a class='detail' href='admin_homepage.php?table=" . $table . "&detail=event&id=" . $id . "'>Team Event</button></td>";
+
+              }
+              
               echo "<td><button class='update' id='" . $id . "'>Edit</button></td>";
               echo "<td><form action='delete" . $table . ".php' method='get'>
               <input type='hidden' name='id' value='" . $id . "'>
@@ -120,11 +127,11 @@ if (!in_array($table, $allowed_tables)) {
         </div>
       </div>
     </div>
-    <div class="card" hidden>
+    <div class="card" <?= ((isset($_GET['detail'])) ? '' : 'hidden') ?>>
       <div id="card-header">
         <?php $table_name = 'A' ?>
-        <h2>Table <span><?php echo $table_name ?></span></h2>
-        <button class="insert">Add New <?php echo $table_name ?></button>
+        <h2>Halaman <span><?php echo ucfirst($_GET['table']).' '.ucfirst($_GET['detail'])  ?></span></h2>
+        <!-- <button class="insert">Add New <?php echo $table_name ?></button> -->
       </div>
       <div class="search-bar">
         <input type="text" placeholder="Search...">
@@ -140,37 +147,86 @@ if (!in_array($table, $allowed_tables)) {
       <div class="table-responsive">
         <table>
           <?php
-          $sql = "SELECT t.idteam, t.name AS team_name, g.name AS game_name, g.description as game_desc ,a.name AS achievement_name
+          
+          $sql = '';
+
+          if ($_GET['detail'] == 'achievement') {
+            # code...
+            $sql = "SELECT t.idteam, t.name AS team_name, g.name AS game_name, g.description as game_desc ,a.name AS achievement_name, a.description as achievement_desc
                   FROM team t 
                   INNER JOIN game g ON t.idgame = g.idgame
-                  LEFT JOIN achievement a ON t.idteam = a.idteam";
+                  LEFT JOIN achievement a ON t.idteam = a.idteam where t.idteam =".$_GET['id'];
+          }elseif ($_GET['detail'] == 'event') {
+            # code...
+            $sql = 'SELECT t.idteam, t.name AS team_name, e.name AS event_name, e.description as event_desc, e.date as held_on
+                  FROM team t 
+                  left JOIN event_teams et ON t.idteam = et.idteam
+                  inner JOIN event e ON et.idevent = e.idevent where t.idteam ='.$_GET['id'];
+          }
           $stmt = $conn->prepare($sql);
           $stmt->execute();
           $result = $stmt->get_result();
 
-          echo "<tr>
-                  <th>ID Team</th>
-                  <th>Team</th>
-                  <th>Game</th>
-                  <th>Achievement</th>
-                  <th colspan = 2 >Action</th>
-              </tr>";
+          // echo "<tr>
+          //         <th>ID Team</th>
+          //         <th>Team</th>
+          //         <th>Game</th>
+          //         <th>Achievement</th>
+          //         <th colspan = 2 >Action</th>
+          //     </tr>";
 
-          while ($row = $result->fetch_assoc()) {
-            echo "<tbody>";
-            echo "<tr>";
-            $idteam = $row['idteam'];
 
-            echo "<td>" . $idteam . "</td>";
-            echo "<td>" . $row['team_name'] . "</td>";
-            echo "<td>" . $row['game_name'] . "</td>";
+          echo "<tr>";
 
-            echo "<td>" . $row['achievement_name'] . "</td>";
-            echo "<td><a href='editteam.php?id=$idteam' class='edit'>Edit</a></td>";
-            echo "<td><a href='deleteteam.php?id=$idteam' class='delete'>Delete</a></td>";
-            echo "</tr>";
-            echo "</tbody>";
+          if ($_GET['detail'] == 'achievement') {
+            # code...
+            echo "<th>ID Team</th>
+                      <th>Team</th>
+                      <th>Game</th>
+                      <th>Game Description</th>
+                      <th>Achievement</th>
+                      <th>Achievement Description</th>";
+          }else{
+            echo "<th>ID Team</th>
+                      <th>Team</th>
+                      <th>Event</th>
+                      <th>Event Description</th>
+                      <th>Held On</th>";
           }
+
+          echo "</tr>";
+              
+          echo "<tbody>";
+          while ($row = $result->fetch_assoc()) {
+            
+            echo "<tr>";
+            if ($_GET['detail'] == 'achievement') {
+              # code...
+              // $idteam = $row['idteam'];
+
+              echo "<td>" . $row['idteam'] . "</td>";
+              echo "<td>" . $row['team_name'] . "</td>";
+              echo "<td>" . $row['game_name'] . "</td>";
+              echo "<td>" . $row['game_desc'] . "</td>";
+  
+              echo "<td>" . $row['achievement_name'] . "</td>";
+              echo "<td>" . $row['achievement_desc'] . "</td>";
+
+              // echo "<td><a href='editteam.php?id=$idteam' class='edit'>Edit</a></td>";
+              // echo "<td><a href='deleteteam.php?id=$idteam' class='delete'>Delete</a></td>";
+            }else{
+              echo "<td>" . $row['idteam'] . "</td>";
+              echo "<td>" . $row['team_name'] . "</td>";
+              echo "<td>" . $row['event_name'] . "</td>";
+              echo "<td>" . $row['event_desc'] . "</td>";
+  
+              echo "<td>" . $row['held_on'] . "</td>";
+            }
+           
+            echo "</tr>";
+            
+          }
+          echo "</tbody>";
           ?>
         </table>
       </div>

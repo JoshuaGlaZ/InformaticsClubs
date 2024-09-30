@@ -286,6 +286,31 @@ td button.update:hover {
   background-color: transparent; 
 }
 
+
+td a.detail {
+  display: inline-block;
+    font-weight: 900;
+    line-height: 1.5;
+    text-align: center;
+    text-decoration: none;
+    vertical-align: middle;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    font-size: .8rem;
+    border-radius: .25rem;
+  background-color: #F1FAFF; 
+  color: #0095E8;
+}
+
+td a.detail:hover {
+  display: inline-block;
+  background-color: transparent; 
+}
+
 td button.delete {
   background-color: #ffdada; 
   color: #fe2b2b

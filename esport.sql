@@ -94,6 +94,7 @@ CREATE TABLE `event_teams` (
 
 LOCK TABLES `event_teams` WRITE;
 /*!40000 ALTER TABLE `event_teams` DISABLE KEYS */;
+INSERT INTO `event_teams` VALUES (1,1),(2,1),(3,3);
 /*!40000 ALTER TABLE `event_teams` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -244,4 +245,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-09-18 20:26:52
+-- Dump completed on 2024-09-30 22:18:00
