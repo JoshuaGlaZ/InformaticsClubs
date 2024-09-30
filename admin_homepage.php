@@ -79,7 +79,7 @@ if (!in_array($table, $allowed_tables)) {
                 $fields[] = $field->name;
               }
             }
-            echo "<th colspan='".(($table == 'team') ? '4' : '2')."'>Action</th>";
+            echo "<th colspan='" . (($table == 'team') ? '4' : '2') . "'>Action</th>";
             echo '</tr>';
 
             while ($row = $result->fetch_assoc()) {
@@ -90,13 +90,12 @@ if (!in_array($table, $allowed_tables)) {
               $id = $row['id' . $table];
               if ($table == 'team') {
                 # code...
-                echo "<td><a class='detail' href='admin_homepage.php?table=" . $table . "&detail=achievement&id=" . $id . "'>Team Achievement</button></td>";
-                echo "<td><a class='detail' href='admin_homepage.php?table=" . $table . "&detail=event&id=" . $id . "'>Team Event</button></td>";
-
+                echo "<td class='action'><a class='detail' href='admin_homepage.php?table=" . $table . "&detail=achievement&id=" . $id . "'>Team Achievement</button></td>";
+                echo "<td class='action'><a class='detail' href='admin_homepage.php?table=" . $table . "&detail=event&id=" . $id . "'>Team Event</button></td>";
               }
-              
-              echo "<td><button class='update' id='" . $id . "'>Edit</button></td>";
-              echo "<td><form action='delete" . $table . ".php' method='get'>
+
+              echo "<td class='action'><button class='update' id='" . $id . "'>Edit</button></td>";
+              echo "<td class='action'><form action='delete" . $table . ".php' method='get'>
               <input type='hidden' name='id' value='" . $id . "'>
               <button type='submit' class='delete' id='" . $id . "'>Delete</button>
               </form></td>";
@@ -130,7 +129,7 @@ if (!in_array($table, $allowed_tables)) {
     <div class="card" <?= ((isset($_GET['detail'])) ? '' : 'hidden') ?>>
       <div id="card-header">
         <?php $table_name = 'A' ?>
-        <h2>Halaman <span><?php echo ucfirst($_GET['table']).' '.ucfirst($_GET['detail'])  ?></span></h2>
+        <h2>Halaman <span><?php echo ucfirst($_GET['table']) . ' ' . ucfirst($_GET['detail'])  ?></span></h2>
         <!-- <button class="insert">Add New <?php echo $table_name ?></button> -->
       </div>
       <div class="search-bar">
@@ -147,86 +146,87 @@ if (!in_array($table, $allowed_tables)) {
       <div class="table-responsive">
         <table>
           <?php
-          
+
           $sql = '';
 
-          if ($_GET['detail'] == 'achievement') {
-            # code...
-            $sql = "SELECT t.idteam, t.name AS team_name, g.name AS game_name, g.description as game_desc ,a.name AS achievement_name, a.description as achievement_desc
-                  FROM team t 
-                  INNER JOIN game g ON t.idgame = g.idgame
-                  LEFT JOIN achievement a ON t.idteam = a.idteam where t.idteam =".$_GET['id'];
-          }elseif ($_GET['detail'] == 'event') {
-            # code...
-            $sql = 'SELECT t.idteam, t.name AS team_name, e.name AS event_name, e.description as event_desc, e.date as held_on
-                  FROM team t 
-                  left JOIN event_teams et ON t.idteam = et.idteam
-                  inner JOIN event e ON et.idevent = e.idevent where t.idteam ='.$_GET['id'];
-          }
-          $stmt = $conn->prepare($sql);
-          $stmt->execute();
-          $result = $stmt->get_result();
-
-          // echo "<tr>
-          //         <th>ID Team</th>
-          //         <th>Team</th>
-          //         <th>Game</th>
-          //         <th>Achievement</th>
-          //         <th colspan = 2 >Action</th>
-          //     </tr>";
-
-
-          echo "<tr>";
-
-          if ($_GET['detail'] == 'achievement') {
-            # code...
-            echo "<th>ID Team</th>
-                      <th>Team</th>
-                      <th>Game</th>
-                      <th>Game Description</th>
-                      <th>Achievement</th>
-                      <th>Achievement Description</th>";
-          }else{
-            echo "<th>ID Team</th>
-                      <th>Team</th>
-                      <th>Event</th>
-                      <th>Event Description</th>
-                      <th>Held On</th>";
-          }
-
-          echo "</tr>";
-              
-          echo "<tbody>";
-          while ($row = $result->fetch_assoc()) {
-            
-            echo "<tr>";
+          if (isset($_GET['detail'])) {
             if ($_GET['detail'] == 'achievement') {
               # code...
-              // $idteam = $row['idteam'];
-
-              echo "<td>" . $row['idteam'] . "</td>";
-              echo "<td>" . $row['team_name'] . "</td>";
-              echo "<td>" . $row['game_name'] . "</td>";
-              echo "<td>" . $row['game_desc'] . "</td>";
-  
-              echo "<td>" . $row['achievement_name'] . "</td>";
-              echo "<td>" . $row['achievement_desc'] . "</td>";
-
-              // echo "<td><a href='editteam.php?id=$idteam' class='edit'>Edit</a></td>";
-              // echo "<td><a href='deleteteam.php?id=$idteam' class='delete'>Delete</a></td>";
-            }else{
-              echo "<td>" . $row['idteam'] . "</td>";
-              echo "<td>" . $row['team_name'] . "</td>";
-              echo "<td>" . $row['event_name'] . "</td>";
-              echo "<td>" . $row['event_desc'] . "</td>";
-  
-              echo "<td>" . $row['held_on'] . "</td>";
+              $sql = "SELECT t.idteam, t.name AS team_name, g.name AS game_name, g.description as game_desc ,a.name AS achievement_name, a.description as achievement_desc
+                    FROM team t 
+                    INNER JOIN game g ON t.idgame = g.idgame
+                    LEFT JOIN achievement a ON t.idteam = a.idteam where t.idteam =" . $_GET['id'];
+            } elseif ($_GET['detail'] == 'event') {
+              # code...
+              $sql = 'SELECT t.idteam, t.name AS team_name, e.name AS event_name, e.description as event_desc, e.date as held_on
+                    FROM team t 
+                    left JOIN event_teams et ON t.idteam = et.idteam
+                    inner JOIN event e ON et.idevent = e.idevent where t.idteam =' . $_GET['id'];
             }
-           
+            $stmt = $conn->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            // echo "<tr>
+            //         <th>ID Team</th>
+            //         <th>Team</th>
+            //         <th>Game</th>
+            //         <th>Achievement</th>
+            //         <th colspan = 2 >Action</th>
+            //     </tr>";
+
+
+            echo "<tr>";
+
+            if ($_GET['detail'] == 'achievement') {
+              # code...
+              echo "<th>ID Team</th>
+                        <th>Team</th>
+                        <th>Game</th>
+                        <th>Game Description</th>
+                        <th>Achievement</th>
+                        <th>Achievement Description</th>";
+            } else {
+              echo "<th>ID Team</th>
+                        <th>Team</th>
+                        <th>Event</th>
+                        <th>Event Description</th>
+                        <th>Held On</th>";
+            }
+
             echo "</tr>";
-            
+
+            echo "<tbody>";
+            while ($row = $result->fetch_assoc()) {
+
+              echo "<tr>";
+              if ($_GET['detail'] == 'achievement') {
+                # code...
+                // $idteam = $row['idteam'];
+
+                echo "<td>" . $row['idteam'] . "</td>";
+                echo "<td>" . $row['team_name'] . "</td>";
+                echo "<td>" . $row['game_name'] . "</td>";
+                echo "<td>" . $row['game_desc'] . "</td>";
+
+                echo "<td>" . $row['achievement_name'] . "</td>";
+                echo "<td>" . $row['achievement_desc'] . "</td>";
+
+                // echo "<td><a href='editteam.php?id=$idteam' class='edit'>Edit</a></td>";
+                // echo "<td><a href='deleteteam.php?id=$idteam' class='delete'>Delete</a></td>";
+              } else {
+                echo "<td>" . $row['idteam'] . "</td>";
+                echo "<td>" . $row['team_name'] . "</td>";
+                echo "<td>" . $row['event_name'] . "</td>";
+                echo "<td>" . $row['event_desc'] . "</td>";
+
+                echo "<td>" . $row['held_on'] . "</td>";
+              }
+
+              echo "</tr>";
+            }
+            echo "</tbody>";
           }
-          echo "</tbody>";
           ?>
         </table>
       </div>
@@ -367,7 +367,7 @@ if (!in_array($table, $allowed_tables)) {
         var fields = <?php echo json_encode($fields); ?>;
 
         // Collect each column data except the last two columns (edit & delete)
-        row.find("td").slice(0, totalColumns - 2).each(function() {
+        row.find("td").not(".action").each(function() {
           var cellData = $(this).text();
           rowData.push(cellData); // Add the cell data to the rowData array
         });

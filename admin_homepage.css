@@ -256,11 +256,9 @@ tbody tr:hover {
   background-color: rgba(255, 255, 255, 0.1); 
 }
 
-td:nth-last-child(1),
-td:nth-last-child(2) {
+td.action {
   padding: 12px 4px;
   text-align: center;
-  width: 120px;
 }
 
 
@@ -268,6 +266,8 @@ td button {
   display: inline-block;
   padding: 0.5em 1.5em; 
   border-radius: 10px; 
+  width: auto;
+  margin: 0 1em;
   text-align: center;
   color: #000;
   border: 1px solid transparent;
@@ -301,14 +301,14 @@ td a.detail {
     border: 1px solid transparent;
     padding: .375rem .75rem;
     font-size: .8rem;
-    border-radius: .25rem;
+    border-radius: 10px;
+  transition: background-color 0.2s;
   background-color: #F1FAFF; 
   color: #0095E8;
 }
 
 td a.detail:hover {
-  display: inline-block;
-  background-color: transparent; 
+    background-color: transparent; 
 }
 
 td button.delete {
