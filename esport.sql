@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.38, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.34, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: esport
 -- ------------------------------------------------------
--- Server version	5.5.5-10.4.32-MariaDB
+-- Server version	5.5.5-10.4.20-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -31,7 +31,7 @@ CREATE TABLE `achievement` (
   PRIMARY KEY (`idachievement`),
   KEY `fk_achievement_team1_idx` (`idteam`),
   CONSTRAINT `fk_achievement_team1` FOREIGN KEY (`idteam`) REFERENCES `team` (`idteam`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -57,7 +57,7 @@ CREATE TABLE `event` (
   `date` date DEFAULT NULL,
   `description` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`idevent`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -66,7 +66,7 @@ CREATE TABLE `event` (
 
 LOCK TABLES `event` WRITE;
 /*!40000 ALTER TABLE `event` DISABLE KEYS */;
-INSERT INTO `event` VALUES (1,'Valorant Champions','2024-11-05','Turnamen dunia untuk game Valorant yang diadakan setiap tahun.'),(2,'Dota 2 The International','2024-10-15','Turnamen e-sport terbesar untuk game Dota 2 dengan hadiah jutaan dolar.'),(3,'League of Legends Worlds','2024-09-30','Kejuaraan dunia League of Legends, diikuti oleh tim terbaik dari berbagai negara.'),(4,'PUBG Global Championship','2024-12-01','Turnamen global untuk game PUBG yang mempertemukan tim-tim terbaik dari seluruh dunia.'),(5,'Overwatch World Cup','2024-10-25','Kejuaraan dunia untuk game Overwatch yang mempertemukan tim nasional dari berbagai negara.');
+INSERT INTO `event` VALUES (1,'Valorant Champions','2024-11-05','Turnamen dunia untuk game Valorant yang diadakan setiap tahun.'),(2,'Dota 2 The International','2024-10-15','Turnamen e-sport terbesar untuk game Dota 2 dengan hadiah jutaan dolar.'),(3,'League of Legends Worlds','2024-09-30','Kejuaraan dunia League of Legends, diikuti oleh tim terbaik dari berbagai negara.'),(4,'PUBG Global Championship','2024-12-01','Turnamen global untuk game PUBG yang mempertemukan tim-tim terbaik dari seluruh dunia.'),(5,'Overwatch World Cup','2024-10-25','Kejuaraan dunia untuk game Overwatch yang mempertemukan tim nasional dari berbagai negara.'),(6,'eFootball Konami Cup','2024-10-02','Turnamen eFootball yang mempertemukan antar tim-tim eSport untuk meraih titel terbaik di Konami Cup'),(7,'Clash Royale League: 2024 World Finals','2024-10-30','Turnamen Clash Royale yang mempertemukan player dari seluruh dunia'),(8,'Pokemon Go World Championships ','2024-10-12','Turnamen yang mempertemukan Trainer Pokemon dari seluruh dunia untuk menjadi Player terbaik');
 /*!40000 ALTER TABLE `event` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -85,7 +85,7 @@ CREATE TABLE `event_teams` (
   KEY `fk_event_has_team_event1_idx` (`idevent`),
   CONSTRAINT `fk_event_has_team_event1` FOREIGN KEY (`idevent`) REFERENCES `event` (`idevent`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_event_has_team_team1` FOREIGN KEY (`idteam`) REFERENCES `team` (`idteam`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -94,7 +94,6 @@ CREATE TABLE `event_teams` (
 
 LOCK TABLES `event_teams` WRITE;
 /*!40000 ALTER TABLE `event_teams` DISABLE KEYS */;
-INSERT INTO `event_teams` VALUES (1,1),(2,1),(3,3);
 /*!40000 ALTER TABLE `event_teams` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -110,7 +109,7 @@ CREATE TABLE `game` (
   `name` varchar(45) DEFAULT NULL,
   `description` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`idgame`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -141,7 +140,7 @@ CREATE TABLE `join_proposal` (
   KEY `fk_join_proposal_team1_idx` (`idteam`),
   CONSTRAINT `fk_join_proposal_member1` FOREIGN KEY (`idmember`) REFERENCES `member` (`idmember`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_join_proposal_team1` FOREIGN KEY (`idteam`) REFERENCES `team` (`idteam`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -165,10 +164,10 @@ CREATE TABLE `member` (
   `fname` varchar(45) DEFAULT NULL,
   `lname` varchar(45) DEFAULT NULL,
   `username` varchar(45) DEFAULT NULL,
-  `password` varchar(45) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
   `profile` enum('admin','member') DEFAULT NULL,
   PRIMARY KEY (`idmember`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -177,7 +176,7 @@ CREATE TABLE `member` (
 
 LOCK TABLES `member` WRITE;
 /*!40000 ALTER TABLE `member` DISABLE KEYS */;
-INSERT INTO `member` VALUES (1,'admin','','admin','admin','admin'),(2,'A','111','usera','123','member'),(3,'B','222','userb','123','member'),(4,'C','333','userc','123','member'),(5,'D','444','userd','123','member');
+INSERT INTO `member` VALUES (1,'admin','','admin','$2y$10$tXl9jQAJulNKhYx.PrT4r.qU9bM6LBpde5VShdHrV.m6gEqHjSsLC','admin'),(2,'A','111','usera','$2y$10$jlHbq2Ig7fm72G/elHL8Cuv6S5KAb2HGkI3OMJgzqJHnCd15aCt8G','member'),(3,'B','222','userb','$2y$10$jlHbq2Ig7fm72G/elHL8Cuv6S5KAb2HGkI3OMJgzqJHnCd15aCt8G','member'),(4,'C','333','userc','$2y$10$jlHbq2Ig7fm72G/elHL8Cuv6S5KAb2HGkI3OMJgzqJHnCd15aCt8G','member'),(5,'D','444','userd','$2y$10$jlHbq2Ig7fm72G/elHL8Cuv6S5KAb2HGkI3OMJgzqJHnCd15aCt8G','member'),(6,'E','555','usere','$2y$10$6zzPUqPDfXmbzYrl9Re7dOdUVobeJiqGJt5JumibpKKTYPQOi42..','member');
 /*!40000 ALTER TABLE `member` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -195,7 +194,7 @@ CREATE TABLE `team` (
   PRIMARY KEY (`idteam`),
   KEY `fk_team_game1_idx` (`idgame`),
   CONSTRAINT `fk_team_game1` FOREIGN KEY (`idgame`) REFERENCES `game` (`idgame`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -224,7 +223,7 @@ CREATE TABLE `team_members` (
   KEY `fk_team_has_member_team_idx` (`idteam`),
   CONSTRAINT `fk_team_has_member_member1` FOREIGN KEY (`idmember`) REFERENCES `member` (`idmember`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_team_has_member_team` FOREIGN KEY (`idteam`) REFERENCES `team` (`idteam`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -245,4 +244,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-09-30 22:18:00
+-- Dump completed on 2024-10-07 18:59:12
