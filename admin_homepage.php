@@ -217,7 +217,7 @@ $total_pages = ceil($totaldata / $records_per_page);
           //         <th>Achievement</th>
           //         <th colspan = 2 >Action</th>
           //     </tr>";
-        
+
 
           echo "<tr>";
 
@@ -247,7 +247,7 @@ $total_pages = ceil($totaldata / $records_per_page);
             if ($_GET['detail'] == 'achievement') {
               # code...
               // $idteam = $row['idteam'];
-        
+
               echo "<td>" . $row['idteam'] . "</td>";
               echo "<td>" . $row['team_name'] . "</td>";
               echo "<td>" . $row['game_name'] . "</td>";
@@ -297,128 +297,129 @@ $total_pages = ceil($totaldata / $records_per_page);
         <?php endif; ?>
       </div>
     </div>
+  </div>
 
-    <!-- Insert Modal -->
-    <div id="insertModal" class="modal">
-      <div class="modal-content">
-        <div class="modal-header">
-          <span id="closeInsert" class="close">&times;</span>
-          <h2>Add New <?php echo ucfirst($table); ?></h2>
-        </div>
-        <form id="insertForm" action="insert<?php echo $table ?>_proses.php" method="POST">
-          <?php
-          for ($i = 1; $i < count($_SESSION['fields']); $i++) {
-            echo '<div class="input-group">';
-            $field = $_SESSION['fields'][$i];
-            echo '<label for="' . $field . '"> ' . ucfirst($field) . ':</label>';
-            if ($field == 'date') {
-              echo '<input type="date" id="insert_' . $field . '" name="' . $field . '" required>';
-            } else if ($field == 'description') {
-              echo '<textarea id="insert_' . $field . '" name="' . $field . '" required></textarea>';
-            } else if (str_starts_with($field, 'id')) {
-              echo '<select id="insert_' . $field . '" name="' . $field . '" required>';
-              $sql2 = "SELECT * FROM game";
-              $stmt2 = $conn->prepare($sql2);
-              $stmt2->execute();
-              $result2 = $stmt2->get_result();
-
-              while ($row2 = $result2->fetch_assoc()) {
-                $gameId = $row2['idgame'];
-                $gameName = $row2['name'];
-
-                echo "<option value='$gameId'>$gameName</option>";
-              }
-              echo '</select>';
-              $stmt2->close();
-              $conn->close();
-            } else {
-              echo '<input type="text" id="insert_' . $field . '" name="' . $field . '" required>';
-            }
-            echo '</div>';
-          }
-
-          ?>
-          <div class="modal-footer">
-            <button class="close">Cancel</button>
-            <input type="submit" name="submit" value="Save"></input>
-          </div>
-        </form>
+  <!-- Insert Modal -->
+  <div id="insertModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span id="closeInsert" class="close">&times;</span>
+        <h2>Add New <?php echo ucfirst($table); ?></h2>
       </div>
-    </div>
-
-
-    <!-- Update Modal -->
-    <div id="updateModal" class="modal">
-      <div class="modal-content">
-        <div class="modal-header">
-          <span id="updateClose" class="close">&times;</span>
-          <h2>Update <?php echo ucfirst($table); ?> Data</h2>
-        </div>
-        <form id="updateForm" action="update<?php echo $table ?>_proses.php" method="POST">
-          <?php
-          include 'db.php';
+      <form id="insertForm" action="insert<?php echo $table ?>_proses.php" method="POST">
+        <?php
+        for ($i = 1; $i < count($_SESSION['fields']); $i++) {
           echo '<div class="input-group">';
-          $field = $_SESSION['fields'][0];
+          $field = $_SESSION['fields'][$i];
           echo '<label for="' . $field . '"> ' . ucfirst($field) . ':</label>';
-          echo '<input type="text" id="update_' . $field . '" name="' . $field . '" required readonly>';
-          for ($i = 1; $i < count($_SESSION['fields']); $i++) {
-            $field = $_SESSION['fields'][$i];
-            echo '<label for="' . $field . '"> ' . ucfirst($field) . ':</label>';
-            if ($field == 'date') {
-              echo '<input type="date" id="update_' . $field . '" name="' . $field . '" required>';
-            } else if ($field == 'description') {
-              echo '<textarea id="update_' . $field . '" name="' . $field . '" required>$value</textarea>';
-            } else if (str_starts_with($field, 'id')) {
-              echo '<select id="update_' . $field . '" name="' . $field . '" required>';
-              if ($field == 'idgame') {
-                echo '<option value="null">-</option>';
-              }
-              $sql2 = "SELECT * FROM game";
-              $stmt2 = $conn->prepare($sql2);
-              $stmt2->execute();
-              $result2 = $stmt2->get_result();
+          if ($field == 'date') {
+            echo '<input type="date" id="insert_' . $field . '" name="' . $field . '" required>';
+          } else if ($field == 'description') {
+            echo '<textarea id="insert_' . $field . '" name="' . $field . '" required></textarea>';
+          } else if (str_starts_with($field, 'id')) {
+            echo '<select id="insert_' . $field . '" name="' . $field . '" required>';
+            $sql2 = "SELECT * FROM game";
+            $stmt2 = $conn->prepare($sql2);
+            $stmt2->execute();
+            $result2 = $stmt2->get_result();
 
-              while ($row2 = $result2->fetch_assoc()) {
-                $gameId = $row2['idgame'];
-                $gameName = $row2['name'];
-                $selected = ($gameId == $_SESSION['fields'][0]) ? 'selected' : '';
+            while ($row2 = $result2->fetch_assoc()) {
+              $gameId = $row2['idgame'];
+              $gameName = $row2['name'];
 
-                echo "<option value='$gameId' $selected>$gameName</option>";
-              }
-              echo '</select>';
-              $stmt2->close();
-              $conn->close();
-            } else {
-              echo '<input type="text" id="update_' . $field . '" name="' . $field . '" required>';
+              echo "<option value='$gameId'>$gameName</option>";
             }
+            echo '</select>';
+            $stmt2->close();
+            $conn->close();
+          } else {
+            echo '<input type="text" id="insert_' . $field . '" name="' . $field . '" required>';
           }
           echo '</div>';
-          ?>
-          <div class="modal-footer">
-            <button class="close">Cancel</button>
-            <input type="submit" name="submit" value="Save"></input>
-          </div>
-        </form>
-      </div>
+        }
+
+        ?>
+        <div class="modal-footer">
+          <button class="close">Cancel</button>
+          <input type="submit" name="submit" value="Save"></input>
+        </div>
+      </form>
     </div>
+  </div>
+
+
+  <!-- Update Modal -->
+  <div id="updateModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span id="updateClose" class="close">&times;</span>
+        <h2>Update <?php echo ucfirst($table); ?> Data</h2>
+      </div>
+      <form id="updateForm" action="update<?php echo $table ?>_proses.php" method="POST">
+        <?php
+        include 'db.php';
+        echo '<div class="input-group">';
+        $field = $_SESSION['fields'][0];
+        echo '<label for="' . $field . '"> ' . ucfirst($field) . ':</label>';
+        echo '<input type="text" id="update_' . $field . '" name="' . $field . '" required readonly>';
+        for ($i = 1; $i < count($_SESSION['fields']); $i++) {
+          $field = $_SESSION['fields'][$i];
+          echo '<label for="' . $field . '"> ' . ucfirst($field) . ':</label>';
+          if ($field == 'date') {
+            echo '<input type="date" id="update_' . $field . '" name="' . $field . '" required>';
+          } else if ($field == 'description') {
+            echo '<textarea id="update_' . $field . '" name="' . $field . '" required>$value</textarea>';
+          } else if (str_starts_with($field, 'id')) {
+            echo '<select id="update_' . $field . '" name="' . $field . '" required>';
+            if ($field == 'idgame') {
+              echo '<option value="null">-</option>';
+            }
+            $sql2 = "SELECT * FROM game";
+            $stmt2 = $conn->prepare($sql2);
+            $stmt2->execute();
+            $result2 = $stmt2->get_result();
+
+            while ($row2 = $result2->fetch_assoc()) {
+              $gameId = $row2['idgame'];
+              $gameName = $row2['name'];
+              $selected = ($gameId == $_SESSION['fields'][0]) ? 'selected' : '';
+
+              echo "<option value='$gameId' $selected>$gameName</option>";
+            }
+            echo '</select>';
+            $stmt2->close();
+            $conn->close();
+          } else {
+            echo '<input type="text" id="update_' . $field . '" name="' . $field . '" required>';
+          }
+        }
+        echo '</div>';
+        ?>
+        <div class="modal-footer">
+          <button class="close">Cancel</button>
+          <input type="submit" name="submit" value="Save"></input>
+        </div>
+      </form>
+    </div>
+  </div>
 
   </div>
 
 
   <script>
-    $(document).ready(function () {
-      $("#insertButton").on("click", function () {
+    $(document).ready(function() {
+      $("#insertButton").on("click", function() {
         $("#insertModal").css("display", "block");
       });
 
-      $(".update").on("click", function () {
+      $(".update").on("click", function() {
         var row = $(this).closest("tr");
         var totalColumns = row.find("td").length;
         var rowData = [];
         var fields = <?php echo json_encode($fields); ?>;
 
         // Collect each column data except the last two columns (edit & delete)
-        row.find("td").not(".action").each(function () {
+        row.find("td").not(".action").each(function() {
           var cellData = $(this).text();
           rowData.push(cellData); // Add the cell data to the rowData array
         });
@@ -433,7 +434,7 @@ $total_pages = ceil($totaldata / $records_per_page);
           data: {
             values: rowData
           },
-          success: function (response) {
+          success: function(response) {
             $("body").css("cursor", "default");
             console.log("Session updated:", response);
             const data = JSON.parse(response);
@@ -441,7 +442,7 @@ $total_pages = ceil($totaldata / $records_per_page);
             if (data.status === 'success') {
               const fields = <?php echo json_encode($fields); ?>;
               console.log(fields);
-              $.each(fields, function (index, field) {
+              $.each(fields, function(index, field) {
                 const inputElement = $('#update_' + field); // Use jQuery to select the element
 
                 if (inputElement.length) { // Check if the element exists
@@ -459,7 +460,7 @@ $total_pages = ceil($totaldata / $records_per_page);
             }
           },
 
-          error: function (xhr, status, error) {
+          error: function(xhr, status, error) {
             console.error("Error:", error);
             $("body").css("cursor", "default");
           }
@@ -467,11 +468,11 @@ $total_pages = ceil($totaldata / $records_per_page);
       });
 
       // Close the modal when the close button is clicked
-      $(".close").on("click", function () {
+      $(".close").on("click", function() {
         $(".modal").css("display", "none");
       });
 
-      $(window).on("click", function (event) {
+      $(window).on("click", function(event) {
         const insertModal = $("#insertModal")[0];
         const updateModal = $("#updateModal")[0];
         if (event.target === insertModal) {
