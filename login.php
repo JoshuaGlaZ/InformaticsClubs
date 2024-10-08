@@ -160,7 +160,3 @@ if (isset($_SESSION['error'])) {
 </body>
 
 </html>
-
-<?php 
-  echo password_hash("123", PASSWORD_DEFAULT);
-?>

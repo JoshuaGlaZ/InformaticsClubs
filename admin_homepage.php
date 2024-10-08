@@ -164,137 +164,137 @@ $total_pages = ceil($totaldata / $records_per_page);
       </div>
 
     </div>
-  </div>
-  <div class="card" <?= ((isset($_GET['detail'])) ? '' : 'hidden') ?>>
-    <div id="card-header">
-      <?php $table_name = 'A' ?>
-      <h2>Halaman <span><?php echo ucfirst($_GET['table']) . ' ' . ucfirst($_GET['detail']) ?></span></h2>
-      <!-- <button class="insert">Add New <?php echo $table_name ?></button> -->
-    </div>
-    <div class="search-bar">
-      <input type="text" placeholder="Search...">
-      <div class="input-group">
-        <button class="advance-dropdown"><span class="caret"></span></button>
-        <button class="search">
-          <svg class="magnifying-glass" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
-            width="14"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
-            <path
-              d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z" />
-          </svg>
-        </button>
+    <div class="card" <?= ((isset($_GET['detail'])) ? '' : 'hidden') ?>>
+      <div id="card-header">
+        <?php $table_name = 'A' ?>
+        <h2>Halaman <span><?php echo ucfirst($_GET['table']) . ' ' . ucfirst($_GET['detail']) ?></span></h2>
+        <!-- <button class="insert">Add New <?php echo $table_name ?></button> -->
       </div>
-    </div>
-    <div class="table-responsive">
-      <table>
-        <?php
+      <div class="search-bar">
+        <input type="text" placeholder="Search...">
+        <div class="input-group">
+          <button class="advance-dropdown"><span class="caret"></span></button>
+          <button class="search">
+            <svg class="magnifying-glass" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
+              width="14"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+              <path
+                d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z" />
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table>
+          <?php
 
-        $sql = '';
+          $sql = '';
 
-        if (isset($_GET['detail'])) {
-          if ($_GET['detail'] == 'achievement') {
-            # code...
-            $sql = "SELECT t.idteam, t.name AS team_name, g.name AS game_name, g.description as game_desc,
+          if (isset($_GET['detail'])) {
+            if ($_GET['detail'] == 'achievement') {
+              # code...
+              $sql = "SELECT t.idteam, t.name AS team_name, g.name AS game_name, g.description as game_desc,
           a.name AS achievement_name, a.description as achievement_desc, a.date AS achievement_date
           FROM team t 
           INNER JOIN game g ON t.idgame = g.idgame
           LEFT JOIN achievement a ON t.idteam = a.idteam
           WHERE t.idteam =" . $_GET['id'];
-          } elseif ($_GET['detail'] == 'event') {
-            # code...
-            $sql = 'SELECT t.idteam, t.name AS team_name, e.name AS event_name, e.description as event_desc, e.date as held_on
+            } elseif ($_GET['detail'] == 'event') {
+              # code...
+              $sql = 'SELECT t.idteam, t.name AS team_name, e.name AS event_name, e.description as event_desc, e.date as held_on
                     FROM team t 
                     left JOIN event_teams et ON t.idteam = et.idteam
                     inner JOIN event e ON et.idevent = e.idevent where t.idteam =' . $_GET['id'];
-          }
-          $stmt = $conn->prepare($sql);
-          $stmt->execute();
-          $result = $stmt->get_result();
+            }
+            $stmt = $conn->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->get_result();
 
-          // echo "<tr>
-          //         <th>ID Team</th>
-          //         <th>Team</th>
-          //         <th>Game</th>
-          //         <th>Achievement</th>
-          //         <th colspan = 2 >Action</th>
-          //     </tr>";
+            // echo "<tr>
+            //         <th>ID Team</th>
+            //         <th>Team</th>
+            //         <th>Game</th>
+            //         <th>Achievement</th>
+            //         <th colspan = 2 >Action</th>
+            //     </tr>";
 
 
-          echo "<tr>";
+            echo "<tr>";
 
-          if ($_GET['detail'] == 'achievement') {
-            # code...
-            echo "<th>ID Team</th>
+            if ($_GET['detail'] == 'achievement') {
+              # code...
+              echo "<th>ID Team</th>
                         <th>Team</th>
                         <th>Game</th>
                         <th>Game Description</th>
                         <th>Achievement</th>
                         <th>Achievement Description</th>
                         <th>Tanggal Achievement</th>";
-          } else {
-            echo "<th>ID Team</th>
+            } else {
+              echo "<th>ID Team</th>
                         <th>Team</th>
                         <th>Event</th>
                         <th>Event Description</th>
                         <th>Held On</th>";
-          }
-
-          echo "</tr>";
-
-          echo "<tbody>";
-          while ($row = $result->fetch_assoc()) {
-
-            echo "<tr>";
-            if ($_GET['detail'] == 'achievement') {
-              # code...
-              // $idteam = $row['idteam'];
-
-              echo "<td>" . $row['idteam'] . "</td>";
-              echo "<td>" . $row['team_name'] . "</td>";
-              echo "<td>" . $row['game_name'] . "</td>";
-              echo "<td>" . $row['game_desc'] . "</td>";
-
-              echo "<td>" . $row['achievement_name'] . "</td>";
-              echo "<td>" . $row['achievement_desc'] . "</td>";
-              echo "<td>" . $row['achievement_date'] . "</td>";
-
-              // echo "<td><a href='editteam.php?id=$idteam' class='edit'>Edit</a></td>";
-              // echo "<td><a href='deleteteam.php?id=$idteam' class='delete'>Delete</a></td>";
-            } else {
-              echo "<td>" . $row['idteam'] . "</td>";
-              echo "<td>" . $row['team_name'] . "</td>";
-              echo "<td>" . $row['event_name'] . "</td>";
-              echo "<td>" . $row['event_desc'] . "</td>";
-
-              echo "<td>" . $row['held_on'] . "</td>";
             }
 
             echo "</tr>";
+
+            echo "<tbody>";
+            while ($row = $result->fetch_assoc()) {
+
+              echo "<tr>";
+              if ($_GET['detail'] == 'achievement') {
+                # code...
+                // $idteam = $row['idteam'];
+
+                echo "<td>" . $row['idteam'] . "</td>";
+                echo "<td>" . $row['team_name'] . "</td>";
+                echo "<td>" . $row['game_name'] . "</td>";
+                echo "<td>" . $row['game_desc'] . "</td>";
+
+                echo "<td>" . $row['achievement_name'] . "</td>";
+                echo "<td>" . $row['achievement_desc'] . "</td>";
+                echo "<td>" . $row['achievement_date'] . "</td>";
+
+                // echo "<td><a href='editteam.php?id=$idteam' class='edit'>Edit</a></td>";
+                // echo "<td><a href='deleteteam.php?id=$idteam' class='delete'>Delete</a></td>";
+              } else {
+                echo "<td>" . $row['idteam'] . "</td>";
+                echo "<td>" . $row['team_name'] . "</td>";
+                echo "<td>" . $row['event_name'] . "</td>";
+                echo "<td>" . $row['event_desc'] . "</td>";
+
+                echo "<td>" . $row['held_on'] . "</td>";
+              }
+
+              echo "</tr>";
+            }
+            echo "</tbody>";
           }
-          echo "</tbody>";
-        }
-        ?>
-      </table>
-    </div>
-    <div class="pagination-container">
-      <div class="pagination-info">
-        Showing <?php echo ($totaldata > 0) ? ($offset + 1) : 0; ?> to
-        <?php echo min($offset + $records_per_page, $totaldata); ?> of <?php echo $totaldata; ?> entries
+          ?>
+        </table>
       </div>
-      <div class="pagination-controls">
-        <?php if ($page > 1): ?>
-          <a href="admin_homepage.php?table=<?php echo htmlspecialchars($table); ?>&page=<?php echo $page - 1; ?>"
-            class="prev">Previous</a>
-        <?php endif; ?>
+      <div class="pagination-container">
+        <div class="pagination-info">
+          Showing <?php echo ($totaldata > 0) ? ($offset + 1) : 0; ?> to
+          <?php echo min($offset + $records_per_page, $totaldata); ?> of <?php echo $totaldata; ?> entries
+        </div>
+        <div class="pagination-controls">
+          <?php if ($page > 1): ?>
+            <a href="admin_homepage.php?table=<?php echo htmlspecialchars($table); ?>&page=<?php echo $page - 1; ?>"
+              class="prev">Previous</a>
+          <?php endif; ?>
 
-        <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-          <a href="admin_homepage.php?table=<?php echo htmlspecialchars($table); ?>&page=<?php echo $i; ?>"
-            class="page-number <?php echo ($i == $page) ? 'active' : ''; ?>"><?php echo $i; ?></a>
-        <?php endfor; ?>
+          <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+            <a href="admin_homepage.php?table=<?php echo htmlspecialchars($table); ?>&page=<?php echo $i; ?>"
+              class="page-number <?php echo ($i == $page) ? 'active' : ''; ?>"><?php echo $i; ?></a>
+          <?php endfor; ?>
 
-        <?php if ($page < $total_pages): ?>
-          <a href="admin_homepage.php?table=<?php echo htmlspecialchars($table); ?>&page=<?php echo $page + 1; ?>"
-            class="next">Next</a>
-        <?php endif; ?>
+          <?php if ($page < $total_pages): ?>
+            <a href="admin_homepage.php?table=<?php echo htmlspecialchars($table); ?>&page=<?php echo $page + 1; ?>"
+              class="next">Next</a>
+          <?php endif; ?>
+        </div>
       </div>
     </div>
   </div>
@@ -401,8 +401,6 @@ $total_pages = ceil($totaldata / $records_per_page);
         </div>
       </form>
     </div>
-  </div>
-
   </div>
 
 
