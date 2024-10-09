@@ -27,7 +27,7 @@ if (isset($_POST['submit']) && !isset($_GET)) {
 }
 elseif (isset($_POST['submit']) && isset($_GET)) {
   # code...
-  $idteam = $_GET['id'];
+  $idteam = $_POST['idteam'];
   $idevent = $_POST['idevent'];
 
   
@@ -43,9 +43,10 @@ elseif (isset($_POST['submit']) && isset($_GET)) {
 
   $stmt2->close();
   $conn->close();
-  header("Location: admin_homepage.php?table=".$_GET['table']."&detail=".$_GET['detail']."&id=".$_GET['id']);
+  // header("Location: admin_homepage.php?table=".$_GET['table']."&detail=".$_GET['detail']."&id=".$_GET['id']);
+  header("Location: admin_homepage.php?table=team&detail=event" . (isset($idteam) ? '&id=' . $idteam : ''));
   exit();
 }
 ?>
-<br>
+  <br>
 <a href="admin_homepage.php">Back to Home</a>

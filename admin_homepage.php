@@ -70,16 +70,16 @@ $total_pages = ceil($totaldata / $records_per_page);
   </div>
   <div id="content">
     <div class="card" <?= ((isset($_GET['detail'])) ? 'hidden' : '') ?>>
-      
+
       <div id="card-header">
         <h2><?php echo ucfirst($table); ?> Table</h2>
         <?php
-            
-          if (!isset($_GET['detail'])) {
-            echo '<button id="insertButton">Add New '.ucfirst($table).'</button>';
-          }
+
+        if (!isset($_GET['detail'])) {
+          echo '<button id="insertButton">Add New ' . ucfirst($table) . '</button>';
+        }
         ?>
-        
+
       </div>
       <div class="search-bar">
         <input type="text" placeholder="Search...">
@@ -103,47 +103,46 @@ $total_pages = ceil($totaldata / $records_per_page);
           $stmt->execute();
           $result = $stmt->get_result();
           $fields = [];
-          if (!isset($_GET['detail'])) {
-            # code...
+          if ($result->num_rows > 0) {
+            echo '<tr>';
+            while ($field = mysqli_fetch_field($result)) {
+              if ($field->name !== 'password') {
+                echo '<th>' . $field->name . '</th>';
+                $fields[] = $field->name;
+              }
+            }
+            echo "<th colspan='" . (($table == 'team') ? '4' : '2') . "'>Action</th>";
+            echo '</tr>';
 
             while ($row = $result->fetch_assoc()) {
               echo "<tr>";
               foreach ($row as $key => $value) {
                 echo "<td>" . htmlspecialchars($value) . "</td>";
               }
-              echo "<th colspan='" . (($table == 'team') ? '4' : '2') . "'>Action</th>";
-              echo '</tr>';
-  
-              while ($row = $result->fetch_assoc()) {
-                echo "<tr>";
-                foreach ($fields as $field_name) {
-                  echo "<td>" . htmlspecialchars($row[$field_name]) . "</td>";
-                }
-                $id = $row['id' . $table];
-                if ($table == 'team') {
-                  # code...
-                  echo "<td class='action'><a class='detail' href='admin_homepage.php?table=" . $table . "&detail=achievement&id=" . $id . "'>Team Achievement</button></td>";
-                  echo "<td class='action'><a class='detail' href='admin_homepage.php?table=" . $table . "&detail=event&id=" . $id . "'>Team Event</button></td>";
-                }
-  
-                echo "<td class='action'><button class='update' id='" . $id . "'>Edit</button></td>";
-                echo "<td class='action'><form action='delete" . $table . ".php' method='get'>
+              $id = $row['id' . $table];
+              if ($table == 'team') {
+                # code...
+                echo "<td class='action'><a class='detail' href='admin_homepage.php?table=" . $table . "&detail=achievement&id=" . $id . "'>Team Achievement</button></td>";
+                echo "<td class='action'><a class='detail' href='admin_homepage.php?table=" . $table . "&detail=event&id=" . $id . "'>Team Event</button></td>";
+              }
+
+              echo "<td class='action'><button class='update' id='" . $id . "'>Edit</button></td>";
+              echo "<td class='action'><form action='delete" . $table . ".php' method='get'>
                 <input type='hidden' name='id' value='" . $id . "'>
                 <button type='submit' class='delete' id='" . $id . "'>Delete</button>
                 </form></td>";
-                echo "</tr>";
-              }
-            } else {
-              while ($field = mysqli_fetch_field($result)) {
-                if ($field->name !== 'password') {
-                  echo '<th>' . $field->name . '</th>';
-                  $fields[] = $field->name;
-                }
-              }
-              echo '<tr><td colspan="6">No records found.</td></tr>'; // Handle empty result set
+              echo "</tr>";
             }
-            $_SESSION["fields"] = $fields;
+          } else {
+            while ($field = mysqli_fetch_field($result)) {
+              if ($field->name !== 'password') {
+                echo '<th>' . $field->name . '</th>';
+                $fields[] = $field->name;
+              }
+            }
+            echo '<tr><td colspan="6">No records found.</td></tr>'; // Handle empty result set
           }
+          $_SESSION["fields"] = $fields;
           ?>
         </table>
       </div>
@@ -194,6 +193,33 @@ $total_pages = ceil($totaldata / $records_per_page);
         <table>
           <?php
 
+          $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int) $_GET['page'] : 1;
+          $records_per_page = 3;
+          $offset = ($page - 1) * $records_per_page;
+          if (isset($_GET['detail'])) {
+            if ($_GET['detail'] == 'event') {
+              $sql_detail = "SELECT COUNT(*) AS total FROM team t 
+                            LEFT JOIN event_teams et ON t.idteam = et.idteam
+                            INNER JOIN event e ON et.idevent = e.idevent 
+                            WHERE t.idteam =" . $_GET['id'];
+            } else if ($_GET['detail'] == 'achievement') {
+              $sql_detail = "SELECT COUNT(*) AS total FROM team t 
+                            INNER JOIN game g ON t.idgame = g.idgame
+                            LEFT JOIN achievement a ON t.idteam = a.idteam
+                            WHERE t.idteam =" . $_GET['id'];
+            }
+            $stmt_detail = $conn->prepare($sql_detail);
+
+            if ($stmt_detail) {
+              $stmt_detail->execute();
+              $result_detail = $stmt_detail->get_result();
+              $totaldata_detail = $result_detail->fetch_assoc()['total'];
+            } else {
+              echo "Error preparing statement: " . $conn->error;
+              exit;
+            }
+            $total_pages = ceil($totaldata_detail / $records_per_page);
+          }
           $sql = '';
 
           if (isset($_GET['detail'])) {
@@ -204,15 +230,16 @@ $total_pages = ceil($totaldata / $records_per_page);
           FROM team t 
           INNER JOIN game g ON t.idgame = g.idgame
           LEFT JOIN achievement a ON t.idteam = a.idteam
-          WHERE t.idteam =" . $_GET['id'];
+          WHERE t.idteam =" . $_GET['id'] . " LIMIT ? OFFSET ?";
             } elseif ($_GET['detail'] == 'event') {
               # code...
               $sql = 'SELECT t.idteam, t.name AS team_name, e.idevent as idevent,  e.name AS event_name, e.description as event_desc, e.date as held_on
                     FROM team t 
                     left JOIN event_teams et ON t.idteam = et.idteam
-                    inner JOIN event e ON et.idevent = e.idevent where t.idteam =' . $_GET['id'];
+                    inner JOIN event e ON et.idevent = e.idevent where t.idteam =' . $_GET['id'] . " LIMIT ? OFFSET ?";
             }
             $stmt = $conn->prepare($sql);
+            $stmt->bind_param("ii", $records_per_page, $offset);
             $stmt->execute();
             $result = $stmt->get_result();
             echo "<tr>";
@@ -238,41 +265,46 @@ $total_pages = ceil($totaldata / $records_per_page);
             echo "</tr>";
 
             echo "<tbody>";
-            while ($row = $result->fetch_assoc()) {
 
-              echo "<tr>";
-              if ($_GET['detail'] == 'achievement') {
-                # code...
-                // $idteam = $row['idteam'];
+            if ($result->num_rows > 0) {
+              while ($row = $result->fetch_assoc()) {
 
-                echo "<td>" . $row['idteam'] . "</td>";
-                echo "<td>" . $row['team_name'] . "</td>";
-                echo "<td>" . $row['game_name'] . "</td>";
-                echo "<td>" . $row['game_desc'] . "</td>";
+                echo "<tr>";
+                if ($_GET['detail'] == 'achievement') {
+                  # code...
+                  // $idteam = $row['idteam'];
 
-                echo "<td>" . $row['achievement_name'] . "</td>";
-                echo "<td>" . $row['achievement_desc'] . "</td>";
-                echo "<td>" . $row['achievement_date'] . "</td>";
+                  echo "<td>" . $row['idteam'] . "</td>";
+                  echo "<td>" . $row['team_name'] . "</td>";
+                  echo "<td>" . $row['game_name'] . "</td>";
+                  echo "<td>" . $row['game_desc'] . "</td>";
 
-                // echo "<td><a href='editteam.php?id=$idteam' class='edit'>Edit</a></td>";
-                // echo "<td><a href='deleteteam.php?id=$idteam' class='delete'>Delete</a></td>";
-              } else {
-                echo "<td>" . $row['idteam'] . "</td>";
-                echo "<td>" . $row['team_name'] . "</td>";
-                echo "<td>" . $row['event_name'] . "</td>";
-                echo "<td>" . $row['event_desc'] . "</td>";
+                  echo "<td>" . $row['achievement_name'] . "</td>";
+                  echo "<td>" . $row['achievement_desc'] . "</td>";
+                  echo "<td>" . $row['achievement_date'] . "</td>";
 
-                echo "<td>" . $row['held_on'] . "</td>";
-                echo "<td class='action'><form action='deleteteam.php' method='get'>
+                  // echo "<td><a href='editteam.php?id=$idteam' class='edit'>Edit</a></td>";
+                  // echo "<td><a href='deleteteam.php?id=$idteam' class='delete'>Delete</a></td>";
+                } else {
+                  echo "<td>" . $row['idteam'] . "</td>";
+                  echo "<td>" . $row['team_name'] . "</td>";
+                  echo "<td>" . $row['event_name'] . "</td>";
+                  echo "<td>" . $row['event_desc'] . "</td>";
+
+                  echo "<td>" . $row['held_on'] . "</td>";
+                  echo "<td class='action'><form action='deleteteam.php' method='get'>
                 <input type='hidden' name='idteam' value='" . $row['idteam'] . "'>
                 <input type='hidden' name='idevent' value='" . $row['idevent'] . "'>
                 <button type='submit' class='delete' id='" . $row['idteam'] . "'>Delete</button>
                 </form></td>";
-                // echo "<td><a href='deleteteam.php?idteam=".$row['idteam']."&idevent=".$row['idteam']."' class='delete'>Delete</a></td>";
+                  // echo "<td><a href='deleteteam.php?idteam=".$row['idteam']."&idevent=".$row['idteam']."' class='delete'>Delete</a></td>";
 
+                }
+
+                echo "</tr>";
               }
-
-              echo "</tr>";
+            } else {
+              echo '<tr><td colspan="6">No records found.</td></tr>'; // Handle empty result set
             }
             echo "</tbody>";
           }
@@ -281,22 +313,22 @@ $total_pages = ceil($totaldata / $records_per_page);
       </div>
       <div class="pagination-container">
         <div class="pagination-info">
-          Showing <?php echo ($totaldata > 0) ? ($offset + 1) : 0; ?> to
-          <?php echo min($offset + $records_per_page, $totaldata); ?> of <?php echo $totaldata; ?> entries
+          Showing <?php echo ($totaldata_detail > 0) ? ($offset + 1) : 0; ?> to
+          <?php echo min($offset + $records_per_page, $totaldata_detail); ?> of <?php echo $totaldata_detail; ?> entries
         </div>
         <div class="pagination-controls">
           <?php if ($page > 1): ?>
-            <a href="admin_homepage.php?table=<?php echo htmlspecialchars($table); ?>&page=<?php echo $page - 1; ?>"
+            <a href="admin_homepage.php?table=team&detail=event&id=1&page=<?php echo $page - 1; ?>"
               class="prev">Previous</a>
           <?php endif; ?>
 
           <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-            <a href="admin_homepage.php?table=<?php echo htmlspecialchars($table); ?>&page=<?php echo $i; ?>"
+            <a href="admin_homepage.php?table=team&detail=event&id=1&page=<?php echo $i; ?>"
               class="page-number <?php echo ($i == $page) ? 'active' : ''; ?>"><?php echo $i; ?></a>
           <?php endfor; ?>
 
           <?php if ($page < $total_pages): ?>
-            <a href="admin_homepage.php?table=<?php echo htmlspecialchars($table); ?>&page=<?php echo $page + 1; ?>"
+            <a href="admin_homepage.php?table=team&detail=event&id=1&page=<?php echo $page + 1; ?>"
               class="next">Next</a>
           <?php endif; ?>
         </div>
@@ -304,159 +336,97 @@ $total_pages = ceil($totaldata / $records_per_page);
     </div>
   </div>
 
-    <!-- Insert Modal -->
-    <div id="insertModal" class="modal">
-      <div class="modal-content">
-        <div class="modal-header">
-          <span id="closeInsert" class="close">&times;</span>
-          <h2>Add New <?php echo ucfirst($table) .' '.(isset($_GET['detail']) ? ucfirst($_GET['detail']):''); ?></h2>
-        </div>
-        <form id="insertForm" action="insert<?php echo $table ?>_proses.php<?= isset($_GET['detail']) ? '?table='.$_GET['table'].'&detail='.$_GET['detail'].'&id='.$_GET['id'] :'' ?>" method="POST">
-          <?php
-          if (isset($_GET['detail'])) {
-            # code...
-            $sql_team = "SELECT idteam, name
-          FROM team 
-          WHERE idteam =" . $_GET['id'];
-           $stmt_team = $conn->prepare(query: $sql_team);
-           $stmt_team->execute();
-           $result_team = $stmt_team->get_result();
-           
-           $row_team =  $result_team->fetch_assoc();
-           ?>
-            <div class="input-group">
-              <label for="idteam">Team Name: <b><?= ucwords($row_team['name']) ?></b></label>
-              <input type="text" id="insert_idteam" name="idteam" required value='<?= ucwords($row_team['idteam']) ?>' disabled>
-            </div>
-            <?php
-           if ($_GET['detail'] == 'event') {
-            # code...
-            $sql_event_team = "SELECT idevent FROM event_teams WHERE idteam=".$_GET['id'];
-           $stmt_event_team = $conn->prepare(query: $sql_event_team);
-           $stmt_event_team->execute();
-           $result_event_team = $stmt_event_team->get_result();
-
-           $eventid = "(";
-           $totalRows = $result_event_team->num_rows; // Hitung total baris
-           $currentRow = 0; // Inisialisasi penghitung
-
-           while ( $row_event_team =  $result_event_team->fetch_assoc()) {
-            # code...
-            $currentRow++; // Tambah penghitung di setiap iterasi
-
-             $eventid .= $row_event_team['idevent'];
-
-             if ($currentRow < $totalRows) {
-                  $eventid .= ", ";
-              }
-           }
-
-           $eventid = rtrim($eventid, ", ") . ")";
-
-           $sql_event = "SELECT * FROM event where idevent not in ".$eventid;
-           $stmt_event = $conn->prepare(query: $sql_event);
-           $stmt_event->execute();
-           $result_event = $stmt_event->get_result();
-           ?>
-
-            <div class="input-group">
-            <label for="event_name">Event Name</label>
-            
-            <select name="idevent" id="event_name">
-              <option value="">-- Pilih Event --</option>
-              <?php
-                while ($row_event =  $result_event->fetch_assoc()) {
-                  # code...
-                  echo '<option value="'.$row_event['idevent'].'">'.$row_event['name'].'</option>';
-                }
-              ?>
-            </select>
-            </div>
-           <?php
-           } else {
-            # code...
-            
-           }
-
-
-
-           ?>
-           
-
-           
-            
-          <?php
-          } else {
-            # code...
-            for ($i = 1; $i < count($_SESSION['fields']); $i++) {
-              echo '<div class="input-group">';
-              $field = $_SESSION['fields'][$i];
-              echo '<label for="' . $field . '"> ' . ucfirst($field) . ':</label>';
-              if ($field == 'date') {
-                echo '<input type="date" id="insert_' . $field . '" name="' . $field . '" required>';
-              } else if ($field == 'description') {
-                echo '<textarea id="insert_' . $field . '" name="' . $field . '" required></textarea>';
-              } else if (str_starts_with($field, 'id')) {
-                echo '<select id="insert_' . $field . '" name="' . $field . '" required>';
-                $sql2 = "SELECT * FROM game";
-                $stmt2 = $conn->prepare($sql2);
-                $stmt2->execute();
-                $result2 = $stmt2->get_result();
-  
-                while ($row2 = $result2->fetch_assoc()) {
-                  $gameId = $row2['idgame'];
-                  $gameName = $row2['name'];
-  
-                  echo "<option value='$gameId'>$gameName</option>";
-                }
-                echo '</select>';
-                $stmt2->close();
-                $conn->close();
-              } else {
-                echo '<input type="text" id="insert_' . $field . '" name="' . $field . '" required>';
-              }
-              echo '</div>';
-            }
-          }
-          
-
-          ?>
-          <div class="modal-footer">
-            <button class="close">Cancel</button>
-            <input type="submit" name="submit" value="Save"></input>
-          </div>
-        </form>
+  <!-- Insert Modal -->
+  <div id="insertModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span id="closeInsert" class="close">&times;</span>
+        <h2>Add New <?php echo ucfirst($table) . ' ' . (isset($_GET['detail']) ? ucfirst($_GET['detail']) : ''); ?></h2>
       </div>
       <form id="insertForm" action="insert<?php echo $table ?>_proses.php" method="POST">
         <?php
-        for ($i = 1; $i < count($_SESSION['fields']); $i++) {
-          echo '<div class="input-group">';
-          $field = $_SESSION['fields'][$i];
-          echo '<label for="' . $field . '"> ' . ucfirst($field) . ':</label>';
-          if ($field == 'date') {
-            echo '<input type="date" id="insert_' . $field . '" name="' . $field . '" required>';
-          } else if ($field == 'description') {
-            echo '<textarea id="insert_' . $field . '" name="' . $field . '" required></textarea>';
-          } else if (str_starts_with($field, 'id')) {
-            echo '<select id="insert_' . $field . '" name="' . $field . '" required>';
-            $sql2 = "SELECT * FROM game";
-            $stmt2 = $conn->prepare($sql2);
-            $stmt2->execute();
-            $result2 = $stmt2->get_result();
+        if (isset($_GET['detail'])) {
+          $sql_team = "SELECT idteam, name
+          FROM team 
+          WHERE idteam =" . $_GET['id'];
+          $stmt_team = $conn->prepare(query: $sql_team);
+          $stmt_team->execute();
+          $result_team = $stmt_team->get_result();
+          $row_team =  $result_team->fetch_assoc();
+        ?>
+          <div class="input-group">
+            <label for="idteam">Team Name: <b><?= ucwords($row_team['name']) ?></b></label>
+            <input type="text" id="insert_idteam" name="idteam" required value='<?= ucwords($row_team['idteam']) ?>' readonly>
+          </div>
+          <?php
+          if ($_GET['detail'] == 'event') {
+            $sql_event_team = "SELECT idevent FROM event_teams WHERE idteam=" . $_GET['id'];
+            $stmt_event_team = $conn->prepare(query: $sql_event_team);
+            $stmt_event_team->execute();
+            $result_event_team = $stmt_event_team->get_result();
 
-            while ($row2 = $result2->fetch_assoc()) {
-              $gameId = $row2['idgame'];
-              $gameName = $row2['name'];
+            $eventid = "(";
+            $totalRows = $result_event_team->num_rows; // Hitung total baris
+            $currentRow = 0; // Inisialisasi penghitung
 
-              echo "<option value='$gameId'>$gameName</option>";
+            while ($row_event_team =  $result_event_team->fetch_assoc()) {
+              $currentRow++; // Tambah penghitung di setiap iterasi
+              $eventid .= $row_event_team['idevent'];
+              if ($currentRow < $totalRows) {
+                $eventid .= ", ";
+              }
             }
-            echo '</select>';
-            $stmt2->close();
-            $conn->close();
-          } else {
-            echo '<input type="text" id="insert_' . $field . '" name="' . $field . '" required>';
+
+            $eventid = rtrim($eventid, ", ") . ")";
+
+            $sql_event = "SELECT * FROM event where idevent not in " . $eventid;
+            $stmt_event = $conn->prepare(query: $sql_event);
+            $stmt_event->execute();
+            $result_event = $stmt_event->get_result();
+          ?>
+            <div class="input-group">
+              <label for="event_name">Event Name</label>
+              <select name="idevent" id="event_name">
+                <option value="">-- Pilih Event --</option>
+                <?php
+                while ($row_event =  $result_event->fetch_assoc()) {
+                  echo '<option value="' . $row_event['idevent'] . '">' . $row_event['name'] . '</option>';
+                }
+                ?>
+              </select>
+            </div>
+        <?php
+          } // endif isset
+        } else {
+          for ($i = 1; $i < count($_SESSION['fields']); $i++) {
+            echo '<div class="input-group">';
+            $field = $_SESSION['fields'][$i];
+            echo '<label for="' . $field . '"> ' . ucfirst($field) . ':</label>';
+            if ($field == 'date') {
+              echo '<input type="date" id="insert_' . $field . '" name="' . $field . '" required>';
+            } else if ($field == 'description') {
+              echo '<textarea id="insert_' . $field . '" name="' . $field . '" required></textarea>';
+            } else if (str_starts_with($field, 'id')) {
+              echo '<select id="insert_' . $field . '" name="' . $field . '" required>';
+              $sql2 = "SELECT * FROM game";
+              $stmt2 = $conn->prepare($sql2);
+              $stmt2->execute();
+              $result2 = $stmt2->get_result();
+
+              while ($row2 = $result2->fetch_assoc()) {
+                $gameId = $row2['idgame'];
+                $gameName = $row2['name'];
+
+                echo "<option value='$gameId'>$gameName</option>";
+              }
+              echo '</select>';
+              $stmt2->close();
+              $conn->close();
+            } else {
+              echo '<input type="text" id="insert_' . $field . '" name="' . $field . '" required>';
+            }
+            echo '</div>';
           }
-          echo '</div>';
         }
 
         ?>
@@ -524,17 +494,11 @@ $total_pages = ceil($totaldata / $records_per_page);
     </div>
   </div>
 
-
   <script>
     $(document).ready(function() {
-      console.log("kesini");
-      
       $("#insertButton").on("click", function() {
-        console.log("kesini");
-        
         $("#insertModal").css("display", "block");
       });
-
       $(".update").on("click", function() {
         var row = $(this).closest("tr");
         var totalColumns = row.find("td").length;
@@ -546,6 +510,7 @@ $total_pages = ceil($totaldata / $records_per_page);
           var cellData = $(this).text();
           rowData.push(cellData); // Add the cell data to the rowData array
         });
+        console.log(rowData)
 
         // Loading
         $("body").css("cursor", "wait");
