@@ -1,7 +1,11 @@
 <?php
 include 'db.php';
 
-if (isset($_POST['submit'])) {
+print_r($_GET);
+print_r($_POST);
+
+
+if (isset($_POST['submit']) && !isset($_GET)) {
   $idgame = $_POST['idgame'];
   $teamname = $_POST['name'];
 
@@ -19,6 +23,27 @@ if (isset($_POST['submit'])) {
   $stmt2->close();
   $conn->close();
   header("Location: admin_homepage.php");
+  exit();
+}
+elseif (isset($_POST['submit']) && isset($_GET)) {
+  # code...
+  $idteam = $_GET['id'];
+  $idevent = $_POST['idevent'];
+
+  
+  $sql = "INSERT INTO event_teams (idevent, idteam) VALUES (?, ?)";
+  $stmt2 = $conn->prepare($sql);
+  $stmt2->bind_param("ii", $idevent, $idteam);
+
+  if ($stmt2->execute()) {
+    echo "Team inserted successfully!";
+  } else {
+    echo "Error: " . $stmt2->error;
+  }
+
+  $stmt2->close();
+  $conn->close();
+  header("Location: admin_homepage.php?table=".$_GET['table']."&detail=".$_GET['detail']."&id=".$_GET['id']);
   exit();
 }
 ?>

@@ -48,9 +48,16 @@ if (!in_array($table, $allowed_tables)) {
   </div>
   <div id="content">
     <div class="card" <?= ((isset($_GET['detail'])) ? 'hidden' : '') ?>>
+      
       <div id="card-header">
         <h2><?php echo ucfirst($table); ?> Table</h2>
-        <button id="insertButton">Add New <?php echo ucfirst($table); ?></button>
+        <?php
+            
+          if (!isset($_GET['detail'])) {
+            echo '<button id="insertButton">Add New '.ucfirst($table).'</button>';
+          }
+        ?>
+        
       </div>
       <div class="search-bar">
         <input type="text" placeholder="Search...">
@@ -66,51 +73,56 @@ if (!in_array($table, $allowed_tables)) {
       <div class="table-responsive">
         <table>
           <?php
-          $sql = "SELECT * FROM " . $table . ";";
-          $stmt = $conn->prepare($sql);
-          $stmt->execute();
-          $result = $stmt->get_result();
           $fields = [];
-          if ($result->num_rows > 0) {
-            echo '<tr>';
-            while ($field = mysqli_fetch_field($result)) {
-              if ($field->name !== 'password') {
-                echo '<th>' . $field->name . '</th>';
-                $fields[] = $field->name;
-              }
-            }
-            echo "<th colspan='" . (($table == 'team') ? '4' : '2') . "'>Action</th>";
-            echo '</tr>';
+          if (!isset($_GET['detail'])) {
+            # code...
 
-            while ($row = $result->fetch_assoc()) {
-              echo "<tr>";
-              foreach ($fields as $field_name) {
-                echo "<td>" . htmlspecialchars($row[$field_name]) . "</td>";
+            $sql = "SELECT * FROM " . $table . ";";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            
+            if ($result->num_rows > 0) {
+              echo '<tr>';
+              while ($field = mysqli_fetch_field($result)) {
+                if ($field->name !== 'password') {
+                  echo '<th>' . $field->name . '</th>';
+                  $fields[] = $field->name;
+                }
               }
-              $id = $row['id' . $table];
-              if ($table == 'team') {
-                # code...
-                echo "<td class='action'><a class='detail' href='admin_homepage.php?table=" . $table . "&detail=achievement&id=" . $id . "'>Team Achievement</button></td>";
-                echo "<td class='action'><a class='detail' href='admin_homepage.php?table=" . $table . "&detail=event&id=" . $id . "'>Team Event</button></td>";
+              echo "<th colspan='" . (($table == 'team') ? '4' : '2') . "'>Action</th>";
+              echo '</tr>';
+  
+              while ($row = $result->fetch_assoc()) {
+                echo "<tr>";
+                foreach ($fields as $field_name) {
+                  echo "<td>" . htmlspecialchars($row[$field_name]) . "</td>";
+                }
+                $id = $row['id' . $table];
+                if ($table == 'team') {
+                  # code...
+                  echo "<td class='action'><a class='detail' href='admin_homepage.php?table=" . $table . "&detail=achievement&id=" . $id . "'>Team Achievement</button></td>";
+                  echo "<td class='action'><a class='detail' href='admin_homepage.php?table=" . $table . "&detail=event&id=" . $id . "'>Team Event</button></td>";
+                }
+  
+                echo "<td class='action'><button class='update' id='" . $id . "'>Edit</button></td>";
+                echo "<td class='action'><form action='delete" . $table . ".php' method='get'>
+                <input type='hidden' name='id' value='" . $id . "'>
+                <button type='submit' class='delete' id='" . $id . "'>Delete</button>
+                </form></td>";
+                echo "</tr>";
               }
-
-              echo "<td class='action'><button class='update' id='" . $id . "'>Edit</button></td>";
-              echo "<td class='action'><form action='delete" . $table . ".php' method='get'>
-              <input type='hidden' name='id' value='" . $id . "'>
-              <button type='submit' class='delete' id='" . $id . "'>Delete</button>
-              </form></td>";
-              echo "</tr>";
+            } else {
+              while ($field = mysqli_fetch_field($result)) {
+                if ($field->name !== 'password') {
+                  echo '<th>' . $field->name . '</th>';
+                  $fields[] = $field->name;
+                }
+              }
+              echo '<tr><td colspan="6">No records found.</td></tr>'; // Handle empty result set
             }
-          } else {
-            while ($field = mysqli_fetch_field($result)) {
-              if ($field->name !== 'password') {
-                echo '<th>' . $field->name . '</th>';
-                $fields[] = $field->name;
-              }
-            }
-            echo '<tr><td colspan="6">No records found.</td></tr>'; // Handle empty result set
+            $_SESSION["fields"] = $fields;
           }
-          $_SESSION["fields"] = $fields;
           ?>
         </table>
       </div>
@@ -128,9 +140,8 @@ if (!in_array($table, $allowed_tables)) {
     </div>
     <div class="card" <?= ((isset($_GET['detail'])) ? '' : 'hidden') ?>>
       <div id="card-header">
-        <?php $table_name = 'A' ?>
         <h2>Halaman <span><?php echo ucfirst($_GET['table']) . ' ' . ucfirst($_GET['detail'])  ?></span></h2>
-        <!-- <button class="insert">Add New <?php echo $table_name ?></button> -->
+        <button id="insertButton">Add New <?php echo ucfirst($_GET['table']) . ' ' . ucfirst($_GET['detail']) ?></button>
       </div>
       <div class="search-bar">
         <input type="text" placeholder="Search...">
@@ -160,7 +171,7 @@ if (!in_array($table, $allowed_tables)) {
           WHERE t.idteam =" . $_GET['id'];
             } elseif ($_GET['detail'] == 'event') {
               # code...
-              $sql = 'SELECT t.idteam, t.name AS team_name, e.name AS event_name, e.description as event_desc, e.date as held_on
+              $sql = 'SELECT t.idteam, t.name AS team_name, e.idevent as idevent,  e.name AS event_name, e.description as event_desc, e.date as held_on
                     FROM team t 
                     left JOIN event_teams et ON t.idteam = et.idteam
                     inner JOIN event e ON et.idevent = e.idevent where t.idteam =' . $_GET['id'];
@@ -168,16 +179,6 @@ if (!in_array($table, $allowed_tables)) {
             $stmt = $conn->prepare($sql);
             $stmt->execute();
             $result = $stmt->get_result();
-
-            // echo "<tr>
-            //         <th>ID Team</th>
-            //         <th>Team</th>
-            //         <th>Game</th>
-            //         <th>Achievement</th>
-            //         <th colspan = 2 >Action</th>
-            //     </tr>";
-
-
             echo "<tr>";
 
             if ($_GET['detail'] == 'achievement') {
@@ -194,7 +195,8 @@ if (!in_array($table, $allowed_tables)) {
                         <th>Team</th>
                         <th>Event</th>
                         <th>Event Description</th>
-                        <th>Held On</th>";
+                        <th>Held On</th>
+                        <th>Action</th>";
             }
 
             echo "</tr>";
@@ -225,6 +227,13 @@ if (!in_array($table, $allowed_tables)) {
                 echo "<td>" . $row['event_desc'] . "</td>";
 
                 echo "<td>" . $row['held_on'] . "</td>";
+                echo "<td class='action'><form action='deleteteam.php' method='get'>
+                <input type='hidden' name='idteam' value='" . $row['idteam'] . "'>
+                <input type='hidden' name='idevent' value='" . $row['idevent'] . "'>
+                <button type='submit' class='delete' id='" . $row['idteam'] . "'>Delete</button>
+                </form></td>";
+                // echo "<td><a href='deleteteam.php?idteam=".$row['idteam']."&idevent=".$row['idteam']."' class='delete'>Delete</a></td>";
+
               }
 
               echo "</tr>";
@@ -255,39 +264,116 @@ if (!in_array($table, $allowed_tables)) {
       <div class="modal-content">
         <div class="modal-header">
           <span id="closeInsert" class="close">&times;</span>
-          <h2>Add New <?php echo ucfirst($table); ?></h2>
+          <h2>Add New <?php echo ucfirst($table) .' '.(isset($_GET['detail']) ? ucfirst($_GET['detail']):''); ?></h2>
         </div>
-        <form id="insertForm" action="insert<?php echo $table ?>_proses.php" method="POST">
+        <form id="insertForm" action="insert<?php echo $table ?>_proses.php<?= isset($_GET['detail']) ? '?table='.$_GET['table'].'&detail='.$_GET['detail'].'&id='.$_GET['id'] :'' ?>" method="POST">
           <?php
-          for ($i = 1; $i < count($_SESSION['fields']); $i++) {
-            echo '<div class="input-group">';
-            $field = $_SESSION['fields'][$i];
-            echo '<label for="' . $field . '"> ' . ucfirst($field) . ':</label>';
-            if ($field == 'date') {
-              echo '<input type="date" id="insert_' . $field . '" name="' . $field . '" required>';
-            } else if ($field == 'description') {
-              echo '<textarea id="insert_' . $field . '" name="' . $field . '" required></textarea>';
-            } else if (str_starts_with($field, 'id')) {
-              echo '<select id="insert_' . $field . '" name="' . $field . '" required>';
-              $sql2 = "SELECT * FROM game";
-              $stmt2 = $conn->prepare($sql2);
-              $stmt2->execute();
-              $result2 = $stmt2->get_result();
+          if (isset($_GET['detail'])) {
+            # code...
+            $sql_team = "SELECT idteam, name
+          FROM team 
+          WHERE idteam =" . $_GET['id'];
+           $stmt_team = $conn->prepare(query: $sql_team);
+           $stmt_team->execute();
+           $result_team = $stmt_team->get_result();
+           
+           $row_team =  $result_team->fetch_assoc();
+           ?>
+            <div class="input-group">
+              <label for="idteam">Team Name: <b><?= ucwords($row_team['name']) ?></b></label>
+              <input type="text" id="insert_idteam" name="idteam" required value='<?= ucwords($row_team['idteam']) ?>' disabled>
+            </div>
+            <?php
+           if ($_GET['detail'] == 'event') {
+            # code...
+            $sql_event_team = "SELECT idevent FROM event_teams WHERE idteam=".$_GET['id'];
+           $stmt_event_team = $conn->prepare(query: $sql_event_team);
+           $stmt_event_team->execute();
+           $result_event_team = $stmt_event_team->get_result();
 
-              while ($row2 = $result2->fetch_assoc()) {
-                $gameId = $row2['idgame'];
-                $gameName = $row2['name'];
+           $eventid = "(";
+           $totalRows = $result_event_team->num_rows; // Hitung total baris
+           $currentRow = 0; // Inisialisasi penghitung
 
-                echo "<option value='$gameId'>$gameName</option>";
+           while ( $row_event_team =  $result_event_team->fetch_assoc()) {
+            # code...
+            $currentRow++; // Tambah penghitung di setiap iterasi
+
+             $eventid .= $row_event_team['idevent'];
+
+             if ($currentRow < $totalRows) {
+                  $eventid .= ", ";
               }
-              echo '</select>';
-              $stmt2->close();
-              $conn->close();
-            } else {
-              echo '<input type="text" id="insert_' . $field . '" name="' . $field . '" required>';
+           }
+
+           $eventid = rtrim($eventid, ", ") . ")";
+
+           $sql_event = "SELECT * FROM event where idevent not in ".$eventid;
+           $stmt_event = $conn->prepare(query: $sql_event);
+           $stmt_event->execute();
+           $result_event = $stmt_event->get_result();
+           ?>
+
+            <div class="input-group">
+            <label for="event_name">Event Name</label>
+            
+            <select name="idevent" id="event_name">
+              <option value="">-- Pilih Event --</option>
+              <?php
+                while ($row_event =  $result_event->fetch_assoc()) {
+                  # code...
+                  echo '<option value="'.$row_event['idevent'].'">'.$row_event['name'].'</option>';
+                }
+              ?>
+            </select>
+            </div>
+           <?php
+           } else {
+            # code...
+            
+           }
+
+
+
+           ?>
+           
+
+           
+            
+          <?php
+          } else {
+            # code...
+            for ($i = 1; $i < count($_SESSION['fields']); $i++) {
+              echo '<div class="input-group">';
+              $field = $_SESSION['fields'][$i];
+              echo '<label for="' . $field . '"> ' . ucfirst($field) . ':</label>';
+              if ($field == 'date') {
+                echo '<input type="date" id="insert_' . $field . '" name="' . $field . '" required>';
+              } else if ($field == 'description') {
+                echo '<textarea id="insert_' . $field . '" name="' . $field . '" required></textarea>';
+              } else if (str_starts_with($field, 'id')) {
+                echo '<select id="insert_' . $field . '" name="' . $field . '" required>';
+                $sql2 = "SELECT * FROM game";
+                $stmt2 = $conn->prepare($sql2);
+                $stmt2->execute();
+                $result2 = $stmt2->get_result();
+  
+                while ($row2 = $result2->fetch_assoc()) {
+                  $gameId = $row2['idgame'];
+                  $gameName = $row2['name'];
+  
+                  echo "<option value='$gameId'>$gameName</option>";
+                }
+                echo '</select>';
+                $stmt2->close();
+                $conn->close();
+              } else {
+                echo '<input type="text" id="insert_' . $field . '" name="' . $field . '" required>';
+              }
+              echo '</div>';
             }
-            echo '</div>';
           }
+          
 
           ?>
           <div class="modal-footer">
@@ -360,7 +446,11 @@ if (!in_array($table, $allowed_tables)) {
 
   <script>
     $(document).ready(function() {
+      console.log("kesini");
+      
       $("#insertButton").on("click", function() {
+        console.log("kesini");
+        
         $("#insertModal").css("display", "block");
       });
 
