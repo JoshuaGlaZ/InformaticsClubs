@@ -28,24 +28,43 @@ if (isset($_POST['submit']) && !isset($_GET)) {
 elseif (isset($_POST['submit']) && isset($_GET)) {
   # code...
   $idteam = $_POST['idteam'];
-  $idevent = $_POST['idevent'];
 
+  if (isset($_POST['idevent'])) {
+    echo 'idevent';
+
+    $sql = "INSERT INTO event_teams (idevent, idteam) VALUES (?, ?)";
+    $stmt2 = $conn->prepare($sql);
+    $stmt2->bind_param("ii", $_POST['idevent'], $idteam);
   
-  $sql = "INSERT INTO event_teams (idevent, idteam) VALUES (?, ?)";
-  $stmt2 = $conn->prepare($sql);
-  $stmt2->bind_param("ii", $idevent, $idteam);
-
-  if ($stmt2->execute()) {
-    echo "Team inserted successfully!";
-  } else {
-    echo "Error: " . $stmt2->error;
+    if ($stmt2->execute()) {
+      echo "Team inserted successfully!";
+    } else {
+      echo "Error: " . $stmt2->error;
+    }
+  
+    $stmt2->close();
+    $conn->close();
+    header("Location: admin_homepage.php?table=team&detail=event" . (isset($idteam) ? '&id=' . $idteam : ''));
+    exit();
+  } else if (isset($_POST['idachievement'])) {
+    echo 'idachievement';
+    $sql = "INSERT INTO achievement (idteam, name, date, description) VALUES (?, ?, ?, ?)";
+    $stmt2 = $conn->prepare($sql);
+    $stmt2->bind_param("isss", $idteam, $_POST['name'],$_POST['date'],$_POST['description']);
+  
+    if ($stmt2->execute()) {
+      echo "Team inserted successfully!";
+    } else {
+      echo "Error: " . $stmt2->error;
+    }
+  
+    $stmt2->close();
+    $conn->close();
+    header("Location: admin_homepage.php?table=team&detail=achievement" . (isset($idteam) ? '&id=' . $idteam : ''));
+    exit();
   }
-
-  $stmt2->close();
-  $conn->close();
   // header("Location: admin_homepage.php?table=".$_GET['table']."&detail=".$_GET['detail']."&id=".$_GET['id']);
-  header("Location: admin_homepage.php?table=team&detail=event" . (isset($idteam) ? '&id=' . $idteam : ''));
-  exit();
+  
 }
 ?>
   <br>

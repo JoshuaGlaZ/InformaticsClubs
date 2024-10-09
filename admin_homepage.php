@@ -395,8 +395,37 @@ $total_pages = ceil($totaldata / $records_per_page);
                 ?>
               </select>
             </div>
+          <?php
+          } // endif get detail event
+          else if ($_GET['detail'] == 'achievement') {
+            $sql_achievement_team = "SELECT idachievement, name, date, description FROM achievement LIMIT 1";
+            $stmt_achievement_team = $conn->prepare(query: $sql_achievement_team);
+            $stmt_achievement_team->execute();
+            $result_achievement_team = $stmt_achievement_team->get_result();
+            while ($row_achievement = $result_achievement_team->fetch_assoc()) {
+              foreach ($row_achievement as $field => $value) {
+                if ($field == 'idachievement') {
+                  echo '<input type="hidden" id="insert_' . $field . '" name="' . $field . '" value="' . $value . '">';
+                } else {
+                  echo '<div class="input-group">';
+                  echo '<label for="' . $field . '">Achievement ' . ucfirst($field) . '</label>';
+
+                  // Generate the appropriate input types based on the field
+                  if ($field == 'date') {
+                    echo '<input type="date" id="insert_' . $field . '" name="' . $field . '" value="' . $value . '" required>';
+                  } else if ($field == 'description') {
+                    echo '<textarea id="insert_' . $field . '" name="' . $field . '" required>' . $value . '</textarea>';
+                  } else {
+                    echo '<input type="text" id="insert_' . $field . '" name="' . $field . '" value="' . $value . '" required>';
+                  }
+
+                  echo '</div>';
+                }
+              }
+            }
+          ?>
         <?php
-          } // endif isset
+          }
         } else {
           for ($i = 1; $i < count($_SESSION['fields']); $i++) {
             echo '<div class="input-group">';

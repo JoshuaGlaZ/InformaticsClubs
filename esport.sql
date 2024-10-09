@@ -31,7 +31,7 @@ CREATE TABLE `achievement` (
   PRIMARY KEY (`idachievement`),
   KEY `fk_achievement_team1_idx` (`idteam`),
   CONSTRAINT `fk_achievement_team1` FOREIGN KEY (`idteam`) REFERENCES `team` (`idteam`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,7 +40,7 @@ CREATE TABLE `achievement` (
 
 LOCK TABLES `achievement` WRITE;
 /*!40000 ALTER TABLE `achievement` DISABLE KEYS */;
-INSERT INTO `achievement` VALUES (1,1,'Dota2 Winner','2017-07-12','Winning in the biggest major tournament in Moba game'),(2,3,'PMGC Winner','2022-10-07','Winning in the biggest major tournament in Battle Royal game');
+INSERT INTO `achievement` VALUES (1,1,'Dota2 Winner','2017-07-12','Winning in the biggest major tournament in Moba game'),(2,3,'PMGC Winner','2022-10-07','Winning in the biggest major tournament in Battle Royal game'),(4,1,'Dota2 MVP','2017-07-12','MVP in the biggest major tournament in Moba game');
 /*!40000 ALTER TABLE `achievement` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -245,4 +245,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-10-10  3:22:01
+-- Dump completed on 2024-10-10  4:34:26
