@@ -18,8 +18,9 @@ if (isset($_POST['submit'])) {
     header("Location: login.php");
     exit();
   } else {
+    $hash_pass = password_hash($password, PASSWORD_DEFAULT);
     $stmt = $conn->prepare("INSERT INTO member (fname, lname, username, password, profile) VALUES (?, ?, ?, ?, 'member')");
-    $stmt->bind_param("ssss", $firstname, $lastname, $username, $password);
+    $stmt->bind_param("ssss", $firstname, $lastname, $username, $hash_pass);
 
     if ($stmt->execute()) {
       header("Location: admin_homepage.php");
