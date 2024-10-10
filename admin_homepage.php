@@ -225,10 +225,9 @@ $total_pages = ceil($totaldata / $records_per_page);
           if (isset($_GET['detail'])) {
             if ($_GET['detail'] == 'achievement') {
               # code...
-              $sql = "SELECT t.idteam, t.name AS team_name, g.name AS game_name, g.description as game_desc,
+              $sql = "SELECT t.idteam, t.name AS team_name,
           a.name AS achievement_name, a.description as achievement_desc, a.date AS achievement_date
           FROM team t 
-          INNER JOIN game g ON t.idgame = g.idgame
           LEFT JOIN achievement a ON t.idteam = a.idteam
           WHERE t.idteam =" . $_GET['id'] . " LIMIT ? OFFSET ?";
             } elseif ($_GET['detail'] == 'event') {
@@ -248,8 +247,6 @@ $total_pages = ceil($totaldata / $records_per_page);
               # code...
               echo "<th>ID Team</th>
                         <th>Team</th>
-                        <th>Game</th>
-                        <th>Game Description</th>
                         <th>Achievement</th>
                         <th>Achievement Description</th>
                         <th>Tanggal Achievement</th>";
@@ -276,8 +273,6 @@ $total_pages = ceil($totaldata / $records_per_page);
 
                   echo "<td>" . $row['idteam'] . "</td>";
                   echo "<td>" . $row['team_name'] . "</td>";
-                  echo "<td>" . $row['game_name'] . "</td>";
-                  echo "<td>" . $row['game_desc'] . "</td>";
 
                   echo "<td>" . $row['achievement_name'] . "</td>";
                   echo "<td>" . $row['achievement_desc'] . "</td>";
@@ -437,16 +432,16 @@ $total_pages = ceil($totaldata / $records_per_page);
               echo '<textarea id="insert_' . $field . '" name="' . $field . '" required></textarea>';
             } else if (str_starts_with($field, 'id')) {
               echo '<select id="insert_' . $field . '" name="' . $field . '" required>';
-              $sql2 = "SELECT * FROM game";
+              $sql2 = "SELECT * FROM team";
               $stmt2 = $conn->prepare($sql2);
               $stmt2->execute();
               $result2 = $stmt2->get_result();
 
               while ($row2 = $result2->fetch_assoc()) {
-                $gameId = $row2['idgame'];
+                $teamid = $row2['idteam'];
                 $gameName = $row2['name'];
 
-                echo "<option value='$gameId'>$gameName</option>";
+                echo "<option value='$teamid'>$gameName</option>";
               }
               echo '</select>';
               $stmt2->close();
@@ -484,6 +479,7 @@ $total_pages = ceil($totaldata / $records_per_page);
         echo '<input type="text" id="update_' . $field . '" name="' . $field . '" required readonly>';
         for ($i = 1; $i < count($_SESSION['fields']); $i++) {
           $field = $_SESSION['fields'][$i];
+
           echo '<label for="' . $field . '"> ' . ucfirst($field) . ':</label>';
           if ($field == 'date') {
             echo '<input type="date" id="update_' . $field . '" name="' . $field . '" required>';
@@ -491,18 +487,19 @@ $total_pages = ceil($totaldata / $records_per_page);
             echo '<textarea id="update_' . $field . '" name="' . $field . '" required>$value</textarea>';
           } else if (str_starts_with($field, 'id')) {
             echo '<select id="update_' . $field . '" name="' . $field . '" required>';
-            if ($field == 'idgame') {
-              echo '<option value="null">-</option>';
-            }
-            $sql2 = "SELECT * FROM game";
+            // if ($field == 'idgame') {
+            //   echo '<option value="null">-</option>';
+            // }
+            $sql2 = "SELECT * FROM team";
             $stmt2 = $conn->prepare($sql2);
             $stmt2->execute();
             $result2 = $stmt2->get_result();
 
             while ($row2 = $result2->fetch_assoc()) {
-              $gameId = $row2['idgame'];
+              $gameId = $row2['idteam'];
               $gameName = $row2['name'];
-              $selected = ($gameId == $_SESSION['fields'][0]) ? 'selected' : '';
+              $selected = ($gameId == $_SESSION['fields'][1]) ? 'selected' : '';
+              echo $gameId . "hello";
 
               echo "<option value='$gameId' $selected>$gameName</option>";
             }
