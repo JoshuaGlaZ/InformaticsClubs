@@ -412,11 +412,11 @@ $total_pages = ceil($totaldata / $records_per_page);
 
                   // Generate the appropriate input types based on the field
                   if ($field == 'date') {
-                    echo '<input type="date" id="insert_' . $field . '" name="' . $field . '" value="' . $value . '" required>';
+                    echo '<input type="date" id="insert_' . $field . '" name="' . $field . '" required>';
                   } else if ($field == 'description') {
-                    echo '<textarea id="insert_' . $field . '" name="' . $field . '" required>' . $value . '</textarea>';
+                    echo '<textarea id="insert_' . $field . '" name="' . $field . '" required>' . '</textarea>';
                   } else {
-                    echo '<input type="text" id="insert_' . $field . '" name="' . $field . '" value="' . $value . '" required>';
+                    echo '<input type="text" id="insert_' . $field . '" name="' . $field . '" required>';
                   }
 
                   echo '</div>';
