@@ -313,17 +313,17 @@ $total_pages = ceil($totaldata / $records_per_page);
         </div>
         <div class="pagination-controls">
           <?php if ($page > 1): ?>
-            <a href="admin_homepage.php?table=team&detail=event&id=1&page=<?php echo $page - 1; ?>"
+            <a href="admin_homepage.php?table=team&detail=<?php echo $_GET['detail'];?>&id=<?php echo $_GET['id'];?>&page=<?php echo $page - 1; ?>"
               class="prev">Previous</a>
           <?php endif; ?>
 
           <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-            <a href="admin_homepage.php?table=team&detail=event&id=1&page=<?php echo $i; ?>"
+            <a href="admin_homepage.php?table=team&detail=<?php echo $_GET['detail'];?>&id=<?php echo $_GET['id'];?>&page=<?php echo $i; ?>"
               class="page-number <?php echo ($i == $page) ? 'active' : ''; ?>"><?php echo $i; ?></a>
           <?php endfor; ?>
 
           <?php if ($page < $total_pages): ?>
-            <a href="admin_homepage.php?table=team&detail=event&id=1&page=<?php echo $page + 1; ?>"
+            <a href="admin_homepage.php?table=team&detail=<?php echo $_GET['detail'];?>&id=<?php echo $_GET['id'];?>&page=<?php echo $page + 1; ?>"
               class="next">Next</a>
           <?php endif; ?>
         </div>
@@ -432,16 +432,26 @@ $total_pages = ceil($totaldata / $records_per_page);
               echo '<textarea id="insert_' . $field . '" name="' . $field . '" required></textarea>';
             } else if (str_starts_with($field, 'id')) {
               echo '<select id="insert_' . $field . '" name="' . $field . '" required>';
-              $sql2 = "SELECT * FROM team";
-              $stmt2 = $conn->prepare($sql2);
-              $stmt2->execute();
-              $result2 = $stmt2->get_result();
-
-              while ($row2 = $result2->fetch_assoc()) {
-                $teamid = $row2['idteam'];
-                $gameName = $row2['name'];
-
-                echo "<option value='$teamid'>$gameName</option>";
+              if ($field == 'idgame') {
+                $sql2 = "SELECT * FROM game";
+                $stmt2 = $conn->prepare($sql2);
+                $stmt2->execute();
+                $result2 = $stmt2->get_result();
+                while ($row2 = $result2->fetch_assoc()) {
+                  $gameId = $row2['idgame'];
+                  $gameName = $row2['name'];
+                  echo "<option value='$gameId'>$gameName</option>";
+                }
+              } else if ($field == 'idteam') {
+                $sql2 = "SELECT * FROM team";
+                $stmt2 = $conn->prepare($sql2);
+                $stmt2->execute();
+                $result2 = $stmt2->get_result();
+                while ($row2 = $result2->fetch_assoc()) {
+                  $teamId = $row2['idteam'];
+                  $teamName = $row2['name'];
+                  echo "<option value='$teamId'>$teamName</option>";
+                }
               }
               echo '</select>';
               $stmt2->close();
@@ -487,21 +497,27 @@ $total_pages = ceil($totaldata / $records_per_page);
             echo '<textarea id="update_' . $field . '" name="' . $field . '" required>$value</textarea>';
           } else if (str_starts_with($field, 'id')) {
             echo '<select id="update_' . $field . '" name="' . $field . '" required>';
-            // if ($field == 'idgame') {
-            //   echo '<option value="null">-</option>';
-            // }
-            $sql2 = "SELECT * FROM team";
-            $stmt2 = $conn->prepare($sql2);
-            $stmt2->execute();
-            $result2 = $stmt2->get_result();
-
-            while ($row2 = $result2->fetch_assoc()) {
-              $gameId = $row2['idteam'];
-              $gameName = $row2['name'];
-              $selected = ($gameId == $_SESSION['fields'][1]) ? 'selected' : '';
-              echo $gameId . "hello";
-
-              echo "<option value='$gameId' $selected>$gameName</option>";
+            if ($field == 'idgame') {
+              $sql2 = "SELECT * FROM game";
+              $stmt2 = $conn->prepare($sql2);
+              $stmt2->execute();
+              $result2 = $stmt2->get_result();
+              while ($row2 = $result2->fetch_assoc()) {
+                $gameId = $row2['idgame'];
+                $gameName = $row2['name'];
+                echo "<option value='$gameId'>$gameName</option>";
+              }
+            } else if ($field == 'idteam') {
+              $sql2 = "SELECT * FROM team";
+              $stmt2 = $conn->prepare($sql2);
+              $stmt2->execute();
+              $result2 = $stmt2->get_result();
+              while ($row2 = $result2->fetch_assoc()) {
+                $teamId = $row2['idteam'];
+                $teamName = $row2['name'];
+                $selected = ($teamId == $_SESSION['fields'][1]) ? 'selected' : '';
+                echo "<option value='$teamId' $selected>$teamName</option>";
+              }
             }
             echo '</select>';
             $stmt2->close();
