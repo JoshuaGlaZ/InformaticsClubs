@@ -34,7 +34,7 @@ if (isset($_GET['id'])) {
   $stmt->close();
   $conn->close();
 
-  header("Location: admin_homepage.php");
+  header("Location: admin_homepage.php?table=team");
   exit();
 } else {
   echo "No team ID provided!";

@@ -15,7 +15,7 @@ if (isset($_POST['submit'])) {
   if ($stmt->execute()) {
     $stmt->close();
     $conn->close();
-    header("Location: admin_homepage.php");
+    header("Location: admin_homepage.php?table=event");
     exit();
   } else {
     $stmt->close();

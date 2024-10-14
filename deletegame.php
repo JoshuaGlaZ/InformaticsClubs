@@ -17,7 +17,7 @@ if (isset($_GET['id'])) {
   $stmt->close();
   $conn->close();
 
-  header("Location: admin_homepage.php");
+  header("Location: admin_homepage.php?table=game");
   exit();
 } else {
   echo "No game ID provided!";

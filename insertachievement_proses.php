@@ -16,7 +16,7 @@ if (isset($_POST['submit'])) {
   if ($stmt2->execute()) {
     $stmt2->close();
     $conn->close();
-    header("Location: admin_homepage.php");
+    header("Location: admin_homepage.php?table=achievement");
     exit();
   } else {
     echo "Error updating" . $stmt2->error;

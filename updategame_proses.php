@@ -19,7 +19,7 @@ if (isset($_POST['submit'])) {
     $stmt->close();
     $conn->close();
 
-    header("Location: admin_homepage.php");
+    header("Location: admin_homepage.php?table=game");
     exit();
 } else {
     echo "Invalid request!";

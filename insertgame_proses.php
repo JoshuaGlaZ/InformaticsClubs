@@ -18,7 +18,7 @@ if (isset($_POST['submit'])) {
 
   $stmt2->close();
   $conn->close();
-  header("Location: admin_homepage.php");
+  header("Location: admin_homepage.php?table=game");
   exit();
 }
 ?>

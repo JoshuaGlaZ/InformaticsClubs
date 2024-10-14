@@ -12,7 +12,7 @@ if (isset($_POST['submit'])) {
   if ($stmt2->execute()) {
     $stmt2->close();
     $conn->close();
-    header("Location: admin_homepage.php");
+    header("Location: admin_homepage.php?table=event");
     exit();
   } else {
     echo "Error insertig" . $stmt2->error;
