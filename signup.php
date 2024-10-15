@@ -32,5 +32,7 @@ if (isset($_POST['submit'])) {
 
   $stmt->close();
   $conn->close();
+} else {
+  header("Location: login.php");
 }
 ?>

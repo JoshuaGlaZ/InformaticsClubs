@@ -4,6 +4,11 @@ if (isset($_SESSION['error'])) {
   echo "<script>alert('" . $_SESSION['error'] . "');</script>";
   unset($_SESSION['error']);
 }
+if (isset($_SESSION['username'])) {
+  if ($_SESSION['username'] == 'member') {
+    header("Location: index.php");
+  }
+}
 ?>
 
 

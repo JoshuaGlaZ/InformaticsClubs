@@ -3,8 +3,22 @@ session_start();
 include 'db.php';
 
 if (!isset($_SESSION['username'])) {
-  header("Location: login.php");
+  header("Location: index.php");
   exit();
+}
+
+
+$username = $_SESSION['username'];
+$stmt = $conn->prepare("SELECT profile FROM member WHERE username = ?");
+$stmt->bind_param("s", $username);
+$stmt->execute();
+$stmt->bind_result($profile);
+$stmt->fetch();
+$stmt->close();
+
+if ($profile !== 'admin') {
+    header("Location: login.php");
+    exit();
 }
 
 $table = isset($_GET['table']) ? $_GET['table'] : 'team';
