@@ -25,11 +25,132 @@ session_start();
       ?>
     </div>
   </nav>
+
+  <?php if (isset($_SESSION['username'])): ?>
+    <div class="scrollable-panel">
+      <div class="card">
+        <div class="img-block">
+          <img src="https://robohash.org/team1" class="card-img">
+        </div>
+        <div class="card-content">
+          <h2 class="card-title">Card Title</h2>
+          <p class="card-description">This is the description of the card. Here you can provide detailed information.</p>
+          <button class="card-button">View Details</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="img-block">
+          <img src="https://robohash.org/team2" class="card-img">
+        </div>
+        <div class="card-content">
+          <h2 class="card-title">Card Title</h2>
+          <p class="card-description">This is the description of the card. Here you can provide detailed information.</p>
+          <button class="card-button">View Details</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="img-block">
+          <img src="https://robohash.org/team3" class="card-img">
+        </div>
+        <div class="card-content">
+          <h2 class="card-title">Card Title</h2>
+          <p class="card-description">This is the description of the card. Here you can provide detailed information.</p>
+          <button class="card-button">View Details</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="img-block">
+          <img src="https://robohash.org/team4" class="card-img">
+        </div>
+        <div class="card-content">
+          <h2 class="card-title">Card Title</h2>
+          <p class="card-description">This is the description of the card. Here you can provide detailed information.</p>
+          <button class="card-button">View Details</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="img-block">
+          <img src="https://robohash.org/team3" class="card-img">
+        </div>
+        <div class="card-content">
+          <h2 class="card-title">Card Title</h2>
+          <p class="card-description">This is the description of the card. Here you can provide detailed information.</p>
+          <button class="card-button">View Details</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="img-block">
+          <img src="https://robohash.org/team5" class="card-img">
+        </div>
+        <div class="card-content">
+          <h2 class="card-title">Card Title</h2>
+          <p class="card-description">This is the description of the card. Here you can provide detailed information.</p>
+          <button class="card-button">View Details</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="img-block">
+          <img src="https://robohash.org/team6" class="card-img">
+        </div>
+        <div class="card-content">
+          <h2 class="card-title">Card Title</h2>
+          <p class="card-description">This is the description of the card. Here you can provide detailed information.</p>
+          <button class="card-button">View Details</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="img-block">
+          <img src="https://robohash.org/team7" class="card-img">
+        </div>
+        <div class="card-content">
+          <h2 class="card-title">Card Title</h2>
+          <p class="card-description">This is the description of the card. Here you can provide detailed information.</p>
+          <button class="card-button">View Details</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="img-block">
+          <img src="https://robohash.org/team8" class="card-img">
+        </div>
+        <div class="card-content">
+          <h2 class="card-title">Card Title</h2>
+          <p class="card-description">This is the description of the card. Here you can provide detailed information.</p>
+          <button class="card-button">View Details</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="img-block">
+          <img src="https://robohash.org/team9" class="card-img">
+        </div>
+        <div class="card-content">
+          <h2 class="card-title">Card Title</h2>
+          <p class="card-description">This is the description of the card. Here you can provide detailed information.</p>
+          <button class="card-button">View Details</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="img-block">
+          <img src="https://robohash.org/team10" class="card-img">
+        </div>
+        <div class="card-content">
+          <h2 class="card-title">Card Title</h2>
+          <p class="card-description">This is the description of the card. Here you can provide detailed information.</p>
+          <button class="card-button">View Details</button>
+        </div>
+      </div>
+    </div>
+  <?php endif; ?>
+
+
+
+
+
   <div>
     <div class="wave"></div>
     <div class="wave"></div>
     <div class="wave"></div>
   </div>
+
 </body>
 
 </html>
