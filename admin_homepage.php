@@ -387,6 +387,7 @@ $total_pages = ceil($totaldata / $records_per_page);
                 while ($row_event =  $result_event->fetch_assoc()) {
                   echo '<option value="' . $row_event['idevent'] . '">' . $row_event['name'] . '</option>';
                 }
+                echo '<input type="hidden" name="detailteam" value="event"></input>';
                 ?>
               </select>
             </div>
@@ -401,6 +402,7 @@ $total_pages = ceil($totaldata / $records_per_page);
               foreach ($row_achievement as $field => $value) {
                 if ($field == 'idachievement') {
                   echo '<input type="hidden" id="insert_' . $field . '" name="' . $field . '" value="' . $value . '">';
+                  echo '<input type="hidden" name="detailteam" value="achievement"></input>';
                 } else {
                   echo '<div class="input-group">';
                   echo '<label for="' . $field . '">Achievement ' . ucfirst($field) . '</label>';

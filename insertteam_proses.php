@@ -5,7 +5,7 @@ print_r($_GET);
 print_r($_POST);
 
 
-if (isset($_POST['submit']) && !isset($_GET)) {
+if (isset($_POST['submit']) && !isset($_POST['detailteam'])) {
   $idgame = $_POST['idgame'];
   $teamname = $_POST['name'];
 
@@ -25,7 +25,7 @@ if (isset($_POST['submit']) && !isset($_GET)) {
   header("Location: admin_homepage.php");
   exit();
 }
-elseif (isset($_POST['submit']) && isset($_GET)) {
+elseif (isset($_POST['submit']) && isset($_POST['detailteam'])) {
   # code...
   $idteam = $_POST['idteam'];
 
@@ -63,7 +63,7 @@ elseif (isset($_POST['submit']) && isset($_GET)) {
     header("Location: admin_homepage.php?table=team&detail=achievement" . (isset($idteam) ? '&id=' . $idteam : ''));
     exit();
   }
-  // header("Location: admin_homepage.php?table=".$_GET['table']."&detail=".$_GET['detail']."&id=".$_GET['id']);
+  header("Location: admin_homepage.php?table=".$_GET['table']."&detail=".$_GET['detail']."&id=".$_GET['id']);
   
 }
 ?>
