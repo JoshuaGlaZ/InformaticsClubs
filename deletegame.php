@@ -1,5 +1,6 @@
 <?php
 include 'db.php';
+include 'check_loggedin.php';
 
 if (isset($_GET['id'])) {
   $idgame = $_GET['id'];

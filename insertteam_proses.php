@@ -1,5 +1,6 @@
 <?php
 include 'db.php';
+include 'check_loggedin.php';
 
 print_r($_GET);
 print_r($_POST);
