@@ -286,6 +286,32 @@ td button.update:hover {
   background-color: transparent; 
 }
 
+td button.delete {
+  background-color: #ffdada; 
+  color: #fe2b2b
+}
+
+td button.delete:hover {
+  background-color: transparent; 
+}
+
+td button.approve {
+  background-color: #d4edda; 
+  color: #28a745; 
+}
+
+td button.approve:hover {
+  background-color: transparent;
+}
+
+td button.reject {
+  background-color: #f8d7da; 
+  color: #dc3545;
+}
+
+td button.reject:hover {
+  background-color: transparent;
+}
 
 td a.detail {
   display: inline-block;
@@ -309,15 +335,6 @@ td a.detail {
 
 td a.detail:hover {
     background-color: transparent; 
-}
-
-td button.delete {
-  background-color: #ffdada; 
-  color: #fe2b2b
-}
-
-td button.delete:hover {
-  background-color: transparent; 
 }
 
 .pagination-container {

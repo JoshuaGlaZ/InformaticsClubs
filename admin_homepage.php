@@ -17,12 +17,12 @@ $stmt->fetch();
 $stmt->close();
 
 if ($profile !== 'admin') {
-    header("Location: login.php");
-    exit();
+  header("Location: login.php");
+  exit();
 }
 
 $table = isset($_GET['table']) ? $_GET['table'] : 'team';
-$allowed_tables = ['team', 'game', 'event', 'achievement'];
+$allowed_tables = ['team', 'game', 'event', 'achievement', 'join_proposal'];
 if (!in_array($table, $allowed_tables)) {
   $table = 'team';
 }
@@ -77,7 +77,7 @@ $total_pages = ceil($totaldata / $records_per_page);
       <?php
       foreach ($allowed_tables as $t) {
         $active_class = ($t == $table) ? 'active' : '';
-        echo '<li class="' . $active_class . '"><a href="admin_homepage.php?table=' . $t . '">' . ucfirst($t) . '</a></li>';
+        echo '<li class="' . $active_class . '"><a href="admin_homepage.php?table=' . $t . '">' . ucwords(str_replace('_', ' ', $t)) . '</a></li>';
       }
       ?>
     </ul>
@@ -86,11 +86,13 @@ $total_pages = ceil($totaldata / $records_per_page);
     <div class="card" <?= ((isset($_GET['detail'])) ? 'hidden' : '') ?>>
 
       <div id="card-header">
-        <h2><?php echo ucfirst($table); ?> Table</h2>
+        <h2><?php echo ucwords(str_replace('_', ' ', $table)); ?> Table</h2>
         <?php
 
         if (!isset($_GET['detail'])) {
-          echo '<button id="insertButton">Add New ' . ucfirst($table) . '</button>';
+          if ($table != 'join_proposal') {
+            echo '<button id="insertButton">Add New ' . ucfirst($table) . '</button>';
+          }
         }
         ?>
 
@@ -135,25 +137,29 @@ $total_pages = ceil($totaldata / $records_per_page);
               }
               $id = $row['id' . $table];
               if ($table == 'team') {
-                # code...
                 echo "<td class='action'><a class='detail' href='admin_homepage.php?table=" . $table . "&detail=achievement&id=" . $id . "'>Team Achievement</button></td>";
                 echo "<td class='action'><a class='detail' href='admin_homepage.php?table=" . $table . "&detail=event&id=" . $id . "'>Team Event</button></td>";
               }
 
-              echo "<td class='action'><button class='update' id='" . $id . "'>Edit</button></td>";
-              echo "<td class='action'><form action='delete" . $table . ".php' method='get'>
-                <input type='hidden' name='id' value='" . $id . "'>
-                <button type='submit' class='delete' id='" . $id . "'>Delete</button>
-                </form></td>";
-              echo "</tr>";
-            }
-          } else {
-            while ($field = mysqli_fetch_field($result)) {
-              if ($field->name !== 'password') {
-                echo '<th>' . $field->name . '</th>';
-                $fields[] = $field->name;
+              if ($table == 'join_proposal') {
+                echo "<td class='action'><form action='approveproposal.php' method='post'>
+                  <input type='hidden' name='id' value='" . $id . "'>
+                  <button type='submit' name='submit' class='approve' id='" . $id . "'>Approve</button>
+                  </form></td>";
+                echo "<td class='action'><form action='rejectproposal.php' method='post'>
+                    <input type='hidden' name='id' value='" . $id . "'>
+                    <button type='submit' name='submit' class='reject' id='" . $id . "'>Reject</button>
+                    </form></td>";
+              } else {
+                echo "<td class='action'><button class='update' id='" . $id . "'>Edit</button></td>";
+                echo "<td class='action'><form action='delete" . $table . ".php' method='get'>
+                  <input type='hidden' name='id' value='" . $id . "'>
+                  <button type='submit' class='delete' id='" . $id . "'>Delete</button>
+                  </form></td>";
+                echo "</tr>";
               }
             }
+          } else {
             echo '<tr><td colspan="6">No records found.</td></tr>'; // Handle empty result set
           }
           $_SESSION["fields"] = $fields;
@@ -327,17 +333,17 @@ $total_pages = ceil($totaldata / $records_per_page);
         </div>
         <div class="pagination-controls">
           <?php if ($page > 1): ?>
-            <a href="admin_homepage.php?table=team&detail=<?php echo $_GET['detail'];?>&id=<?php echo $_GET['id'];?>&page=<?php echo $page - 1; ?>"
+            <a href="admin_homepage.php?table=team&detail=<?php echo $_GET['detail']; ?>&id=<?php echo $_GET['id']; ?>&page=<?php echo $page - 1; ?>"
               class="prev">Previous</a>
           <?php endif; ?>
 
           <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-            <a href="admin_homepage.php?table=team&detail=<?php echo $_GET['detail'];?>&id=<?php echo $_GET['id'];?>&page=<?php echo $i; ?>"
+            <a href="admin_homepage.php?table=team&detail=<?php echo $_GET['detail']; ?>&id=<?php echo $_GET['id']; ?>&page=<?php echo $i; ?>"
               class="page-number <?php echo ($i == $page) ? 'active' : ''; ?>"><?php echo $i; ?></a>
           <?php endfor; ?>
 
           <?php if ($page < $total_pages): ?>
-            <a href="admin_homepage.php?table=team&detail=<?php echo $_GET['detail'];?>&id=<?php echo $_GET['id'];?>&page=<?php echo $page + 1; ?>"
+            <a href="admin_homepage.php?table=team&detail=<?php echo $_GET['detail']; ?>&id=<?php echo $_GET['id']; ?>&page=<?php echo $page + 1; ?>"
               class="next">Next</a>
           <?php endif; ?>
         </div>
