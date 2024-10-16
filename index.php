@@ -41,7 +41,7 @@ $result = $conn->query($sql);
         <div class="card-content">
           <h2 class="card-title"><?php echo $row['name'];?></h2> <!-- php simpan nama team di variable   -->
           <p class="card-description">Come and Join Team <?php echo $row['name'];?> and be the Champion of the World </p>
-          <button class="card-button proposalButton" data-team-id="<?php echo $row['idteam']; ?>" data-team-name="<?php echo $row['name']; ?>">Join</button>
+          <button class="card-button proposalButton" data-member-id="<?php echo $_SESSION['idmember']; ?>" data-team-id="<?php echo $row['idteam']; ?>" data-team-name="<?php echo $row['name']; ?>">Join</button>
         </div>
       </div>
       <?php endwhile; ?>
@@ -55,11 +55,11 @@ $result = $conn->query($sql);
   <div class="modal-content">
     <div class="modal-header">
       <span id="closeProposal" class="close">&times;</span>
-      <h2>Join <span id="teamNameInModal"></span></h2> <!-- Echo team name here -->
+      <h2>Join <span id="teamNameInModal"></span></h2> 
     </div>
     <form id="proposalForm" action="join_proposal.php" method="POST">
-      <input type="hidden" name="idmember" value="<?php echo $row['idmember']; ?>">
-      <input type="hidden" name="idteam" id="idTeamField" value="<?php echo $row['idteam']; ?>"> <!-- Correct the id to match the JavaScript -->
+      <input type="hidden" name="idmember" id="idmemberField">
+      <input type="hidden" name="idteam" id="idteamField">
       <div class="input-group">
         <label for="description">Why do you want to join?</label>
         <textarea name="description" style="height:260px" required></textarea>
@@ -84,9 +84,11 @@ $result = $conn->query($sql);
       $(".proposalButton").on("click", function() {
         var teamName = $(this).data("team-name");
         var teamID = $(this).data("team-id");
+        var memberID = $(this).data("member-id");
 
         $("#teamNameInModal").text(teamName);
         $("#idteamField").val(teamID);
+        $("#idmemberField").val(memberID);
 
         $("#proposalModal").css("display", "block");
       });
