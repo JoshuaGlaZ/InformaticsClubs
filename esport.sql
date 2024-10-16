@@ -31,7 +31,7 @@ CREATE TABLE `achievement` (
   PRIMARY KEY (`idachievement`),
   KEY `fk_achievement_team1_idx` (`idteam`),
   CONSTRAINT `fk_achievement_team1` FOREIGN KEY (`idteam`) REFERENCES `team` (`idteam`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,7 +40,7 @@ CREATE TABLE `achievement` (
 
 LOCK TABLES `achievement` WRITE;
 /*!40000 ALTER TABLE `achievement` DISABLE KEYS */;
-INSERT INTO `achievement` VALUES (1,1,'Dota2 Winner','2017-07-12','Winning in the biggest major tournament in Moba game'),(2,3,'PMGC Winner','2022-10-07','Winning in the biggest major tournament in Battle Royal game'),(4,1,'Dota2 MVP','2017-07-12','MVP in the biggest major tournament in Moba game');
+INSERT INTO `achievement` VALUES (1,7,'Dota2 Winner','2017-07-12','Winning in the biggest major tournament in Moba game'),(2,3,'PMGC Winner','2022-10-07','Winning in the biggest major tournament in Battle Royal game'),(4,3,'Dota2 MVP','2017-07-12','MVP in the biggest major tournament in Moba game'),(7,3,'Juara 1','2024-10-24','1221'),(8,3,'Most Longest Match ','2024-10-01','F'),(9,3,'Dota2 Runner-Up Winner','2024-10-31','s');
 /*!40000 ALTER TABLE `achievement` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -66,7 +66,7 @@ CREATE TABLE `event` (
 
 LOCK TABLES `event` WRITE;
 /*!40000 ALTER TABLE `event` DISABLE KEYS */;
-INSERT INTO `event` VALUES (1,'Valorant Champions','2024-11-05','Turnamen dunia untuk game Valorant yang diadakan setiap tahun.'),(2,'Dota 2 The International','2024-10-15','Turnamen e-sport terbesar untuk game Dota 2 dengan hadiah jutaan dolar.'),(3,'League of Legends Worlds','2024-09-30','Kejuaraan dunia League of Legends, diikuti oleh tim terbaik dari berbagai negara.'),(4,'PUBG Global Championship','2024-12-01','Turnamen global untuk game PUBG yang mempertemukan tim-tim terbaik dari seluruh dunia.'),(5,'Overwatch World Cup','2024-10-25','Kejuaraan dunia untuk game Overwatch yang mempertemukan tim nasional dari berbagai negara.'),(6,'eFootball Konami Cup','2024-10-02','Turnamen eFootball yang mempertemukan antar tim-tim eSport untuk meraih titel terbaik di Konami Cup'),(7,'Clash Royale League: 2024 World Finals','2024-10-30','Turnamen Clash Royale yang mempertemukan player dari seluruh dunia'),(8,'Pokemon Go World Championships ','2024-10-12','Turnamen yang mempertemukan Trainer Pokemon dari seluruh dunia untuk menjadi Player terbaik');
+INSERT INTO `event` VALUES (1,'Valorant Champions','2024-11-05','Turnamen dunia untuk game Valorant yang diadakan setiap bulan'),(2,'Dota 2 The International','2024-10-15','Turnamen e-sport terbesar untuk game Dota 2 dengan hadiah jutaan dolar.'),(4,'PUBG Global Championship','2024-12-01','Turnamen global untuk game PUBG yang mempertemukan tim-tim terbaik dari seluruh dunia.'),(5,'Overwatch World Cup','2024-10-25','Kejuaraan dunia untuk game Overwatch yang mempertemukan tim nasional dari berbagai negara.'),(6,'eFootball Konami Cup','2024-10-02','Turnamen eFootball yang mempertemukan antar tim-tim eSport untuk meraih titel terbaik di Konami Cup'),(7,'Clash Royale League: 2024 World Finals','2024-10-30','Turnamen Clash Royale yang mempertemukan player dari seluruh dunia'),(8,'Pokemon Go World Championships ','2024-10-12','Turnamen yang mempertemukan Trainer Pokemon dari seluruh dunia untuk menjadi Player terbaik');
 /*!40000 ALTER TABLE `event` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -94,7 +94,7 @@ CREATE TABLE `event_teams` (
 
 LOCK TABLES `event_teams` WRITE;
 /*!40000 ALTER TABLE `event_teams` DISABLE KEYS */;
-INSERT INTO `event_teams` VALUES (1,1),(1,3),(2,1);
+INSERT INTO `event_teams` VALUES (1,3),(1,7),(2,3),(2,7),(4,3),(5,3),(6,3),(7,3),(7,7);
 /*!40000 ALTER TABLE `event_teams` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -141,7 +141,7 @@ CREATE TABLE `join_proposal` (
   KEY `fk_join_proposal_team1_idx` (`idteam`),
   CONSTRAINT `fk_join_proposal_member1` FOREIGN KEY (`idmember`) REFERENCES `member` (`idmember`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_join_proposal_team1` FOREIGN KEY (`idteam`) REFERENCES `team` (`idteam`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -150,6 +150,7 @@ CREATE TABLE `join_proposal` (
 
 LOCK TABLES `join_proposal` WRITE;
 /*!40000 ALTER TABLE `join_proposal` DISABLE KEYS */;
+INSERT INTO `join_proposal` VALUES (1,2,3,'saya ingin join','approved'),(2,3,3,'kepengen aja','waiting'),(3,3,7,'lorem','waiting'),(4,4,8,'hmm','waiting'),(5,3,3,'16-10\r\n','waiting');
 /*!40000 ALTER TABLE `join_proposal` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -168,7 +169,7 @@ CREATE TABLE `member` (
   `password` varchar(255) DEFAULT NULL,
   `profile` enum('admin','member') DEFAULT NULL,
   PRIMARY KEY (`idmember`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -195,7 +196,7 @@ CREATE TABLE `team` (
   PRIMARY KEY (`idteam`),
   KEY `fk_team_game1_idx` (`idgame`),
   CONSTRAINT `fk_team_game1` FOREIGN KEY (`idgame`) REFERENCES `game` (`idgame`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -204,7 +205,7 @@ CREATE TABLE `team` (
 
 LOCK TABLES `team` WRITE;
 /*!40000 ALTER TABLE `team` DISABLE KEYS */;
-INSERT INTO `team` VALUES (1,2,'Rtu'),(3,3,'OOO'),(5,7,'GoH');
+INSERT INTO `team` VALUES (3,3,'OOO'),(7,2,'Rtu'),(8,2,'MLO'),(9,3,'OPQER'),(10,3,'T-1'),(11,1,'T-2');
 /*!40000 ALTER TABLE `team` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -245,4 +246,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-10-10  4:34:26
+-- Dump completed on 2024-10-16 10:10:41
