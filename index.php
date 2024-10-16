@@ -1,5 +1,9 @@
 <?php
 session_start();
+include 'db.php';
+
+$sql = "SELECT * from team";
+$result = $conn->query($sql);
 ?>
 
 <!DOCTYPE html>
@@ -29,42 +33,44 @@ session_start();
 
   <?php if (isset($_SESSION['username'])): ?>
     <div class="scrollable-panel">
+      <?php while($row = $result ->fetch_assoc()):?>
       <div class="card">
         <div class="img-block">
-          <img src="https://robohash.org/team1" class="card-img">
+          <img src="https://robohash.org/team<?php echo $row['idteam']?>" class="card-img">
         </div>
         <div class="card-content">
-          <h2 class="card-title">Card Title</h2> <!-- php simpan nama team di variable   -->
-          <p class="card-description">This is the description of the card. Here you can provide detailed information.</p>
-          <button class="card-button proposalButton">Join</button>
+          <h2 class="card-title"><?php echo $row['name'];?></h2> <!-- php simpan nama team di variable   -->
+          <p class="card-description">Come and Join Team <?php echo $row['name'];?> and be the Champion of the World </p>
+          <button class="card-button proposalButton" data-team-id="<?php echo $row['idteam']; ?>" data-team-name="<?php echo $row['name']; ?>">Join</button>
         </div>
       </div>
+      <?php endwhile; ?>
     </div>
   <?php endif; ?>
 
 
 
-  <!-- Proposal Modal -->
-  <div id="proposalModal" class="modal" style="display:none">
-    <div class="modal-content">
-      <div class="modal-header">
-        <span id="closeProposal" class="close">&times;</span>
-        <h2>Join Team X</h2> <!--echo nama team di variable-->
-      </div>
-      <form id="proposalForm" action="join_proposal.php" method="POST">
-        <input type="hidden" name="idmember" value="">
-        <input type="hidden" name="idteam" value="">
-        <div class="input-group">
-          <label for="idteam">Why do you want to join?</b></label>
-          <textarea type="text" name="description" style="height:260px" required></textarea>
-        </div>
-        <div class="modal-footer">
-          <button class="close">Cancel</button>
-          <input type="submit" name="submit" value="Join"></input>
-        </div>
-      </form>
+ <!-- Proposal Modal -->
+<div id="proposalModal" class="modal" style="display:none">
+  <div class="modal-content">
+    <div class="modal-header">
+      <span id="closeProposal" class="close">&times;</span>
+      <h2>Join <span id="teamNameInModal"></span></h2> <!-- Echo team name here -->
     </div>
+    <form id="proposalForm" action="join_proposal.php" method="POST">
+      <input type="hidden" name="idmember" value="<?php echo $row['idmember']; ?>">
+      <input type="hidden" name="idteam" id="idTeamField" value="<?php echo $row['idteam']; ?>"> <!-- Correct the id to match the JavaScript -->
+      <div class="input-group">
+        <label for="description">Why do you want to join?</label>
+        <textarea name="description" style="height:260px" required></textarea>
+      </div>
+      <div class="modal-footer">
+        <button class="close">Cancel</button>
+        <input type="submit" name="submit" value="Join">
+      </div>
+    </form>
   </div>
+</div>
 
 
   <div>
@@ -76,6 +82,12 @@ session_start();
   <script>
     $(document).ready(function() {
       $(".proposalButton").on("click", function() {
+        var teamName = $(this).data("team-name");
+        var teamID = $(this).data("team-id");
+
+        $("#teamNameInModal").text(teamName);
+        $("#idteamField").val(teamID);
+
         $("#proposalModal").css("display", "block");
       });
 

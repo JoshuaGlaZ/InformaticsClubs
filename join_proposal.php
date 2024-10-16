@@ -6,7 +6,7 @@ if (isset($_POST['submit'])) {
   $idteam = $_POST['idteam'];
   $description = $_POST['description'];
 
-  $sql = "INSERT INTO event (idmember, idteam, description, status) values(?,?,?, 'waiting')";
+  $sql = "INSERT INTO join_proposal (idmember, idteam, description, status) values(?,?,?, 'waiting')";
   $stmt = $conn->prepare($sql);
   $stmt->bind_param("iis", $idmember,  $idteam, $description);
   if ($stmt->execute()) {
