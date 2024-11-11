@@ -212,7 +212,6 @@ $total_pages = ceil($totaldata / $records_per_page);
       <div class="table-responsive">
         <table>
           <?php
-
           $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int) $_GET['page'] : 1;
           $records_per_page = 3;
           $offset = ($page - 1) * $records_per_page;
@@ -441,6 +440,10 @@ $total_pages = ceil($totaldata / $records_per_page);
               }
             }
           ?>
+          <div class="input-group">
+            <label>Gambar</label>
+            <input type="file" name="gambar" accept="image/*"><br>
+          </div>
         <?php
           }
         } else {

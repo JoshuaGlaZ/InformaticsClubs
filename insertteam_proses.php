@@ -10,14 +10,21 @@ print_r($_POST);
 if (isset($_POST['submit']) && !isset($_POST['detailteam'])) {
   $idgame = $_POST['idgame'];
   $teamname = $_POST['name'];
+  $picture = $_FILES['gambar'];
+  $ext = pathinfo($gambar['name'], PATHINFO_EXTENSION);
 
   // Assuming idteam is auto-incremented, use NULL for the first parameter
-  $sql = "INSERT INTO team (idteam, idgame, name) VALUES (NULL, ?, ?)";
+  $sql = "INSERT INTO team (idteam, idgame, name, extention) VALUES (NULL, ?, ?, ?)";
   $stmt2 = $conn->prepare($sql);
-  $stmt2->bind_param("is", $idgame, $teamname);
+  $stmt2->bind_param("iss", $idgame, $teamname, $ext);
 
   if ($stmt2->execute()) {
     echo "Team inserted successfully!";
+
+    $new_id = $stmt->insert_id;
+		$dst = "gambar/$new_id.$ext";
+		move_uploaded_file($gambar['tmp_name'], $dst);
+
   } else {
     echo "Error: " . $stmt2->error;
   }
