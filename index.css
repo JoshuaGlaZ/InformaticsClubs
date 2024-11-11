@@ -1,19 +1,21 @@
-@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap");
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Quicksand', sans-serif;
+  font-family: "Quicksand", sans-serif;
 }
 
 body {
   overflow: auto;
-  background: linear-gradient(315deg,
-      rgb(20, 47, 102) 3%,     
-      rgb(24, 69, 132) 38%,    
-      rgb(50, 100, 150) 68%,   
-      rgb(54, 84, 134) 98%); 
+  background: linear-gradient(
+    315deg,
+    rgb(20, 47, 102) 3%,
+    rgb(24, 69, 132) 38%,
+    rgb(50, 100, 150) 68%,
+    rgb(54, 84, 134) 98%
+  );
   background-size: 400% 400%;
   background-attachment: fixed;
   animation: gradient 15s ease infinite;
@@ -23,9 +25,11 @@ body {
   0% {
     background-position: 0% 0%;
   }
+
   50% {
     background-position: 100% 100%;
   }
+
   100% {
     background-position: 0% 0%;
   }
@@ -38,19 +42,19 @@ body {
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 1000; 
+  z-index: 1000;
 }
 
 .navbar-content {
   display: flex;
-  justify-content: space-between; /* Space between title and button */
-  align-items: center; /* Center items vertically */
+  justify-content: space-between;
+  align-items: center;
 }
 
 .navbar h1 {
-  margin: 0; 
-  color: white; 
-  font-size: 1.5rem; 
+  margin: 0;
+  color: white;
+  font-size: 1.5rem;
 }
 
 .navbar ul {
@@ -73,21 +77,20 @@ body {
 .navbar li a {
   position: relative;
   display: inline-block;
-  padding: 0 0 5px 0; /* Ensure no padding on the links */
-  margin: 0 20px; /* Add margin for spacing between items */
-  text-decoration: none; /* Optional: removes the underline from links */
-  color: #f4f4f9; /* Link color */
+  padding: 0 0 5px 0;
+  margin: 0 20px;
+  text-decoration: none;
+  color: #f4f4f9;
 }
 
 .navbar li a.active {
-  font-weight: 800; /* Slightly bolder font weight for emphasis */
+  font-weight: 800;
 }
 
-/* Hover effect for a thin border under the text */
 .navbar li a::after {
   content: "";
   position: absolute;
-  bottom: -2px; /* Position just below the text */
+  bottom: -2px;
   left: 0;
   width: 0;
   height: 2px;
@@ -96,48 +99,47 @@ body {
 }
 
 .navbar li a:hover::after {
-  width: 100%; /* Expands only to the width of the text content */
+  width: 100%;
 }
 
-/* Active link style */
 .navbar li a.active::after {
-  width: 100%; /* Full width when active */
+  width: 100%;
 }
 
 button#login {
-  background-color: #28a746; 
+  background-color: #28a746;
   color: white;
   border: none;
-  padding: 0.75rem 1.5rem; 
+  padding: 0.75rem 1.5rem;
   border-radius: 0.5rem;
   cursor: pointer;
-  font-size: 1.1rem; 
-  font-weight: 600; 
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+  font-size: 1.1rem;
+  font-weight: 600;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   transition: background-color 0.3s, transform 0.2s;
 }
 
 button#login:hover {
   background-color: rgba(11, 244, 65, 0.8);
-  transform: scale(1.05); 
+  transform: scale(1.05);
 }
 
 button#logout {
-  background-color: #dc3545; 
+  background-color: #dc3545;
   color: white;
   border: none;
-  padding: 0.75rem 1.5rem; 
+  padding: 0.75rem 1.5rem;
   border-radius: 0.5rem;
   cursor: pointer;
-  font-size: 1.1rem; 
-  font-weight: 600; 
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+  font-size: 1.1rem;
+  font-weight: 600;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   transition: background-color 0.3s, transform 0.2s;
 }
 
 button#logout:hover {
-  background-color: rgba(220, 53, 69, 0.8);   
-  transform: scale(1.05); 
+  background-color: rgba(220, 53, 69, 0.8);
+  transform: scale(1.05);
 }
 
 .scrollable-panel {
@@ -145,17 +147,17 @@ button#logout:hover {
   flex-wrap: wrap;
   margin: 40px 0;
   position: relative;
-  top: 4rem;  
-  width: 100%; 
-  padding: 15px 30px 30px; 
+  top: 4rem;
+  width: 100%;
+  padding: 15px 30px 30px;
   background-color: transparent;
-  color: #1C1F26;
+  color: #1c1f26;
   gap: 1.25em;
 }
 
 .scrollable-panel .card {
   background: #fff;
-  flex: 1 1 250px;  /* Allow the card to grow and shrink with the specified basis */
+  flex: 1 1 250px;
   max-width: 250px;
   margin-bottom: 1.25em;
   border-radius: 10px;
@@ -164,14 +166,14 @@ button#logout:hover {
   text-align: center;
   flex-shrink: 0;
   z-index: 10;
-  box-sizing: border-box; /* Prevents box from overflowing */
+  box-sizing: border-box;
 }
 
 .scrollable-panel .img-block {
-  position: relative;   
+  position: relative;
   display: block;
-  width: 100%; 
-  margin: 1em auto ;
+  width: 100%;
+  margin: 1em auto;
   overflow: hidden;
 }
 
@@ -186,8 +188,8 @@ button#logout:hover {
   margin: 0 auto;
 }
 
-.scrollable-panel .card-content  {
-  box-shadow: 0 1px 5px rgba(0,0,0,.3);
+.scrollable-panel .card-content {
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
   padding: 20px;
 }
 
@@ -203,27 +205,26 @@ button#logout:hover {
 }
 
 .scrollable-panel .card-button {
-  background-color: #007bff; 
+  background-color: #007bff;
   color: white;
   border: none;
   border-radius: 5px;
   padding: 10px 20px;
-  font-size: 1rem; 
+  font-size: 1rem;
   cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s; 
+  transition: background-color 0.3s, transform 0.2s;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .scrollable-panel .card-button:hover {
-  background-color: #0056b3; 
-  transform: translateY(-2px); 
+  background-color: #0056b3;
+  transform: translateY(-2px);
 }
 
 .scrollable-panel .card-button:active {
-  transform: translateY(0); 
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); 
+  transform: translateY(0);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
-
 
 .modal {
   position: fixed;
@@ -243,7 +244,7 @@ button#logout:hover {
   transform: translate(-50%, -50%);
   color: #566787;
   background-color: #e2f2ff;
-  border: 1px solid #4B5363;
+  border: 1px solid #4b5363;
   width: 80%;
   max-width: 500px;
   border-radius: 3px;
@@ -251,7 +252,7 @@ button#logout:hover {
 
 .modal-header {
   padding: 20px 30px;
-  border-bottom: 1px solid #4B5363 ;
+  border-bottom: 1px solid #4b5363;
 }
 
 .close,
@@ -268,6 +269,7 @@ button#logout:hover {
   text-decoration: none;
   cursor: pointer;
 }
+
 .modal .input-group {
   margin: 20px 30px;
 }
@@ -283,25 +285,25 @@ button#logout:hover {
   display: block;
   width: 100%;
   padding: 0.75em;
-  border: 1px solid #4B5363;
+  border: 1px solid #4b5363;
   border-radius: 0.5rem;
   background-color: #fff;
   color: #333;
 }
 
 .modal .input-group textarea {
-  background-color: #fff; 
+  background-color: #fff;
   width: 100%;
   min-width: 100%;
   max-width: 100%;
   height: 5em;
   min-height: 5em;
   max-height: 300px;
-  color: #333;            
-  border: 1px solid #4B5363;   
+  color: #333;
+  border: 1px solid #4b5363;
   overflow-y: scroll;
-  border-radius: 0.5rem;    
-  padding: 0.75em;          
+  border-radius: 0.5rem;
+  padding: 0.75em;
 }
 
 .modal .modal-footer {
@@ -340,12 +342,8 @@ button#logout:hover {
 
 .modal-footer input[type="submit"]:hover {
   background-color: #0056b3;
-} 
+}
 
-
-
-
-/* Wave animations */
 .wave {
   background: rgb(255 255 255 / 25%);
   border-radius: 1000% 1000% 0 0;
@@ -376,15 +374,19 @@ button#logout:hover {
   2% {
     transform: translateX(1);
   }
+
   25% {
     transform: translateX(-25%);
   }
+
   50% {
     transform: translateX(-50%);
   }
+
   75% {
     transform: translateX(-25%);
   }
+
   100% {
     transform: translateX(1);
   }
@@ -401,14 +403,14 @@ button#logout:hover {
 @media (max-width: 768px) {
   .navbar-content {
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
     align-items: center;
-    width: 100%;          
+    width: 100%;
   }
 
   .navbar-content h1 {
-    font-size: 1.5rem;    
-    margin-bottom: 15px;   
+    font-size: 1.5rem;
+    margin-bottom: 15px;
     text-align: center;
     letter-spacing: 0.1rem;
     word-wrap: break-word;
@@ -423,19 +425,19 @@ button#logout:hover {
   }
 
   .navbar-content ul li {
-    margin: 10px 0; /* Add space between the links */
+    margin: 10px 0;
     text-wrap: pretty;
     text-align: center;
   }
 
   .navbar-content button#logout {
-    text-align: center;  /* Ensure text is centered for links */
+    text-align: center;
     padding: 0.75rem 5rem;
-    margin: 10px 0 0 0;  /* Space between buttons */
+    margin: 10px 0 0 0;
   }
 
   .scrollable-panel {
-    margin-top: 10rem /* Add top margin to create space */
+    margin-top: 10rem;
   }
 }
 
