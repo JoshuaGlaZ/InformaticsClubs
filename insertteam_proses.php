@@ -10,7 +10,7 @@ print_r($_POST);
 if (isset($_POST['submit']) && !isset($_POST['detailteam'])) {
   $idgame = $_POST['idgame'];
   $teamname = $_POST['name'];
-  $picture = $_FILES['gambar'];
+  $gambar = $_FILES['gambar'];
   $ext = pathinfo($gambar['name'], PATHINFO_EXTENSION);
 
   // Assuming idteam is auto-incremented, use NULL for the first parameter

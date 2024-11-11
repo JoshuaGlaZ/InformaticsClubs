@@ -57,7 +57,7 @@ $total_pages = ceil($totaldata / $records_per_page);
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="admin_homepage.css">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <title>Document</title>
+  <title>IC Admin Panel</title>
 </head>
 
 <body>
@@ -357,7 +357,7 @@ $total_pages = ceil($totaldata / $records_per_page);
         <span id="closeInsert" class="close">&times;</span>
         <h2>Add New <?php echo ucfirst($table) . ' ' . (isset($_GET['detail']) ? ucfirst($_GET['detail']) : ''); ?></h2>
       </div>
-      <form id="insertForm" action="insert<?php echo $table ?>_proses.php" method="POST">
+      <form id="insertForm" action="insert<?php echo $table ?>_proses.php" method="POST" enctype="multipart/form-data">
         <?php
         if (isset($_GET['detail'])) {
           $sql_team = "SELECT idteam, name
@@ -440,16 +440,15 @@ $total_pages = ceil($totaldata / $records_per_page);
               }
             }
           ?>
-          <div class="input-group">
-            <label>Gambar</label>
-            <input type="file" name="gambar" accept="image/*"><br>
-          </div>
         <?php
           }
         } else {
           for ($i = 1; $i < count($_SESSION['fields']); $i++) {
             echo '<div class="input-group">';
             $field = $_SESSION['fields'][$i];
+            if ($field == 'extention') {
+              $field = 'poster';
+              }
             echo '<label for="' . $field . '"> ' . ucfirst($field) . ':</label>';
             if ($field == 'date') {
               echo '<input type="date" id="insert_' . $field . '" name="' . $field . '" required>';
@@ -481,6 +480,8 @@ $total_pages = ceil($totaldata / $records_per_page);
               echo '</select>';
               $stmt2->close();
               $conn->close();
+            } else if ($field == 'poster') {
+              echo '<input type="file" id="insert_' . $field . '" name="gambar" accept="image/*">';
             } else {
               echo '<input type="text" id="insert_' . $field . '" name="' . $field . '" required>';
             }
@@ -505,7 +506,7 @@ $total_pages = ceil($totaldata / $records_per_page);
         <span id="updateClose" class="close">&times;</span>
         <h2>Update <?php echo ucfirst($table); ?> Data</h2>
       </div>
-      <form id="updateForm" action="update<?php echo $table ?>_proses.php" method="POST">
+      <form id="updateForm" action="update<?php echo $table ?>_proses.php" method="POST" enctype="multipart/form-data">
         <?php
         include 'db.php';
         echo '<div class="input-group">';
