@@ -31,7 +31,7 @@ section {
 section .signin,
 section .signup {
   position: absolute;
-  width: 400px;
+  width: 500px;
   background: #212121;
   display: flex;
   justify-content: center;
@@ -219,5 +219,27 @@ input[type="submit"]:active {
 
   100% {
     transform: translate(5%, 0)
+  }
+}
+
+@media (max-width: 740px) {
+  section .signin,
+  section .signup {
+    width: 80vw; /* Use viewport width for more fluid resizing */
+    max-width: 500px; /* Ensure the width does not exceed 500px */
+  }
+
+  form .inputBox input {
+    padding-right: 42px; /* Add padding to the right to accommodate the eye icon */
+  }
+}
+
+@media (max-width: 423px) {
+  form .links,
+  label {
+    word-break: keep-all;
+    font-size: 0.8em;  
+    line-height: 1.1;  
+    padding: 0;        
   }
 }

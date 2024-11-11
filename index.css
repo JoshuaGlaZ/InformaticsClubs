@@ -8,13 +8,6 @@
 }
 
 body {
-  background-color: #1C1F26; 
-  color: #e0e0e0; 
-  line-height: 1.42857143;
-}
-
-
-body {
   overflow: auto;
   background: linear-gradient(315deg,
       rgb(20, 47, 102) 3%,     
@@ -60,6 +53,57 @@ body {
   font-size: 1.5rem; 
 }
 
+.navbar ul {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar ul li {
+  margin: auto;
+  margin-left: 0px;
+  list-style: none;
+  font-weight: 600;
+  position: relative;
+}
+
+.navbar li a {
+  position: relative;
+  display: inline-block;
+  padding: 0 0 5px 0; /* Ensure no padding on the links */
+  margin: 0 20px; /* Add margin for spacing between items */
+  text-decoration: none; /* Optional: removes the underline from links */
+  color: #f4f4f9; /* Link color */
+}
+
+.navbar li a.active {
+  font-weight: 800; /* Slightly bolder font weight for emphasis */
+}
+
+/* Hover effect for a thin border under the text */
+.navbar li a::after {
+  content: "";
+  position: absolute;
+  bottom: -2px; /* Position just below the text */
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #f4f4f9;
+  transition: width 0.3s ease;
+}
+
+.navbar li a:hover::after {
+  width: 100%; /* Expands only to the width of the text content */
+}
+
+/* Active link style */
+.navbar li a.active::after {
+  width: 100%; /* Full width when active */
+}
+
 button#login {
   background-color: #28a746; 
   color: white;
@@ -98,31 +142,29 @@ button#logout:hover {
 
 .scrollable-panel {
   display: flex;
+  flex-wrap: wrap;
   margin: 40px 0;
-  flex-flow: row nowrap;
   position: relative;
   top: 4rem;  
   width: 100%; 
-  max-height: 100rem;
-  overflow-x: auto; 
-  overflow-y: hidden;
   padding: 15px 30px 30px; 
   background-color: transparent;
   color: #1C1F26;
   gap: 1.25em;
 }
 
-
-
 .scrollable-panel .card {
   background: #fff;
+  flex: 1 1 250px;  /* Allow the card to grow and shrink with the specified basis */
+  max-width: 250px;
+  margin-bottom: 1.25em;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   overflow: hidden;
-  width: 250px;
   text-align: center;
   flex-shrink: 0;
   z-index: 10;
+  box-sizing: border-box; /* Prevents box from overflowing */
 }
 
 .scrollable-panel .img-block {
@@ -133,7 +175,6 @@ button#logout:hover {
   overflow: hidden;
 }
 
-
 .scrollable-panel .card-img {
   width: 10em;
   height: 10em;
@@ -142,6 +183,7 @@ button#logout:hover {
   object-fit: cover;
   z-index: 2;
   position: relative;
+  margin: 0 auto;
 }
 
 .scrollable-panel .card-content  {
@@ -348,4 +390,70 @@ button#logout:hover {
   }
 }
 
+@media (max-width: 1120px) {
+  .scrollable-panel {
+    align-items: center;
+    justify-content: center;
+  }
+}
 
+/* Responsive Breakpoints */
+@media (max-width: 768px) {
+  .navbar-content {
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+    width: 100%;          
+  }
+
+  .navbar-content h1 {
+    font-size: 1.5rem;    
+    margin-bottom: 15px;   
+    text-align: center;
+    letter-spacing: 0.1rem;
+    word-wrap: break-word;
+  }
+
+  .navbar-content ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+  }
+
+  .navbar-content ul li {
+    margin: 10px 0; /* Add space between the links */
+    text-wrap: pretty;
+    text-align: center;
+  }
+
+  .navbar-content button#logout {
+    text-align: center;  /* Ensure text is centered for links */
+    padding: 0.75rem 5rem;
+    margin: 10px 0 0 0;  /* Space between buttons */
+  }
+
+  .scrollable-panel {
+    margin-top: 10rem /* Add top margin to create space */
+  }
+}
+
+@media (max-width: 460px) {
+  .scrollable-panel .card-title {
+    font-size: 1.2em;
+  }
+
+  .scrollable-panel .card-description {
+    font-size: 0.8em;
+  }
+
+  .scrollable-panel .card-button {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+
+  .scrollable-panel .card-content {
+    padding: 15px;
+  }
+}

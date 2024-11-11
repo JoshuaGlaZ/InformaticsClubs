@@ -21,6 +21,10 @@ $result = $conn->query($sql);
   <nav class="navbar">
     <div class="navbar-content">
       <h1>Informatics Clubs</h1>
+      <ul>
+        <li><a href="#" id="choose-team-link" class="active">Choose Team to Apply</a></li>
+        <li><a href="#" id="application-status-link">Application Status</a></li>
+      </ul>
       <?php
       if (isset($_SESSION['username'])) {
         echo '<a href="logout.php"><button id="logout">Logout</button></a>';
@@ -32,7 +36,8 @@ $result = $conn->query($sql);
   </nav>
 
   <?php if (isset($_SESSION['username'])): ?>
-    <div class="scrollable-panel">
+    <!-- Choose Team Section -->
+    <div id="team-apply" class="scrollable-panel">
       <?php while($row = $result ->fetch_assoc()):?>
       <div class="card">
         <div class="img-block">
@@ -45,6 +50,12 @@ $result = $conn->query($sql);
         </div>
       </div>
       <?php endwhile; ?>
+    </div>
+    
+    <!-- Application Status Section (Hidden by Default) -->
+    <div id="application-status" class="scrollable-panel" style="display: none;">
+      <h2>Your Application Status</h2>
+      <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Maxime mollitia magni quam esse architecto, blanditiis reiciendis pariatur repudiandae vitae saepe cumque tempore deleniti exercitationem amet est maiores iure magnam natus.</p>
     </div>
   <?php endif; ?>
 
@@ -81,6 +92,22 @@ $result = $conn->query($sql);
 
   <script>
     $(document).ready(function() {
+      $('#choose-team-link').on('click', function(event) {
+        event.preventDefault();
+        $(this).addClass('active');
+        $('#application-status-link').removeClass('active');
+        $('#team-apply').show();
+        $('#application-status').hide();
+      });
+
+      $('#application-status-link').on('click', function(event) {
+        event.preventDefault();
+        $(this).addClass('active');
+        $('#choose-team-link').removeClass('active');
+        $('#team-apply').hide();
+        $('#application-status').show();
+      });
+
       $(".proposalButton").on("click", function() {
         var teamName = $(this).data("team-name");
         var teamID = $(this).data("team-id");
