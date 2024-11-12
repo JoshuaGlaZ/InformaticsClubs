@@ -481,7 +481,7 @@ $total_pages = ceil($totaldata / $records_per_page);
               $stmt2->close();
               $conn->close();
             } else if ($field == 'poster') {
-              echo '<input type="file" id="insert_' . $field . '" name="gambar" accept="image/*">';
+              echo '<input type="file" id="insert_' . $field . '" name="gambar" accept="image/jpg">';
             } else {
               echo '<input type="text" id="insert_' . $field . '" name="' . $field . '" required>';
             }
@@ -510,12 +510,15 @@ $total_pages = ceil($totaldata / $records_per_page);
         <?php
         include 'db.php';
         echo '<div class="input-group">';
-        $field = $_SESSION['fields'][0];
+        
         echo '<label for="' . $field . '"> ' . ucfirst($field) . ':</label>';
         echo '<input type="text" id="update_' . $field . '" name="' . $field . '" required readonly>';
+        
         for ($i = 1; $i < count($_SESSION['fields']); $i++) {
           $field = $_SESSION['fields'][$i];
-
+          if ($field == 'extention') {
+            $field = 'poster';
+          }
           echo '<label for="' . $field . '"> ' . ucfirst($field) . ':</label>';
           if ($field == 'date') {
             echo '<input type="date" id="update_' . $field . '" name="' . $field . '" required>';
@@ -548,7 +551,11 @@ $total_pages = ceil($totaldata / $records_per_page);
             echo '</select>';
             $stmt2->close();
             $conn->close();
-          } else {
+          }
+          else if ($field == 'poster') {
+            echo '<input type="file" id="update_' . $field . '" name="gambar" accept="image/jpg">';
+          }
+          else {
             echo '<input type="text" id="update_' . $field . '" name="' . $field . '" required>';
           }
         }
