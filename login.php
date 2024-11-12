@@ -19,7 +19,7 @@ if (isset($_SESSION['username'])) {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login IC</title>
-  <link rel="stylesheet" href="./login.css">
+  <link rel="stylesheet" href="assets/login.css">
   <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 </head>
 
@@ -31,7 +31,7 @@ if (isset($_SESSION['username'])) {
     <div class="signin">
       <div class="content">
         <h2>Sign In</h2>
-        <form method="POST" action="signin.php">
+        <form method="POST" action="./actions/member.php">
           <div class="inputBox">
             <input type="text" name="username" value="<?php
               echo (isset($_COOKIE['remember_me']) && isset($_SESSION['remember_me_token']) && $_COOKIE['remember_me'] === $_SESSION['remember_me_token']) ? $_SESSION['username'] : '';
@@ -64,7 +64,7 @@ if (isset($_SESSION['username'])) {
     <div class="signup">
       <div class="content">
         <h2>Sign Up</h2>
-        <form method="POST" action="signup.php" onsubmit="return validatePassword();">
+        <form method="POST" action="./actions/member.php">
           <div class="inputBox">
             <input type="text" name="firstname" required> <i>First Name</i>
           </div>
@@ -144,20 +144,6 @@ if (isset($_SESSION['username'])) {
           $("#hideEyeSignupConfirm").hide();
         }
       })
-
-      function validatePassword() {
-        const password = $("#password").val();
-        const confirmPassword = $("#confirmpassword").val();
-
-        if (password !== confirmPassword) {
-          alert("Passwords do not match!");
-          return false;
-        } else {
-          return true;
-        }
-      }
-
-       
 
       $(signupForm).hide();
     });

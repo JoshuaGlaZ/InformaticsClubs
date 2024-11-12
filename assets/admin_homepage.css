@@ -161,63 +161,6 @@ body {
   background-color: rgba(11, 244, 65, 0.8);
 }
 
-.card .search-bar {
-  display: flex;
-  margin: 0 auto;
-  margin-bottom: 1rem;
-  height: 34px;
-  border: 2px solid #4B5363;
-  border-radius: 0.5rem;
-  background-color: #fff;
-}
-
-.search-bar input[type='text'] {
-  flex: 1;
-  width: 100%;
-  padding: 0.5em 1em;
-  line-height: 1.42857143;
-  color: #555;
-  border: none;
-  border-radius: 0.5rem;
-  outline: none;
-}
-
-.search-bar .input-group {
-  font-size: 0;
-}
-
-.search-bar .input-group button {
-  display: inline-block;
-  width: 30px;
-  height: 100%;
-  border: 1px solid #ccc;
-  border-radius: 0;
-  cursor: pointer;
-}
-
-.search-bar .input-group button.search {
-  padding: 0 2em;
-  border: none;
-  border-top-right-radius: 0.35rem;
-  border-bottom-right-radius: 0.35rem;
-  background-color: #007bff;
-  fill: white;
-  transition: background-color 0.15s;
-}
-
-.search-bar .input-group button.search:hover {
-  background-color: #0555e9;
-}
-
-.search-bar .caret {
-  display: inline-block;
-  width: 0;
-  height: 0;
-  vertical-align: middle;
-  border-top: 4px solid;
-  border-right: 4px solid transparent;
-  border-left: 4px solid transparent;
-}
 
 .table-responsive {
   overflow-x: auto;
@@ -353,7 +296,9 @@ td a.detail:hover {
   gap: 8px;
 }
 
-.pagination-controls a {
+.pagination-controls a,
+.pagination-controls .page-number,
+.page-number {
   padding: 0.25em 0.75em;
   text-decoration: none;
   color: #e0e0e0;
@@ -362,7 +307,9 @@ td a.detail:hover {
   transition: background-color 0.3s, color 0.5s;
 }
 
-.pagination-controls a:hover {
+.pagination-controls a:hover,
+.pagination-controls .page-number:hover,
+.page-number:hover {
   background-color: #f1f1f1;
   color: #000;
 }
@@ -371,6 +318,18 @@ td a.detail:hover {
   background-color: #007bff;
   color: 333;
   border-color: #007bff;
+}
+
+
+.back-button {
+  display: inline-block;
+  padding: 8px 16px;
+  margin-bottom: 10px;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  font-weight: bold;
 }
 
 .modal {

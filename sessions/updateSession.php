@@ -1,9 +1,7 @@
 <?php
-session_start(); // Start the session if not already started
+session_start(); 
 
-// Assume $fields is defined somewhere before this code block
-// For example, if you have defined it in a configuration file or earlier in the script
-$fields = $_SESSION['fields'] ?? []; // Ensure you have the fields available
+$fields = $_SESSION['fields'] ?? []; 
 
 if (isset($_POST['values'])) {
     $values = $_POST['values'];

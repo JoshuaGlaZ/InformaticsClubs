@@ -1,8 +1,10 @@
 <?php
+require_once("controllers/team.php");
 session_start();
-include 'db.php';
-$sql = "SELECT * from team";
-$result = $conn->query($sql);
+// $sql = "SELECT * from team";
+// $result = $conn->query($sql);
+$team = new Team();
+$teams = $team->getTeams();
 ?>
 
 <!DOCTYPE html>
@@ -12,7 +14,7 @@ $result = $conn->query($sql);
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>IC</title>
-  <link rel="stylesheet" href="index.css">
+  <link rel="stylesheet" href="assets/index.css">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
@@ -49,7 +51,7 @@ $result = $conn->query($sql);
   <?php if (isset($_SESSION['username'])): ?>
     <!-- Choose Team Section -->
     <div id="team-apply" class="scrollable-panel">
-      <?php while ($row = $result->fetch_assoc()): ?>
+      <?php while ($row = $teams->fetch_assoc()): ?>
         <div class="card">
           <div class="img-block">
             <img src="https://robohash.org/team<?php echo $row['idteam'] ?>" class="card-img">
@@ -78,9 +80,10 @@ $result = $conn->query($sql);
         <span id="closeProposal" class="close">&times;</span>
         <h2>Join <span id="teamNameInModal"></span></h2>
       </div>
-      <form id="proposalForm" action="join_proposal.php" method="POST">
+      <form id="proposalForm" action="actions/proposal.php" method="POST">
         <input type="hidden" name="idmember" id="idmemberField">
         <input type="hidden" name="idteam" id="idteamField">
+        <input type="hidden" name="join">
         <div class="input-group">
           <label for="description">Why do you want to join?</label>
           <textarea name="description" style="height:260px" required></textarea>
@@ -127,8 +130,9 @@ $result = $conn->query($sql);
         $('#team-apply').hide();
         $('#approved-team').show().empty();
         $.ajax({
-          url: 'approve_team.php',
+          url: 'ajax/approve_team.php',
           method: 'GET',
+          data: "check_approve",
           success: function(data) {
             const teams = JSON.parse(data);
             if (teams.error) {
@@ -190,10 +194,7 @@ $result = $conn->query($sql);
         var $content = $('#' + itemId);
         var $header = $content.prev('.accordion-header');
 
-        // Toggle visibility of the content
         $content.toggleClass('active');
-
-        // Toggle the arrow rotation
         $header.toggleClass('active');
       }
 
