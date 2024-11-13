@@ -10,6 +10,11 @@ class Team extends Database
 
   public function addTeam($idgame, $teamname, $image)
   {
+    if (!isset($image['name']) || is_array($image['name'])) {
+      throw new Exception("Please upload only one image file.");
+      header("Location: ../admin_homepage.php");
+      exit();
+  } 
     $ext = pathinfo($image['name'], PATHINFO_EXTENSION);
     if (!$this->validateFile($ext)) {
       throw new Exception("Please upload a JPG or JPEG file");
