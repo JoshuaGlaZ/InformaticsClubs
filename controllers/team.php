@@ -28,7 +28,7 @@ class Team extends Database
       return true;
     } else {
       $stmt->close();
-      throw new Exception("Error: " . $stmt->error);
+      throw new Exception("Error inserting team: " . $stmt->error);
     }
   }
 
@@ -40,7 +40,7 @@ class Team extends Database
 
     if (!$stmt->execute()) {
       $stmt->close();
-      throw new Exception("Error: " . $stmt->error);
+      throw new Exception("Error inserting event to team: " . $stmt->error);
     }
     $stmt->close();
   }
@@ -53,7 +53,7 @@ class Team extends Database
 
     if (!$stmt->execute()) {
       $stmt->close();
-      throw new Exception("Error: " . $stmt->error);
+      throw new Exception("Error inserting achievement to team: " . $stmt->error);
     }
     $stmt->close();
   }
@@ -87,57 +87,57 @@ class Team extends Database
 
   public function updateTeam($idteam, $teamName, $idgame, $image)
   {
-      $ext = pathinfo($image['name'], PATHINFO_EXTENSION);
-      if (!$this->validateFile($ext)) {
-          $_SESSION['error'] = "Please upload a JPG or JPEG file.";
-          header("Location: ../admin_homepage.php");
-          exit();
-      }
+    $ext = pathinfo($image['name'], PATHINFO_EXTENSION);
+    if (!$this->validateFile($ext)) {
+      $_SESSION['error'] = "Please upload a JPG or JPEG file.";
+      header("Location: ../admin_homepage.php");
+      exit();
+    }
 
-      $sql = "UPDATE team SET name = ?, idgame = ?, extention = ? WHERE idteam = ?";
-      $stmt = $this->conn->prepare($sql);
-      $stmt->bind_param("sisi", $teamName, $idgame, $ext, $idteam);
+    $sql = "UPDATE team SET name = ?, idgame = ?, extention = ? WHERE idteam = ?";
+    $stmt = $this->conn->prepare($sql);
+    $stmt->bind_param("sisi", $teamName, $idgame, $ext, $idteam);
 
-      if ($stmt->execute()) {
-          $destination = "gambar/$idteam.$ext";
-          move_uploaded_file($image['tmp_name'], $destination);
-          $stmt->close();
-          return true;
-      } else {
-          $stmt->close();
-          throw new Exception("Error updating team: " . $stmt->error);
-      }
+    if ($stmt->execute()) {
+      $destination = "gambar/$idteam.$ext";
+      move_uploaded_file($image['tmp_name'], $destination);
+      $stmt->close();
+      return true;
+    } else {
+      $stmt->close();
+      throw new Exception("Error updating team: " . $stmt->error);
+    }
   }
 
   public function deleteTeam($idteam)
-    {
-        $sql = "DELETE FROM team WHERE idteam = ?";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("i", $idteam);
+  {
+    $sql = "DELETE FROM team WHERE idteam = ?";
+    $stmt = $this->conn->prepare($sql);
+    $stmt->bind_param("i", $idteam);
 
-        if ($stmt->execute()) {
-            $stmt->close();
-            return true;
-        } else {
-          $stmt->close();
-          throw new Exception("Error deleting team: " . $stmt->error);
-        }
+    if ($stmt->execute()) {
+      $stmt->close();
+      return true;
+    } else {
+      $stmt->close();
+      throw new Exception("Error deleting team: " . $stmt->error);
     }
+  }
 
-    public function deleteEventFromTeam($idteam, $idevent)
-    {
-        $sql = "DELETE FROM event_teams WHERE idteam = ? AND idevent = ?";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("ii", $idteam, $idevent);
+  public function deleteEventFromTeam($idteam, $idevent)
+  {
+    $sql = "DELETE FROM event_teams WHERE idteam = ? AND idevent = ?";
+    $stmt = $this->conn->prepare($sql);
+    $stmt->bind_param("ii", $idteam, $idevent);
 
-        if ($stmt->execute()) {
-            $stmt->close();
-            return true;
-        } else {
-          $stmt->close();
-          throw new Exception("Error deleting event team: " . $stmt->error);
-        }
+    if ($stmt->execute()) {
+      $stmt->close();
+      return true;
+    } else {
+      $stmt->close();
+      throw new Exception("Error deleting event team: " . $stmt->error);
     }
+  }
 
   private function validateFile($ext)
   {
