@@ -242,26 +242,26 @@ $currentPage = $tableData['currentPage'];
       </div>
       <div class="pagination-container">
         <?php if (isset($_GET['detail'])): ?>
-        <div class="pagination-info">
-          Showing <?php echo ($totaldata > 0) ? ($offset + 1) : 0; ?> to
-          <?php echo min($offset + $records_per_page, $totaldata); ?> of <?php echo $totaldata; ?> entries
-        </div>
-        <div class="pagination-controls">
-          <?php if ($page > 1): ?>
-            <a href="admin_homepage.php?table=team&detail=<?php echo $_GET['detail']; ?>&id=<?php echo $_GET['id']; ?>&page=<?php echo $page - 1; ?>"
-              class="prev">Previous</a>
-          <?php endif; ?>
+          <div class="pagination-info">
+            Showing <?php echo ($totaldata > 0) ? ($offset + 1) : 0; ?> to
+            <?php echo min($offset + $records_per_page, $totaldata); ?> of <?php echo $totaldata; ?> entries
+          </div>
+          <div class="pagination-controls">
+            <?php if ($page > 1): ?>
+              <a href="admin_homepage.php?table=team&detail=<?php echo $_GET['detail']; ?>&id=<?php echo $_GET['id']; ?>&page=<?php echo $page - 1; ?>"
+                class="prev">Previous</a>
+            <?php endif; ?>
 
-          <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-            <a href="admin_homepage.php?table=team&detail=<?php echo $_GET['detail']; ?>&id=<?php echo $_GET['id']; ?>&page=<?php echo $i; ?>"
-              class="page-number <?php echo ($i == $page) ? 'active' : ''; ?>"><?php echo $i; ?></a>
-          <?php endfor; ?>
+            <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+              <a href="admin_homepage.php?table=team&detail=<?php echo $_GET['detail']; ?>&id=<?php echo $_GET['id']; ?>&page=<?php echo $i; ?>"
+                class="page-number <?php echo ($i == $page) ? 'active' : ''; ?>"><?php echo $i; ?></a>
+            <?php endfor; ?>
 
-          <?php if ($page < $total_pages): ?>
-            <a href="admin_homepage.php?table=team&detail=<?php echo $_GET['detail']; ?>&id=<?php echo $_GET['id']; ?>&page=<?php echo $page + 1; ?>"
-              class="next">Next</a>
-          <?php endif; ?>
-        </div>
+            <?php if ($page < $total_pages): ?>
+              <a href="admin_homepage.php?table=team&detail=<?php echo $_GET['detail']; ?>&id=<?php echo $_GET['id']; ?>&page=<?php echo $page + 1; ?>"
+                class="next">Next</a>
+            <?php endif; ?>
+          </div>
         <?php endif; ?>
       </div>
     </div>
@@ -328,11 +328,12 @@ $currentPage = $tableData['currentPage'];
 
         // Default case for fields in the session
         if (!isset($_GET['id'])) {
-          foreach ($formFields as $field) {
+          for ($i = 1; $i < count($formFields); $i++) {
+            $field = $formFields[$i];
             echo '<div class="input-group">';
             if ($field == 'extention') $field = 'poster';  // Handle 'extention' case
             echo '<label for="' . $field . '"> ' . ucfirst($field) . ':</label>';
-  
+
             if ($field == 'date') {
               echo '<input type="date" id="insert_' . $field . '" name="' . $field . '" required>';
             } else if ($field == 'description') {
@@ -464,10 +465,10 @@ $currentPage = $tableData['currentPage'];
               const fields = <?php echo json_encode($fields); ?>;
               console.log(fields);
               $.each(fields, function(index, field) {
-                const inputElement = $('#update_' + field); 
+                const inputElement = $('#update_' + field);
 
-                if (inputElement.length) { 
-                  inputElement.val(data.data[field] || ''); 
+                if (inputElement.length) {
+                  inputElement.val(data.data[field] || '');
                 } else {
                   console.error(`Field with ID '${field}' not found in the DOM.`);
                 }
