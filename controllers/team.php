@@ -67,10 +67,29 @@ class Team extends Database
 
   public function getApprovedTeams($idmember)
   {
-    $sql = "SELECT p.*, t.name 
-            FROM join_proposal p 
-            INNER JOIN team t ON t.idteam = p.idteam 
-            WHERE p.idmember = ? AND p.status = 'approved'";
+    $sql = "SELECT jp.*, 
+                m.fname as member_fname,
+                m.lname as member_lname,
+                m.username as member_username,
+                t.name as team_name, 
+                g.name as game_name, 
+                g.description as game_desc, 
+                e.name as event_name, 
+                e.date as event_date, 
+                e.description as event_desc,
+                a.name as achievement_name, 
+                a.date as achievement_date, 
+                a.description as achievement_desc
+            FROM join_proposal jp 
+                INNER JOIN team t ON t.idteam = jp.idteam 
+                INNER JOIN team_members tm on tm.idteam = t.idteam
+                INNER JOIN member m on m.idmember = tm.idmember
+                INNER JOIN game g on g.idgame = t.idgame
+                LEFT  JOIN achievement a on a.idteam = t.idteam
+                LEFT  JOIN event_teams et on  et.idteam = t.idteam
+                LEFT  JOIN event e on e.idevent = et.idevent
+            WHERE jp.idmember = ? AND jp.status = 'approved'
+            GROUP BY m.idmember";
     $stmt = $this->conn->prepare($sql);
     $stmt->bind_param("i", $idmember);
     $stmt->execute();

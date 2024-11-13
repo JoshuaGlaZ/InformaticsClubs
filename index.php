@@ -132,12 +132,12 @@ $teams = $team->getTeams();
         $.ajax({
           url: 'ajax/approve_team.php',
           method: 'GET',
-          data: "check_approve",
           success: function(data) {
             const teams = JSON.parse(data);
             if (teams.error) {
               $('#approved-team').append('<p>' + teams.error + '</p>');
             } else {
+              console.log(teams);
               teams.forEach(function(team) {
                 var accordionItem = `
                   <div class="accordion">
@@ -146,15 +146,15 @@ $teams = $team->getTeams();
                         <div class="img-block">
                           <img src="https://robohash.org/team${team.idteam}" class="card-img">
                         </div>
-                        <h1>${team.name}</h1>
+                        <h1>${team.team_name}</h1>
                       </div>
                       <li>
                         <input type="checkbox" checked>
                           <i></i>
                           <h2>Team Member</h2>
                           <div class="accordion-list-item">
-                            <div class="item">Achievement 1</div>
-                            <div class="item">Achievement 2</div>
+                            <div class="item">Member 1</div>
+                            <div class="item">Member 2</div>
                           </div>
                       </li>
                       <li>
@@ -162,8 +162,8 @@ $teams = $team->getTeams();
                           <i></i>
                           <h2>Events</h2>
                           <div class="accordion-list-item">
-                            <div class="item">Achievement 1</div>
-                            <div class="item">Achievement 2</div>
+                            <div class="item">Event 1</div>
+                            <div class="item">Event 2</div>
                           </div>
                       </li>
                       <li>

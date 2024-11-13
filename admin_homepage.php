@@ -117,11 +117,16 @@ $currentPage = $tableData['currentPage'];
               if ($table == 'join_proposal') {
                 echo "<td class='action'><form action='/actions/proposal.php' method='post'>
                   <input type='hidden' name='id' value='" . $id . "'>
+                  <input type='hidden' name='idmember' value='" . $row['idmember'] . "'>
+                  <input type='hidden' name='idteam' value='" . $row['idteam'] . "'>
+                  <input type='hidden' name='description' value='" . $row['description'] . "'>
                   <input type='hidden' name='approve' >
                   <button type='submit' name='submit' class='approve' id='" . $id . "'>Approve</button>
                   </form></td>";
                 echo "<td class='action'><form action='/actions/proposal.php' method='post'>
-                    <input type='hidden' name='id' value='" . $id . "'>
+                  <input type='hidden' name='id' value='" . $id . "'>
+                  <input type='hidden' name='idmember' value='" . $row['idmember'] . "'>
+                  <input type='hidden' name='idteam' value='" . $row['idteam'] . "'>
                     <input type='hidden' name='reject' >
                     <button type='submit' name='submit' class='reject' id='" . $id . "'>Reject</button>
                     </form></td>";
