@@ -104,18 +104,18 @@ $teams = $team->getTeams();
   </div>
 
   <script>
-    $(document).ready(function() {
-      $(".hamburger-menu").click(function() {
+    $(document).ready(function () {
+      $(".hamburger-menu").click(function () {
         $(".nav-links").toggleClass("show");
       });
 
-      $('.scrollable-panel .card-content').each(function(index) {
+      $('.scrollable-panel .card-content').each(function (index) {
         const delay = (0.1 * index) + 's';
         $(this).find('.card-title').css('--delay', delay);
         $(this).find('.card-description').css('--delay', delay);
       });
 
-      $('#choose-team-link').on('click', function(event) {
+      $('#choose-team-link').on('click', function (event) {
         event.preventDefault();
         $(this).addClass('active');
         $('#approved-team-link').removeClass('active');
@@ -123,65 +123,109 @@ $teams = $team->getTeams();
         $('#approved-team').hide();
       });
 
-      $('#approved-team-link').on('click', function(event) {
+      $('#approved-team-link').on('click', function (event) {
         event.preventDefault();
         $(this).addClass('active');
         $('#choose-team-link').removeClass('active');
         $('#team-apply').hide();
         $('#approved-team').show().empty();
+
         $.ajax({
           url: 'ajax/approve_team.php',
           method: 'GET',
-          success: function(data) {
+          success: function (data) {
             const teams = JSON.parse(data);
             if (teams.error) {
               $('#approved-team').append('<p>' + teams.error + '</p>');
             } else {
-              console.log(teams);
-              teams.forEach(function(team) {
+              teams.forEach(function (team) {
+                const itemsPerPage = 3; // Number of items to display per page
+
+                // Pagination functions
+                function paginate(items, containerId, page = 1) {
+                  const start = (page - 1) * itemsPerPage;
+                  const end = start + itemsPerPage;
+                  const paginatedItems = items.slice(start, end);
+                  const totalPages = Math.ceil(items.length / itemsPerPage);
+
+                  // Generate items HTML
+                  let itemsHTML = '';
+                  paginatedItems.forEach(item => {
+                    itemsHTML += `<div class="item">${item}</div>`;
+                  });
+
+                  // Generate pagination controls
+                  let paginationHTML = `<div class="pagination-controls">`;
+                  if (page > 1) {
+                    paginationHTML += `<button onclick="navigatePage('${containerId}', ${page - 1})">Previous</button>`;
+                  }
+                  if (page < totalPages) {
+                    paginationHTML += `<button onclick="navigatePage('${containerId}', ${page + 1})">Next</button>`;
+                  }
+                  paginationHTML += `</div>`;
+
+                  // Display items and pagination in the specified container
+                  $(`#${containerId}`).html(itemsHTML + paginationHTML);
+                }
+
+                // Initial pagination setup
+                function initPagination(items, containerId) {
+                  paginate(items, containerId, 1);
+                }
+
+                // Function to navigate pages
+                window.navigatePage = function (containerId, page) {
+                  const items = JSON.parse($(`#${containerId}`).attr('data-items'));
+                  paginate(items, containerId, page);
+                };
+
+                // Prepare data for pagination
+                const membersHTML = team.members.map(member => `<div class="item">${member}</div>`);
+                const eventsHTML = team.events.map(event => `<div class="item">${event}</div>`);
+                const achievementsHTML = team.achievements.map(achievement => `<div class="item">${achievement}</div>`);
+
+                // Accordion item with dynamically generated member, event, and achievement data
                 var accordionItem = `
-                  <div class="accordion">
-                    <ul>
-                      <div class="header">
-                        <div class="img-block">
-                          <img src="https://robohash.org/team${team.idteam}" class="card-img">
-                        </div>
-                        <h1>${team.team_name}</h1>
+                      <div class="accordion">
+                        <ul>
+                          <div class="header">
+                            <div class="img-block">
+                              <img src="https://robohash.org/team${team.idteam}" class="card-img">
+                            </div>
+                            <h1>${team.team_name}</h1>
+                          </div>
+                          <li>
+                            <input type="checkbox" checked>
+                              <i></i>
+                              <h2>Team Members</h2>
+                              <div class="accordion-list-item" id="members_${team.idteam}" data-items='${JSON.stringify(team.members)}'></div>
+                          </li>
+                          <li>
+                            <input type="checkbox" checked>
+                              <i></i>
+                              <h2>Events</h2>
+                              <div class="accordion-list-item" id="events_${team.idteam}" data-items='${JSON.stringify(team.events)}'></div>
+                          </li>
+                          <li>
+                            <input type="checkbox" checked>
+                              <i></i>
+                              <h2>Achievements</h2>
+                              <div class="accordion-list-item" id="achievements_${team.idteam}" data-items='${JSON.stringify(team.achievements)}'></div>
+                          </li>
+                        </ul>
                       </div>
-                      <li>
-                        <input type="checkbox" checked>
-                          <i></i>
-                          <h2>Team Member</h2>
-                          <div class="accordion-list-item">
-                            <div class="item">Member 1</div>
-                            <div class="item">Member 2</div>
-                          </div>
-                      </li>
-                      <li>
-                        <input type="checkbox" checked>
-                          <i></i>
-                          <h2>Events</h2>
-                          <div class="accordion-list-item">
-                            <div class="item">Event 1</div>
-                            <div class="item">Event 2</div>
-                          </div>
-                      </li>
-                      <li>
-                        <input type="checkbox" checked>
-                          <i></i>
-                          <h2>Achievements</h2>
-                          <div class="accordion-list-item">
-                            <div class="item">Achievement 2</div>
-                          </div>
-                      </li>
-                    </ul>
-                  </div>
-                  `;
+                    `;
+
                 $('#approved-team').append(accordionItem);
+
+                // Initialize pagination for each section
+                initPagination(team.members, `members_${team.idteam}`);
+                initPagination(team.events, `events_${team.idteam}`);
+                initPagination(team.achievements, `achievements_${team.idteam}`);
               });
             }
           },
-          error: function() {
+          error: function () {
             $('#approved-team').append('<p>Could not load approved teams. Please try again later.</p>');
           }
         });
@@ -198,7 +242,7 @@ $teams = $team->getTeams();
         $header.toggleClass('active');
       }
 
-      $(".proposalButton").on("click", function() {
+      $(".proposalButton").on("click", function () {
         var teamName = $(this).data("team-name");
         var teamID = $(this).data("team-id");
         var memberID = $(this).data("member-id");
@@ -210,11 +254,11 @@ $teams = $team->getTeams();
         $("#proposalModal").css("display", "block");
       });
 
-      $(".close").on("click", function() {
+      $(".close").on("click", function () {
         $(".modal").css("display", "none");
       });
 
-      $(window).on("click", function(event) {
+      $(window).on("click", function (event) {
         const proposalModal = $("#proposalModal")[0];
         if (event.target === proposalModal) {
           $("#proposalModal").css("display", "none");

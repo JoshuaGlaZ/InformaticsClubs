@@ -67,29 +67,27 @@ class Team extends Database
 
   public function getApprovedTeams($idmember)
   {
-    $sql = "SELECT jp.*, 
-                m.fname as member_fname,
-                m.lname as member_lname,
-                m.username as member_username,
-                t.name as team_name, 
-                g.name as game_name, 
-                g.description as game_desc, 
-                e.name as event_name, 
-                e.date as event_date, 
-                e.description as event_desc,
-                a.name as achievement_name, 
-                a.date as achievement_date, 
-                a.description as achievement_desc
-            FROM join_proposal jp 
-                INNER JOIN team t ON t.idteam = jp.idteam 
-                INNER JOIN team_members tm on tm.idteam = t.idteam
-                INNER JOIN member m on m.idmember = tm.idmember
-                INNER JOIN game g on g.idgame = t.idgame
-                LEFT  JOIN achievement a on a.idteam = t.idteam
-                LEFT  JOIN event_teams et on  et.idteam = t.idteam
-                LEFT  JOIN event e on e.idevent = et.idevent
-            WHERE jp.idmember = ? AND jp.status = 'approved'
-            GROUP BY m.idmember";
+    $sql = "
+    SELECT 
+        jp.idteam, 
+        t.name as team_name, 
+        g.name as game_name, 
+        CONCAT(m.fname, ' ', m.lname) as member_fullname,
+        e.name as event_name, 
+        a.name as achievement_name 
+    FROM 
+        join_proposal jp 
+        INNER JOIN team t ON t.idteam = jp.idteam 
+        INNER JOIN game g ON g.idgame = t.idgame
+        LEFT JOIN team_members tm ON tm.idteam = t.idteam
+        LEFT JOIN member m ON m.idmember = tm.idmember
+        LEFT JOIN event_teams et ON et.idteam = t.idteam
+        LEFT JOIN event e ON e.idevent = et.idevent
+        LEFT JOIN achievement a ON a.idteam = t.idteam
+    WHERE 
+        jp.idmember = ? AND jp.status = 'approved'
+    ORDER BY t.idteam, m.idmember, e.idevent, a.idachievement";
+
     $stmt = $this->conn->prepare($sql);
     $stmt->bind_param("i", $idmember);
     $stmt->execute();
@@ -97,11 +95,38 @@ class Team extends Database
 
     $teams = [];
     while ($row = $result->fetch_assoc()) {
-      $teams[] = $row;
-    }
+      $team_id = $row['idteam'];
 
+      // Initialize team entry if not already created
+      if (!isset($teams[$team_id])) {
+        $teams[$team_id] = [
+          'idteam' => $team_id,
+          'team_name' => $row['team_name'],
+          'game_name' => $row['game_name'],
+          'members' => [],
+          'events' => [],
+          'achievements' => []
+        ];
+      }
+
+      // Add unique members to the team
+      if (!empty($row['member_fullname']) && !in_array($row['member_fullname'], $teams[$team_id]['members'])) {
+        $teams[$team_id]['members'][] = $row['member_fullname'];
+      }
+
+      // Add unique events to the team
+      if (!empty($row['event_name']) && !in_array($row['event_name'], $teams[$team_id]['events'])) {
+        $teams[$team_id]['events'][] = $row['event_name'];
+      }
+
+      // Add unique achievements to the team
+      if (!empty($row['achievement_name']) && !in_array($row['achievement_name'], $teams[$team_id]['achievements'])) {
+        $teams[$team_id]['achievements'][] = $row['achievement_name'];
+      }
+    }
     $stmt->close();
-    return $teams;
+    // Return teams as a re-indexed array to avoid issues with JSON encoding
+    return array_values($teams);
   }
 
   public function updateTeam($idteam, $teamName, $idgame, $image)

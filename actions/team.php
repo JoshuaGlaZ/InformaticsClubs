@@ -23,7 +23,7 @@ try {
       $team->updateTeam($idteam, $teamName, $idgame, $image);
       $_SESSION['success'] = "Achievement updated successfully!";
   
-      header("Location: ../ admin_homepage.php?table=team");
+      header("Location: ../admin_homepage.php?table=team");
     } else if (isset($_POST['detailteam'])) {
       $idteam = $_POST['idteam'];
       if (isset($_POST['idevent'])) {

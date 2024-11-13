@@ -38,5 +38,5 @@ try {
   $_SESSION['error'] = $e->getMessage();
 }
 
-header("Location: ../admin_homepage.php?table=join_proposal");
+header("Location: admin_homepage.php?table=join_proposal");
 exit();
