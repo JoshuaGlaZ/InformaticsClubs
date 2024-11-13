@@ -141,7 +141,7 @@ $teams = $team->getTeams();
               teams.forEach(function (team) {
                 const itemsPerPage = 3; // Number of items to display per page
 
-                // Pagination functions
+                // Pagination function
                 function paginate(items, containerId, page = 1) {
                   const start = (page - 1) * itemsPerPage;
                   const end = start + itemsPerPage;
@@ -154,13 +154,18 @@ $teams = $team->getTeams();
                     itemsHTML += `<div class="item">${item}</div>`;
                   });
 
-                  // Generate pagination controls
+                  // Generate pagination controls with numbered buttons
                   let paginationHTML = `<div class="pagination-controls">`;
                   if (page > 1) {
-                    paginationHTML += `<button onclick="navigatePage('${containerId}', ${page - 1})">Previous</button>`;
+                    paginationHTML += `<a onclick="navigatePage('${containerId}', ${page - 1})" class="prev">Previous</a>`;
                   }
+
+                  for (let i = 1; i <= totalPages; i++) {
+                    paginationHTML += `<a onclick="navigatePage('${containerId}', ${i})" class="page-number ${i === page ? 'active' : ''}">${i}</a>`;
+                  }
+
                   if (page < totalPages) {
-                    paginationHTML += `<button onclick="navigatePage('${containerId}', ${page + 1})">Next</button>`;
+                    paginationHTML += `<a onclick="navigatePage('${containerId}', ${page + 1})" class="next">Next</a>`;
                   }
                   paginationHTML += `</div>`;
 
@@ -186,35 +191,35 @@ $teams = $team->getTeams();
 
                 // Accordion item with dynamically generated member, event, and achievement data
                 var accordionItem = `
-                      <div class="accordion">
-                        <ul>
-                          <div class="header">
-                            <div class="img-block">
-                              <img src="https://robohash.org/team${team.idteam}" class="card-img">
-                            </div>
-                            <h1>${team.team_name}</h1>
-                          </div>
-                          <li>
-                            <input type="checkbox" checked>
-                              <i></i>
-                              <h2>Team Members</h2>
-                              <div class="accordion-list-item" id="members_${team.idteam}" data-items='${JSON.stringify(team.members)}'></div>
-                          </li>
-                          <li>
-                            <input type="checkbox" checked>
-                              <i></i>
-                              <h2>Events</h2>
-                              <div class="accordion-list-item" id="events_${team.idteam}" data-items='${JSON.stringify(team.events)}'></div>
-                          </li>
-                          <li>
-                            <input type="checkbox" checked>
-                              <i></i>
-                              <h2>Achievements</h2>
-                              <div class="accordion-list-item" id="achievements_${team.idteam}" data-items='${JSON.stringify(team.achievements)}'></div>
-                          </li>
-                        </ul>
+                  <div class="accordion">
+                    <ul>
+                      <div class="header">
+                        <div class="img-block">
+                          <img src="https://robohash.org/team${team.idteam}" class="card-img">
+                        </div>
+                        <h1>${team.team_name}</h1>
                       </div>
-                    `;
+                      <li>
+                        <input type="checkbox" checked>
+                        <i></i>
+                        <h2>Team Members</h2>
+                        <div class="accordion-list-item" id="members_${team.idteam}" data-items='${JSON.stringify(team.members)}'></div>
+                      </li>
+                      <li>
+                        <input type="checkbox" checked>
+                        <i></i>
+                        <h2>Events</h2>
+                        <div class="accordion-list-item" id="events_${team.idteam}" data-items='${JSON.stringify(team.events)}'></div>
+                      </li>
+                      <li>
+                        <input type="checkbox" checked>
+                        <i></i>
+                        <h2>Achievements</h2>
+                        <div class="accordion-list-item" id="achievements_${team.idteam}" data-items='${JSON.stringify(team.achievements)}'></div>
+                      </li>
+                    </ul>
+                  </div>
+                `;
 
                 $('#approved-team').append(accordionItem);
 
@@ -231,6 +236,7 @@ $teams = $team->getTeams();
         });
 
         $('#approved-team').show();
+
       });
 
 

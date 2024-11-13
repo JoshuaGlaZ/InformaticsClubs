@@ -31,7 +31,7 @@ CREATE TABLE `achievement` (
   PRIMARY KEY (`idachievement`),
   KEY `fk_achievement_team1_idx` (`idteam`),
   CONSTRAINT `fk_achievement_team1` FOREIGN KEY (`idteam`) REFERENCES `team` (`idteam`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,7 +40,7 @@ CREATE TABLE `achievement` (
 
 LOCK TABLES `achievement` WRITE;
 /*!40000 ALTER TABLE `achievement` DISABLE KEYS */;
-INSERT INTO `achievement` VALUES (1,7,'Dota2 Winner','2017-07-12','Winning in the biggest major tournament in Moba game'),(2,3,'PMGC Winner','2017-07-12','Winning in the biggest major tournament in Battle Royal game'),(4,3,'Dota2 MVP','2017-07-12','MVP in the biggest major tournament in Moba game'),(7,3,'Juara 1','2024-10-24','1221'),(8,3,'Most Longest Match ','2024-10-01','F'),(9,3,'Dota2 Runner-Up Winner','2024-10-31','s');
+INSERT INTO `achievement` VALUES (1,7,'Dota2 Winner','2017-07-12','Winning in the biggest major tournament in Moba game'),(2,3,'PMGC Winner','2017-07-12','Winning in the biggest major tournament in Battle Royal game'),(4,3,'Dota2 MVP','2017-07-12','MVP in the biggest major tournament in Moba game'),(7,3,'Juara 1','2024-10-24','1221'),(8,3,'Most Longest Match ','2024-10-01','F'),(9,3,'Dota2 Runner-Up Winner','2024-10-31','s'),(10,3,'Best Pull of TCG Pocket','2024-10-31','Collect a god pack in 1 pull'),(11,3,'Best teamwork','2024-11-16','Best teamwork in Free Fire');
 /*!40000 ALTER TABLE `achievement` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -248,4 +248,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-11-13 21:40:48
+-- Dump completed on 2024-11-13 22:33:34
