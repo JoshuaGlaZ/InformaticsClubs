@@ -1,13 +1,13 @@
--- MySQL dump 10.13  Distrib 8.0.34, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: esport
 -- ------------------------------------------------------
--- Server version	5.5.5-10.4.20-MariaDB
+-- Server version	5.5.5-10.4.27-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -21,7 +21,7 @@
 
 DROP TABLE IF EXISTS `achievement`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `achievement` (
   `idachievement` int(11) NOT NULL AUTO_INCREMENT,
   `idteam` int(11) NOT NULL,
@@ -31,7 +31,7 @@ CREATE TABLE `achievement` (
   PRIMARY KEY (`idachievement`),
   KEY `fk_achievement_team1_idx` (`idteam`),
   CONSTRAINT `fk_achievement_team1` FOREIGN KEY (`idteam`) REFERENCES `team` (`idteam`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,7 +40,7 @@ CREATE TABLE `achievement` (
 
 LOCK TABLES `achievement` WRITE;
 /*!40000 ALTER TABLE `achievement` DISABLE KEYS */;
-INSERT INTO `achievement` VALUES (1,7,'Dota2 Winner','2017-07-12','Winning in the biggest major tournament in Moba game'),(2,3,'PMGC Winner','2022-10-07','Winning in the biggest major tournament in Battle Royal game'),(4,3,'Dota2 MVP','2017-07-12','MVP in the biggest major tournament in Moba game'),(7,3,'Juara 1','2024-10-24','1221'),(8,3,'Most Longest Match ','2024-10-01','F'),(9,3,'Dota2 Runner-Up Winner','2024-10-31','s');
+INSERT INTO `achievement` VALUES (1,7,'Dota2 Winner','2017-07-12','Winning in the biggest major tournament in Moba game'),(2,3,'PMGC Winner','2017-07-12','Winning in the biggest major tournament in Battle Royal game'),(4,3,'Dota2 MVP','2017-07-12','MVP in the biggest major tournament in Moba game'),(7,3,'Juara 1','2024-10-24','1221'),(8,3,'Most Longest Match ','2024-10-01','F'),(9,3,'Dota2 Runner-Up Winner','2024-10-31','s');
 /*!40000 ALTER TABLE `achievement` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -50,14 +50,14 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `event`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `event` (
   `idevent` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) DEFAULT NULL,
   `date` date DEFAULT NULL,
   `description` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`idevent`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -76,7 +76,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `event_teams`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `event_teams` (
   `idevent` int(11) NOT NULL,
   `idteam` int(11) NOT NULL,
@@ -85,7 +85,7 @@ CREATE TABLE `event_teams` (
   KEY `fk_event_has_team_event1_idx` (`idevent`),
   CONSTRAINT `fk_event_has_team_event1` FOREIGN KEY (`idevent`) REFERENCES `event` (`idevent`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_event_has_team_team1` FOREIGN KEY (`idteam`) REFERENCES `team` (`idteam`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -104,13 +104,13 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `game`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `game` (
   `idgame` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) DEFAULT NULL,
   `description` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`idgame`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -129,7 +129,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `join_proposal`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `join_proposal` (
   `idjoin_proposal` int(11) NOT NULL AUTO_INCREMENT,
   `idmember` int(11) NOT NULL,
@@ -141,7 +141,7 @@ CREATE TABLE `join_proposal` (
   KEY `fk_join_proposal_team1_idx` (`idteam`),
   CONSTRAINT `fk_join_proposal_member1` FOREIGN KEY (`idmember`) REFERENCES `member` (`idmember`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_join_proposal_team1` FOREIGN KEY (`idteam`) REFERENCES `team` (`idteam`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -150,7 +150,7 @@ CREATE TABLE `join_proposal` (
 
 LOCK TABLES `join_proposal` WRITE;
 /*!40000 ALTER TABLE `join_proposal` DISABLE KEYS */;
-INSERT INTO `join_proposal` VALUES (1,2,3,'saya ingin join','approved'),(2,3,3,'kepengen aja','waiting'),(3,3,7,'lorem','waiting'),(4,4,8,'hmm','waiting'),(5,3,3,'16-10\r\n','waiting');
+INSERT INTO `join_proposal` VALUES (1,2,3,'saya ingin join','approved'),(2,3,3,'kepengen aja','approved'),(3,3,7,'lorem','rejected'),(4,4,8,'hmm','waiting'),(5,3,8,'16-10\r\n','waiting'),(8,1,8,'testtest','rejected'),(9,2,8,'hmmmm hmmmmm','waiting'),(10,1,14,'gggg','waiting'),(11,2,19,'ets ','waiting'),(12,2,10,'fff','waiting');
 /*!40000 ALTER TABLE `join_proposal` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -160,7 +160,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `member`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `member` (
   `idmember` int(11) NOT NULL AUTO_INCREMENT,
   `fname` varchar(45) DEFAULT NULL,
@@ -169,7 +169,7 @@ CREATE TABLE `member` (
   `password` varchar(255) DEFAULT NULL,
   `profile` enum('admin','member') DEFAULT NULL,
   PRIMARY KEY (`idmember`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -178,7 +178,7 @@ CREATE TABLE `member` (
 
 LOCK TABLES `member` WRITE;
 /*!40000 ALTER TABLE `member` DISABLE KEYS */;
-INSERT INTO `member` VALUES (1,'admin','','admin','$2y$10$tXl9jQAJulNKhYx.PrT4r.qU9bM6LBpde5VShdHrV.m6gEqHjSsLC','admin'),(2,'A','111','usera','$2y$10$jlHbq2Ig7fm72G/elHL8Cuv6S5KAb2HGkI3OMJgzqJHnCd15aCt8G','member'),(3,'B','222','userb','$2y$10$jlHbq2Ig7fm72G/elHL8Cuv6S5KAb2HGkI3OMJgzqJHnCd15aCt8G','member'),(4,'C','333','userc','$2y$10$jlHbq2Ig7fm72G/elHL8Cuv6S5KAb2HGkI3OMJgzqJHnCd15aCt8G','member'),(5,'D','444','userd','$2y$10$jlHbq2Ig7fm72G/elHL8Cuv6S5KAb2HGkI3OMJgzqJHnCd15aCt8G','member'),(6,'E','555','usere','$2y$10$6zzPUqPDfXmbzYrl9Re7dOdUVobeJiqGJt5JumibpKKTYPQOi42..','member');
+INSERT INTO `member` VALUES (1,'admin','','admin','$2y$10$tXl9jQAJulNKhYx.PrT4r.qU9bM6LBpde5VShdHrV.m6gEqHjSsLC','admin'),(2,'A','111','usera','$2y$10$jlHbq2Ig7fm72G/elHL8Cuv6S5KAb2HGkI3OMJgzqJHnCd15aCt8G','member'),(3,'B','222','userb','$2y$10$jlHbq2Ig7fm72G/elHL8Cuv6S5KAb2HGkI3OMJgzqJHnCd15aCt8G','member'),(4,'C','333','userc','$2y$10$jlHbq2Ig7fm72G/elHL8Cuv6S5KAb2HGkI3OMJgzqJHnCd15aCt8G','member'),(5,'D','444','userd','$2y$10$jlHbq2Ig7fm72G/elHL8Cuv6S5KAb2HGkI3OMJgzqJHnCd15aCt8G','member'),(6,'E','555','usere','$2y$10$6zzPUqPDfXmbzYrl9Re7dOdUVobeJiqGJt5JumibpKKTYPQOi42..','member'),(7,'dsaf','ddd','ddd','$2y$10$STqM625s.J9IekO3/7SN1eou/UZVxlFDSDwaX.0POE1JGTotHyEQO','member');
 /*!40000 ALTER TABLE `member` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -188,7 +188,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `team`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `team` (
   `idteam` int(11) NOT NULL AUTO_INCREMENT,
   `idgame` int(11) NOT NULL,
@@ -197,7 +197,7 @@ CREATE TABLE `team` (
   PRIMARY KEY (`idteam`),
   KEY `fk_team_game1_idx` (`idgame`),
   CONSTRAINT `fk_team_game1` FOREIGN KEY (`idgame`) REFERENCES `game` (`idgame`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -206,7 +206,7 @@ CREATE TABLE `team` (
 
 LOCK TABLES `team` WRITE;
 /*!40000 ALTER TABLE `team` DISABLE KEYS */;
-INSERT INTO `team` VALUES (3,3,'OOO',''),(7,2,'Rtu',''),(8,2,'MLO',''),(9,3,'OPQER',''),(10,3,'T-1',''),(11,1,'T-2','');
+INSERT INTO `team` VALUES (3,3,'OOO',''),(7,2,'Rtu',''),(8,2,'MLO',''),(9,3,'OPQER',''),(10,3,'T-1',''),(11,1,'T-2',''),(14,1,'MXC',''),(17,1,'DDD','jpg'),(18,1,'DDDD','jpg'),(19,1,'D1D1','jpg');
 /*!40000 ALTER TABLE `team` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -216,7 +216,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `team_members`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `team_members` (
   `idteam` int(11) NOT NULL,
   `idmember` int(11) NOT NULL,
@@ -226,7 +226,7 @@ CREATE TABLE `team_members` (
   KEY `fk_team_has_member_team_idx` (`idteam`),
   CONSTRAINT `fk_team_has_member_member1` FOREIGN KEY (`idmember`) REFERENCES `member` (`idmember`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_team_has_member_team` FOREIGN KEY (`idteam`) REFERENCES `team` (`idteam`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -235,6 +235,7 @@ CREATE TABLE `team_members` (
 
 LOCK TABLES `team_members` WRITE;
 /*!40000 ALTER TABLE `team_members` DISABLE KEYS */;
+INSERT INTO `team_members` VALUES (3,2,'saya ingin join'),(3,3,'kepengen aja');
 /*!40000 ALTER TABLE `team_members` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -247,4 +248,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-11-11 14:16:57
+-- Dump completed on 2024-11-13 19:55:33
