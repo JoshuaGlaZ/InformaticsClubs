@@ -22,7 +22,7 @@ try {
       $achievendate = $_POST['date'];
       $achievedesk = $_POST['description'];
 
-      $achievement->updateAchievement($idteam, $namaachieve, $achievedate, $achievedesk, $idachievement);
+      $achievement->updateAchievement($idteam, $namaachieve, $achievendate, $achievedesk, $idachievement);
       $_SESSION['success'] = "Achievement updated successfully!";
       header("Location: ../admin_homepage.php?table=achievement");
     }

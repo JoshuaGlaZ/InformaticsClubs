@@ -195,15 +195,38 @@ body {
 
 .navbar .nav-btn {
   display: none;
-  padding: 10px; 
+  padding: 10px;
   overflow: hidden;
   cursor: pointer;
   position: relative;
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.navbar .nav-btn:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  box-shadow: 0px 4px 10px 10px rgba(0, 0, 0, 0.1);
+}
+
+.navbar .nav-btn::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  height: 2px;
+  width: 0;
+  transition: width 0.3s ease, left 0.3s ease;
+}
+
+.navbar .nav-btn:hover::after {
+  width: 100%;
+  left: 0;
 }
 
 .navbar .nav-btn label {
-  width: 65px; 
-  height: 65px; 
+  display: block;
+  cursor: pointer;
+  width: 65px;
+  height: 65px;
 }
 
 .navbar .nav-btn label span {
@@ -214,6 +237,7 @@ body {
   position: relative;
   background-color: #fff;
   transition: 0.3s ease;
+  user-select: none;
 }
 
 button#login {
@@ -259,7 +283,7 @@ button#logout:hover {
   position: relative;
   top: 4rem;
   width: 100%;
-  padding: 15px 30px 30px;
+  padding: 15px 80px 80px;
   background-color: transparent;
   color: #1c1f26;
   gap: 1.25em;
@@ -408,7 +432,6 @@ button#logout:hover {
   line-height: 26px;
   letter-spacing: 1px;
   position: relative;
-  overflow: hidden;
   max-height: 800px;
   transition: all 0.25s ease-in-out;
   opacity: 1;
@@ -473,6 +496,7 @@ i::after {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  overflow: visible;
 }
 
 .item {
@@ -485,8 +509,10 @@ i::after {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   font-size: 16px;
   color: #333;
+  word-wrap: break-word;
   transition: background-color 0.3s ease, padding 0.3s ease, box-shadow 0.3s ease;
   position: relative;
+  z-index: 1;
 }
 
 .item:hover {
@@ -701,7 +727,7 @@ i::after {
     transition: all 0.3s ease-in;
     overflow-y: hidden;
     overflow-x: hidden;
-    top: 80px;
+    top: 91px;
     right: 0px;
     gap: 1em;
   }
@@ -722,9 +748,9 @@ i::after {
   }
 
   .navbar button#logout {
-    padding: 0.5rem 3rem; 
-    font-size: 1rem; 
-    font-weight: 500; 
+    padding: 0.5rem 3rem;
+    font-size: 1rem;
+    font-weight: 500;
     margin-bottom: 1em;
   }
 
@@ -733,7 +759,18 @@ i::after {
   }
 }
 
-@media (max-width: 460px) {
+@media (max-width: 480px) {
+  .scrollable-panel .header {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+  }
+
+  .scrollable-panel .img-block {
+    width: auto;
+  }
+
   .scrollable-panel .card-title {
     font-size: 1.2em;
   }
@@ -749,5 +786,35 @@ i::after {
 
   .scrollable-panel .card-content {
     padding: 15px;
+  }
+
+  .scrollable-panel .accordion h1 {
+    font-size: 1.4em;
+    font-weight: 500;
+    line-height: normal;
+    letter-spacing: normal;
+  }
+
+  .scrollable-panel .accordion h2 {
+    font-size: 1.1em;
+    font-weight: 400;
+    width: 80%;
+  }
+
+  .scrollable-panel .accordion-list-item {
+    gap: 5px;
+    padding-bottom: 6px;
+  }
+
+  .scrollable-panel .accordion .item {
+    font-size: 0.8em;
+    padding: 10px 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+
+  .scrollable-panel .accordion .item:hover {
+    background-color: #f0f0f0;
+    padding: 15px 8px;
+    box-shadow: 0 5px 8px rgba(0, 0, 0, 0.2);
   }
 }

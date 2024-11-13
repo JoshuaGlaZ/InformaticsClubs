@@ -270,11 +270,13 @@ td a.detail {
     user-select: none;
     border: 1px solid transparent;
     padding: .375rem .75rem;
+    margin: 0 1em;
     font-size: .8rem;
     border-radius: 10px;
   transition: background-color 0.2s;
   background-color: #F1FAFF; 
   color: #0095E8;
+  white-space: nowrap;
 }
 
 td a.detail:hover {
