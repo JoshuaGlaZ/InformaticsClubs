@@ -77,6 +77,7 @@ class Team extends Database
         jp.idteam, 
         t.name as team_name, 
         g.name as game_name, 
+        m.idmember as id_member,
         CONCAT(m.fname, ' ', m.lname) as member_fullname,
         e.name as event_name, 
         a.name as achievement_name 

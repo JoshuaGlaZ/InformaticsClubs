@@ -30,11 +30,11 @@ class DatabaseTable extends Database
       if ($detail == 'event') {
         $sql_detail = "SELECT COUNT(*) AS total FROM team t 
                          LEFT JOIN event_teams et ON t.idteam = et.idteam
-                         INNER JOIN event e ON et.idevent = e.idevent 
+                         LEFT JOIN event e ON et.idevent = e.idevent 
                          WHERE t.idteam = ?";
       } elseif ($detail == 'achievement') {
         $sql_detail = "SELECT COUNT(*) AS total FROM team t 
-                         INNER JOIN game g ON t.idgame = g.idgame
+                         LEFT JOIN game g ON t.idgame = g.idgame
                          LEFT JOIN achievement a ON t.idteam = a.idteam
                          WHERE t.idteam = ?";
       }
@@ -46,6 +46,7 @@ class DatabaseTable extends Database
         $stmt_detail->execute();
         $result_detail = $stmt_detail->get_result();
         $totalRecords = $result_detail->fetch_assoc()['total'];
+
         $stmt_detail->close();
       } else {
         echo "Error preparing statement: " . $this->conn->error;
@@ -62,7 +63,7 @@ class DatabaseTable extends Database
                          e.date as held_on 
                   FROM team t 
                   LEFT JOIN event_teams et ON t.idteam = et.idteam 
-                  INNER JOIN event e ON et.idevent = e.idevent 
+                  LEFT JOIN event e ON et.idevent = e.idevent 
                   WHERE t.idteam = ? 
                   LIMIT ? OFFSET ?";
       } elseif ($detail == 'achievement') {
@@ -85,11 +86,15 @@ class DatabaseTable extends Database
     $stmt = $this->conn->prepare($sql);
     if ($detail) {
       $stmt->bind_param("iii", $_GET['id'], $recordsPerPage, $offset); // Add ID parameter for details
+      echo "<script>console.log('"  . $_GET['id'] . $recordsPerPage . $offset . "')</script>";
     } else {
       $stmt->bind_param("ii", $recordsPerPage, $offset); // Regular table data
     }
     $stmt->execute();
     $data = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    $jsonData = json_encode($data);
+    echo "<script>console.log(" . json_encode($jsonData) . ");</script>";
+
     $stmt->close();
 
     return [
@@ -103,6 +108,8 @@ class DatabaseTable extends Database
   private function getTotalRecords($table)
   {
     $sql = "SELECT COUNT(*) AS total FROM " . $table;
+    echo "<script>console.log('"  . $sql . "')</script>";
+
     $stmt = $this->conn->prepare($sql);
     $stmt->execute();
     $result = $stmt->get_result();

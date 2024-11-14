@@ -3,6 +3,7 @@ require_once("controllers/team.php");
 session_start();
 // $sql = "SELECT * from team";
 // $result = $conn->query($sql);
+echo '<input type="hidden" id="secret_id" name="idmember" value="'. $_SESSION['idmember'] . '">';
 $team = new Team();
 $teams = $team->getTeams();
 ?>
@@ -104,18 +105,18 @@ $teams = $team->getTeams();
   </div>
 
   <script>
-    $(document).ready(function () {
-      $(".hamburger-menu").click(function () {
+    $(document).ready(function() {
+      $(".hamburger-menu").click(function() {
         $(".nav-links").toggleClass("show");
       });
 
-      $('.scrollable-panel .card-content').each(function (index) {
+      $('.scrollable-panel .card-content').each(function(index) {
         const delay = (0.1 * index) + 's';
         $(this).find('.card-title').css('--delay', delay);
         $(this).find('.card-description').css('--delay', delay);
       });
 
-      $('#choose-team-link').on('click', function (event) {
+      $('#choose-team-link').on('click', function(event) {
         event.preventDefault();
         $(this).addClass('active');
         $('#approved-team-link').removeClass('active');
@@ -123,7 +124,7 @@ $teams = $team->getTeams();
         $('#approved-team').hide();
       });
 
-      $('#approved-team-link').on('click', function (event) {
+      $('#approved-team-link').on('click', function(event) {
         event.preventDefault();
         $(this).addClass('active');
         $('#choose-team-link').removeClass('active');
@@ -133,12 +134,12 @@ $teams = $team->getTeams();
         $.ajax({
           url: 'ajax/approve_team.php',
           method: 'GET',
-          success: function (data) {
+          success: function(data) {
             const teams = JSON.parse(data);
             if (teams.error) {
               $('#approved-team').append('<p>' + teams.error + '</p>');
             } else {
-              teams.forEach(function (team) {
+              teams.forEach(function(team) {
                 const itemsPerPage = 3; // Number of items to display per page
 
                 // Pagination function
@@ -155,17 +156,19 @@ $teams = $team->getTeams();
                   });
 
                   // Generate pagination controls with numbered buttons
-                  let paginationHTML = `<div class="pagination-controls">`;
+                  let paginationHTML = `<div class="pagination-container">`;
                   if (page > 1) {
-                    paginationHTML += `<a onclick="navigatePage('${containerId}', ${page - 1})" class="prev">Previous</a>`;
+                    paginationHTML += `<div class="pagination-controls prev"><a onclick="navigatePage('${containerId}', ${page - 1})" class="prev">Previous</a></div>`;
                   }
 
+                  paginationHTML += `<div class="pagination-controls num">`;
                   for (let i = 1; i <= totalPages; i++) {
                     paginationHTML += `<a onclick="navigatePage('${containerId}', ${i})" class="page-number ${i === page ? 'active' : ''}">${i}</a>`;
                   }
+                  paginationHTML += `</div>`;
 
                   if (page < totalPages) {
-                    paginationHTML += `<a onclick="navigatePage('${containerId}', ${page + 1})" class="next">Next</a>`;
+                    paginationHTML += `<div class="pagination-controls next"><a onclick="navigatePage('${containerId}', ${page + 1})" class="next">Next</a></div>`;
                   }
                   paginationHTML += `</div>`;
 
@@ -179,7 +182,7 @@ $teams = $team->getTeams();
                 }
 
                 // Function to navigate pages
-                window.navigatePage = function (containerId, page) {
+                window.navigatePage = function(containerId, page) {
                   const items = JSON.parse($(`#${containerId}`).attr('data-items'));
                   paginate(items, containerId, page);
                 };
@@ -230,7 +233,7 @@ $teams = $team->getTeams();
               });
             }
           },
-          error: function () {
+          error: function() {
             $('#approved-team').append('<p>Could not load approved teams. Please try again later.</p>');
           }
         });
@@ -248,7 +251,7 @@ $teams = $team->getTeams();
         $header.toggleClass('active');
       }
 
-      $(".proposalButton").on("click", function () {
+      $(".proposalButton").on("click", function() {
         var teamName = $(this).data("team-name");
         var teamID = $(this).data("team-id");
         var memberID = $(this).data("member-id");
@@ -260,11 +263,11 @@ $teams = $team->getTeams();
         $("#proposalModal").css("display", "block");
       });
 
-      $(".close").on("click", function () {
+      $(".close").on("click", function() {
         $(".modal").css("display", "none");
       });
 
-      $(window).on("click", function (event) {
+      $(window).on("click", function(event) {
         const proposalModal = $("#proposalModal")[0];
         if (event.target === proposalModal) {
           $("#proposalModal").css("display", "none");

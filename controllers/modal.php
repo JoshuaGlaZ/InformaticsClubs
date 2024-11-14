@@ -35,6 +35,8 @@ class Modal extends Database
       $sql_event_team = "SELECT idevent FROM event_teams WHERE idteam = ?";
       $stmt_event_team = $this->conn->prepare($sql_event_team);
       $stmt_event_team->bind_param("i", $this->id);
+      echo "<script>console.log('"  . $this->id . "')</script>";
+
       $stmt_event_team->execute();
       $result_event_team = $stmt_event_team->get_result();
 
@@ -42,9 +44,18 @@ class Modal extends Database
       while ($row_event_team = $result_event_team->fetch_assoc()) {
         $eventIds[] = $row_event_team['idevent'];
       }
-      $eventid = "(" . implode(",", $eventIds) . ")";
-      $sql_event = "SELECT * FROM event WHERE idevent NOT IN " . $eventid;
-      $stmt_event = $this->conn->prepare($sql_event);
+      if (empty($eventIds)) {
+        // If $eventIds is empty, retrieve all events
+        $sql_event = "SELECT * FROM event";
+        $stmt_event = $this->conn->prepare($sql_event);
+      } else {
+        // If $eventIds is not empty, filter out the events that the team has taken
+        $eventid = "(" . implode(",", $eventIds) . ")";
+        echo "<script>console.log('"  . $eventid . "')</script>";
+
+        $sql_event = "SELECT * FROM event WHERE idevent NOT IN " . $eventid;
+        $stmt_event = $this->conn->prepare($sql_event);
+      }
       $stmt_event->execute();
       return $stmt_event->get_result();
     }

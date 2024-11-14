@@ -6,25 +6,7 @@ try {
   $team = new Team();
 
   if (isset($_POST['submit'])) {
-    if (isset($_POST['insert'])) {
-      $idgame = $_POST['idgame'];
-      $teamname = $_POST['name'];
-      $image = $_FILES['gambar'];
-
-      $team->addTeam($idgame, $teamname, $image);
-      $_SESSION['success'] = "Team inserted successfully!";
-      header("Location: ../admin_homepage.php");
-    } else if (isset($_POST['update'])) {
-      $idteam = $_POST['idteam'];
-      $teamName = $_POST['name'];
-      $idgame = $_POST['idgame'];
-      $image = $_FILES['gambar'];
-      
-      $team->updateTeam($idteam, $teamName, $idgame, $image);
-      $_SESSION['success'] = "Achievement updated successfully!";
-  
-      header("Location: ../admin_homepage.php?table=team");
-    } else if (isset($_POST['detailteam'])) {
+    if (isset($_POST['detailteam'])) {
       $idteam = $_POST['idteam'];
       if (isset($_POST['idevent'])) {
         $team->addEventToTeam($_POST['idevent'], $idteam);
@@ -40,7 +22,25 @@ try {
         $_SESSION['success'] = "Achievement added to team successfully!";
         header("Location: ../admin_homepage.php?table=team&detail=achievement&id=" . $idteam);
       }
-    } 
+    } else if (isset($_POST['insert'])) {
+      $idgame = $_POST['idgame'];
+      $teamname = $_POST['name'];
+      $image = $_FILES['gambar'];
+
+      $team->addTeam($idgame, $teamname, $image);
+      $_SESSION['success'] = "Team inserted successfully!";
+      header("Location: ../admin_homepage.php");
+    } else if (isset($_POST['update'])) {
+      $idteam = $_POST['idteam'];
+      $teamName = $_POST['name'];
+      $idgame = $_POST['idgame'];
+      $image = $_FILES['gambar'];
+
+      $team->updateTeam($idteam, $teamName, $idgame, $image);
+      $_SESSION['success'] = "Achievement updated successfully!";
+
+      header("Location: ../admin_homepage.php?table=team");
+    }
   } else if (isset($_GET['id'])) {
     $idteam = $_GET['id'];
     $team = new Team();

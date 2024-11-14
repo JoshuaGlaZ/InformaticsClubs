@@ -38,5 +38,8 @@ try {
   $_SESSION['error'] = $e->getMessage();
 }
 
-header("Location: admin_homepage.php?table=join_proposal");
+// echo "<script>
+//         window.location.href = '../admin_homepage.php?table=join_proposal';
+//       </script>";
+header("Location: ../admin_homepage.php?table=join_proposal");
 exit();

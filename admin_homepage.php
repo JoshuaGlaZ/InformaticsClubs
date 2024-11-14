@@ -183,7 +183,8 @@ $currentPage = $tableData['currentPage'];
           <?php
           if (isset($_GET['detail'])) {
             $tableData = $db->getTableData($table, $page,  $records_per_page, $_GET['detail']);
-
+            $jsonData = json_encode($tableData);
+            echo "<script>console.log(" . json_encode($tableData) . ");</script>";
             $data = $tableData['data'];
             $total_pages = $tableData['totalPages'];
             $totaldata = $tableData['totalData'];
@@ -228,7 +229,7 @@ $currentPage = $tableData['currentPage'];
                   echo "<td>" . $row['event_name'] . "</td>";
                   echo "<td>" . $row['event_desc'] . "</td>";
                   echo "<td>" . $row['held_on'] . "</td>";
-                  echo "<td class='action'><form action='deleteteam.php' method='get'>
+                  echo "<td class='action'><form action='actions/team.php' method='get'>
                   <input type='hidden' name='idteam' value='" . $row['idteam'] . "'>
                   <input type='hidden' name='idevent' value='" . $row['idevent'] . "'>
                   <button type='submit' class='delete' id='" . $row['idteam'] . "'>Delete</button>
@@ -422,7 +423,7 @@ $currentPage = $tableData['currentPage'];
         echo '</div>';
         ?>
         <div class="modal-footer">
-          <button class="close">Cancel</button>
+          <button type="button" class="close">Cancel</button>
           <input type="hidden" name="update">
           <input type="submit" name="submit" value="Save"></input>
         </div>
@@ -432,7 +433,17 @@ $currentPage = $tableData['currentPage'];
 
   <script>
     $(document).ready(function() {
-      console.log("Insert button clicked");
+
+      $(window).on("click", function(event) {
+        const insertModal = $("#insertModal")[0];
+        const updateModal = $("#updateModal")[0];
+        if (event.target === insertModal) {
+          $("#insertModal").css("display", "none");
+        }
+        if (event.target === updateModal) {
+          $("#updateModal").css("display", "none");
+        }
+      })
 
       $("#insertButton").on("click", function() {
         $("#insertModal").css("display", "block");
@@ -495,17 +506,6 @@ $currentPage = $tableData['currentPage'];
       $(".close").on("click", function() {
         $(".modal").css("display", "none");
       });
-
-      $(window).on("click", function(event) {
-        const insertModal = $("#insertModal")[0];
-        const updateModal = $("#updateModal")[0];
-        if (event.target === insertModal) {
-          $("#insertModal").css("display", "none");
-        }
-        if (event.target === updateModal) {
-          $("#updateModal").css("display", "none");
-        }
-      })
     });
   </script>
 </body>

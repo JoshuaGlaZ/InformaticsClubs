@@ -701,7 +701,7 @@ i::after {
 
 .pagination-container {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   margin-top: 20px;
 }
@@ -710,9 +710,12 @@ i::after {
   font-size: 14px;
 }
 
+
 .pagination-controls {
   display: flex;
-  gap: 8px;
+  justify-content: center;
+  align-items: center; 
+  gap: 8px; 
 }
 
 .pagination-controls a,
@@ -721,22 +724,24 @@ i::after {
   padding: 0.25em 0.75em;
   text-decoration: none;
   color: #e0e0e0;
-  /* border: 1px solid #ddd; */
   border-radius: 3px;
   transition: background-color 0.3s, color 0.5s;
+  display: inline-block; 
+  min-width: 2.5em;
+  text-align: center; 
 }
 
 .pagination-controls a:hover,
 .pagination-controls .page-number:hover,
 .page-number:hover {
-  background-color: #f1f1f1;
-  color: #000;
+  background-color: #4c93de;
+  color: #ffffff; 
 }
 
 .pagination-controls .active {
   background-color: #007bff;
-  color: 333;
   border-color: #007bff;
+  color: #ffffff;
 }
 
 @media (max-width: 1120px) {
@@ -819,7 +824,8 @@ i::after {
     font-size: 0.8em;
   }
 
-  .scrollable-panel .card-button {
+  .scrollable-panel .card-button,
+  .accordion .page-number {
     padding: 6px 12px;
     font-size: 0.8rem;
   }
