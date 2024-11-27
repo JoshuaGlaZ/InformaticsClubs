@@ -37,7 +37,7 @@ try {
       $image = $_FILES['gambar'];
 
       $team->updateTeam($idteam, $teamName, $idgame, $image);
-      $_SESSION['success'] = "Achievement updated successfully!";
+      $_SESSION['success'] = "Team updated successfully!";
 
       header("Location: ../admin_homepage.php?table=team");
     }

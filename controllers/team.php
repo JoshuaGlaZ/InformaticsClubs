@@ -17,13 +17,13 @@ class Team extends Database
   } 
     $ext = pathinfo($image['name'], PATHINFO_EXTENSION);
     if (!$this->validateFile($ext)) {
-      throw new Exception("Please upload a JPG or JPEG file");
+      throw new Exception("Please upload a JPG");
       header("Location: ../admin_homepage.php");
       exit();
     }
-    $sql = "INSERT INTO team (idteam, idgame, name, extention) VALUES (NULL, ?, ?, ?)";
+    $sql = "INSERT INTO team (idteam, idgame, name) VALUES (NULL, ?, ?)";
     $stmt = $this->conn->prepare($sql);
-    $stmt->bind_param("iss", $idgame, $teamname, $ext);
+    $stmt->bind_param("is", $idgame, $teamname);
 
     if ($stmt->execute()) {
       $new_id = $stmt->insert_id;
@@ -139,17 +139,17 @@ class Team extends Database
   {
     $ext = pathinfo($image['name'], PATHINFO_EXTENSION);
     if (!$this->validateFile($ext)) {
-      $_SESSION['error'] = "Please upload a JPG or JPEG file.";
+      $_SESSION['error'] = "Please upload a JPG file.";
       header("Location: ../admin_homepage.php");
       exit();
     }
 
-    $sql = "UPDATE team SET name = ?, idgame = ?, extention = ? WHERE idteam = ?";
+    $sql = "UPDATE team SET name = ?, idgame = ? WHERE idteam = ?";
     $stmt = $this->conn->prepare($sql);
-    $stmt->bind_param("sisi", $teamName, $idgame, $ext, $idteam);
+    $stmt->bind_param("sii", $teamName, $idgame, $idteam);
 
     if ($stmt->execute()) {
-      $destination = "gambar/$idteam.$ext";
+      $destination = "../gambar/$idteam.$ext";
       move_uploaded_file($image['tmp_name'], $destination);
       $stmt->close();
       return true;
@@ -191,9 +191,9 @@ class Team extends Database
 
   private function validateFile($ext)
   {
-    if ($ext !== 'jpg' && $ext !== 'jpeg') {
+    if ($ext !== 'jpg') {
       echo "<script>
-                alert('Please upload a JPG or JPEG file.');
+                alert('Please upload a JPG file');
                 window.location.href = 'admin_homepage.php';
               </script>";
       return false;

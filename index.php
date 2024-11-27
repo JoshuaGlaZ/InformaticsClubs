@@ -55,7 +55,7 @@ $teams = $team->getTeams();
       <?php while ($row = $teams->fetch_assoc()): ?>
         <div class="card">
           <div class="img-block">
-            <img src="https://robohash.org/team<?php echo $row['idteam'] ?>" class="card-img">
+            <img src="gambar/<?php echo $row['idteam'] ?>.jpg" class="card-img">
           </div>
           <div class="card-content">
             <h2 class="card-title"><?php echo $row['name']; ?></h2> <!-- php simpan nama team di variable   -->
@@ -198,7 +198,7 @@ $teams = $team->getTeams();
                     <ul>
                       <div class="header">
                         <div class="img-block">
-                          <img src="https://robohash.org/team${team.idteam}" class="card-img">
+                          <img src="gambar/${team.idteam}.jpg" class="card-img">
                         </div>
                         <h1>${team.team_name}</h1>
                       </div>
