@@ -12,7 +12,7 @@ class Team extends Database
   {
     if (!isset($image['name']) || is_array($image['name'])) {
       throw new Exception("Please upload only one image file.");
-      header("Location: ../admin_homepage.php");
+      header("Location: /admin_homepage.php");
       exit();
   } 
     $ext = pathinfo($image['name'], PATHINFO_EXTENSION);
