@@ -31,7 +31,7 @@ CREATE TABLE `achievement` (
   PRIMARY KEY (`idachievement`),
   KEY `fk_achievement_team1_idx` (`idteam`),
   CONSTRAINT `fk_achievement_team1` FOREIGN KEY (`idteam`) REFERENCES `team` (`idteam`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,7 +40,7 @@ CREATE TABLE `achievement` (
 
 LOCK TABLES `achievement` WRITE;
 /*!40000 ALTER TABLE `achievement` DISABLE KEYS */;
-INSERT INTO `achievement` VALUES (1,7,'Dota2 Winner','2017-07-12','Winning in the biggest major tournament in Moba game'),(2,3,'PMGC Winner','2017-07-12','Winning in the biggest major tournament in Battle Royal game'),(4,3,'Dota2 MVP','2017-07-12','MVP in the biggest major tournament in Moba game'),(7,3,'Juara 1','2024-10-24','1221'),(8,3,'Most Longest Match ','2024-10-01','F'),(9,3,'Dota2 Runner-Up Winner','2024-10-31','s'),(10,3,'Best Pull of TCG Pocket','2024-10-31','Collect a god pack in 1 pull'),(11,3,'Best teamwork','2024-11-16','Best teamwork in Free Fire');
+INSERT INTO `achievement` VALUES (1,7,'Dota2 Winner','2017-07-12','Winning in the biggest major tournament in Moba game'),(2,3,'PMGC Winner','2017-07-12','Winning in the biggest major tournament in Battle Royal game'),(4,3,'Dota2 MVP','2017-07-12','MVP in the biggest major tournament in Moba game'),(7,3,'Juara 1','2024-10-24','1221'),(8,3,'Most Longest Match ','2024-10-01','F'),(9,3,'Dota2 Runner-Up Winner','2024-10-31','s'),(10,3,'Best Pull of TCG Pocket','2024-10-31','Collect a god pack in 1 pull'),(11,3,'Best teamwork','2024-11-16','Best teamwork in Free Fire'),(12,11,'Best Deck','2023-07-06','Best Deck Builder');
 /*!40000 ALTER TABLE `achievement` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -141,7 +141,7 @@ CREATE TABLE `join_proposal` (
   KEY `fk_join_proposal_team1_idx` (`idteam`),
   CONSTRAINT `fk_join_proposal_member1` FOREIGN KEY (`idmember`) REFERENCES `member` (`idmember`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_join_proposal_team1` FOREIGN KEY (`idteam`) REFERENCES `team` (`idteam`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -150,7 +150,7 @@ CREATE TABLE `join_proposal` (
 
 LOCK TABLES `join_proposal` WRITE;
 /*!40000 ALTER TABLE `join_proposal` DISABLE KEYS */;
-INSERT INTO `join_proposal` VALUES (1,2,3,'saya ingin join','approved'),(2,3,3,'kepengen aja','approved'),(3,3,7,'lorem','rejected'),(4,4,8,'hmm','waiting'),(5,3,8,'16-10\r\n','waiting'),(8,1,8,'testtest','rejected'),(9,2,8,'hmmmm hmmmmm','waiting'),(10,1,14,'gggg','waiting'),(11,2,19,'ets ','waiting'),(12,2,10,'fff','waiting');
+INSERT INTO `join_proposal` VALUES (1,2,3,'saya ingin join','approved'),(2,3,3,'kepengen aja','approved'),(3,3,7,'lorem','rejected'),(4,4,8,'hmm','waiting'),(5,3,8,'16-10\r\n','waiting'),(8,1,8,'testtest','rejected'),(9,2,8,'hmmmm hmmmmm','waiting'),(10,1,14,'gggg','waiting'),(12,2,10,'fff','waiting'),(15,7,17,'wew','waiting');
 /*!40000 ALTER TABLE `join_proposal` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -193,11 +193,10 @@ CREATE TABLE `team` (
   `idteam` int(11) NOT NULL AUTO_INCREMENT,
   `idgame` int(11) NOT NULL,
   `name` varchar(45) DEFAULT NULL,
-  `extention` varchar(4) NOT NULL,
   PRIMARY KEY (`idteam`),
   KEY `fk_team_game1_idx` (`idgame`),
   CONSTRAINT `fk_team_game1` FOREIGN KEY (`idgame`) REFERENCES `game` (`idgame`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -206,7 +205,7 @@ CREATE TABLE `team` (
 
 LOCK TABLES `team` WRITE;
 /*!40000 ALTER TABLE `team` DISABLE KEYS */;
-INSERT INTO `team` VALUES (3,3,'OOO',''),(7,2,'Rtu',''),(8,2,'MLO',''),(9,3,'OPQER',''),(10,3,'T-1',''),(11,1,'T-2',''),(14,1,'MXC',''),(17,1,'DDD','jpg'),(18,1,'DDDD','jpg'),(19,1,'D1D1','jpg');
+INSERT INTO `team` VALUES (3,3,'OOO'),(7,2,'Rtu'),(8,2,'MLO'),(9,3,'OPQER'),(10,3,'T-1'),(11,1,'T-2'),(14,1,'MXC'),(17,1,'DDD'),(18,1,'DDDD'),(20,2,'RRRR'),(21,2,'ollll');
 /*!40000 ALTER TABLE `team` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -248,4 +247,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-11-13 22:33:34
+-- Dump completed on 2024-12-11 11:14:55
