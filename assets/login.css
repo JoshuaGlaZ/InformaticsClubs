@@ -225,12 +225,12 @@ input[type="submit"]:active {
 @media (max-width: 740px) {
   section .signin,
   section .signup {
-    width: 80vw; /* Use viewport width for more fluid resizing */
-    max-width: 500px; /* Ensure the width does not exceed 500px */
+    width: 80vw; 
+    max-width: 500px; 
   }
 
   form .inputBox input {
-    padding-right: 42px; /* Add padding to the right to accommodate the eye icon */
+    padding-right: 42px; 
   }
 }
 

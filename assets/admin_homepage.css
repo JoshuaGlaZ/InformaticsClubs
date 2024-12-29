@@ -122,12 +122,12 @@ body {
 }
 
 .card {
-  background-color: #212121; /* Dark card background */
-  color: #E0E0E0; /* Light text for contrast */
-  border: 1px solid #4B5363; /* Subtle border for structure */
+  background-color: #212121; 
+  color: #E0E0E0; 
+  border: 1px solid #4B5363; 
   padding: 1.5rem;
   border-radius: 0.5rem;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Soft shadow for depth */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   margin-bottom: 2.5rem;
   width: 100%;
@@ -165,9 +165,9 @@ body {
 
 .table-responsive {
   overflow-x: auto;
-  margin-bottom: 1rem; /* Optional: margin for spacing */
-  border: 1px solid #4B5363; /* Optional: border around the table wrapper */
-  border-radius: 0.5rem; /* Optional: rounded corners */  
+  margin-bottom: 1rem; 
+  border: 1px solid #4B5363; 
+  border-radius: 0.5rem; 
 }
 
 table {
