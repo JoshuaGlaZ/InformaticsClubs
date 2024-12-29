@@ -66,7 +66,14 @@ $currentPage = $tableData['currentPage'];
       <?php
       foreach ($allowed_tables as $t) {
         $active_class = ($t == $table) ? 'active' : '';
-        echo '<li class="' . $active_class . '"><a href="admin_homepage.php?table=' . $t . '">' . ucwords(str_replace('_', ' ', $t)) . '</a></li>';
+        $formatted_name = ucwords(str_replace('_', ' ', $t));
+        $first_letter = substr($formatted_name, 0, 1);
+        $remaining_text = substr($formatted_name, 1);
+        echo '<li class="' . $active_class . '">
+            <a href="admin_homepage.php?table=' . $t . '">
+              <span class="large">' . $first_letter . '</span><span class="small">' . $remaining_text . '</span>
+            </a>
+          </li>';
       }
       ?>
     </ul>
@@ -80,7 +87,7 @@ $currentPage = $tableData['currentPage'];
 
         if (!isset($_GET['detail'])) {
           if ($table != 'join_proposal') {
-            echo '<button id="insertButton">Add New ' . ucfirst($table) . '</button>';
+            echo '<button id="insertButton">Add <span>New ' . ucfirst($table) . '</span></button>';
           }
         }
         ?>
@@ -90,7 +97,6 @@ $currentPage = $tableData['currentPage'];
         <table>
           <?php
           if ($data) {
-            echo '<table>';
             echo '<tr>';
 
             $fields = [];
@@ -106,38 +112,23 @@ $currentPage = $tableData['currentPage'];
             echo "<th colspan='" . (($table == 'team') ? '4' : '2') . "'>Action</th>";
             echo '</tr>';
 
-            // foreach ($data as $row) {
-            //   echo "<tr>";
-            //   foreach ($row as $key => $value) {
-            //     echo "<td>" . htmlspecialchars($value) . "</td>";
-          
-            //   }
-            //   $id = $row['id' . $table];
-            //   if ($table == 'team') {
-            //     echo "<td class='action'><a class='detail' href='admin_homepage.php?table=" . $table . "&detail=achievement&id=" . $id . "'>Team Achievement</button></td>";
-            //     echo "<td class='action'><a class='detail' href='admin_homepage.php?table=" . $table . "&detail=event&id=" . $id . "'>Team Event</button></td>";
-            //   }
             foreach ($data as $row) {
               echo "<tr>";
               foreach ($row as $key => $value) {
-                // Display all other columns
-                echo "<td>" . htmlspecialchars($value) . "</td>";
+                echo "<td data-label='" . htmlspecialchars(ucwords($key)) . "'>" . htmlspecialchars($value) . "</td>";
               }
 
-              // Assuming 'idteam' corresponds to the team ID
               $id = $row['id' . $table];
               if ($table == 'team') {
-                // Display the team's image
-                $imagePath = "gambar/$id.jpg"; // Assuming images are stored as {id}.jpg
+                $imagePath = "gambar/$id.jpg"; 
                 if (file_exists($imagePath)) {
-                  echo "<td><img src='" . htmlspecialchars($imagePath) . "' alt='Team Image' style='width:100px; height:auto;'></td>";
+                  echo "<td data-label='Poster'><img src='" . htmlspecialchars($imagePath) . "'alt='Team Image' style='width:100px; height:auto;'></td>";
                 } else {
-                  echo "<td><span>No Image</span></td>";
+                  echo "<td data-label='Poster'><span>No Image</span></td>";
                 }
 
-                // Display action buttons
-                echo "<td class='action'><a class='detail' href='admin_homepage.php?table=" . $table . "&detail=achievement&id=" . $id . "'>Team Achievement</a></td>";
-                echo "<td class='action'><a class='detail' href='admin_homepage.php?table=" . $table . "&detail=event&id=" . $id . "'>Team Event</a></td>";
+                echo "<td class='action' data-label='Actions'><a class='detail' href='admin_homepage.php?table=" . $table . "&detail=achievement&id=" . $id . "'>Team Achievement</a></td>";
+                echo "<td class='action' data-label='Actions'><a class='detail' href='admin_homepage.php?table=" . $table . "&detail=event&id=" . $id . "'>Team Event</a></td>";
               }
 
               if ($table == 'join_proposal') {
@@ -204,8 +195,8 @@ $currentPage = $tableData['currentPage'];
         <h2>Halaman
           <span><?php echo ucfirst($_GET['table']) . ' ' . ucfirst(isset($_GET['detail']) ? $_GET['detail'] : '') ?></span>
         </h2>
-        <button id="insertButton">Add New
-          <?php echo ucfirst($_GET['table']) . ' ' . ucfirst(isset($_GET['detail']) ? $_GET['detail'] : '') ?></button>
+        <button id="insertButton">Add <span>New
+          <?php echo ucfirst($_GET['table']) . ' ' . ucfirst(isset($_GET['detail']) ? $_GET['detail'] : '') ?></span></button>
       </div>
       <div class="table-responsive">
         <table>
@@ -241,29 +232,27 @@ $currentPage = $tableData['currentPage'];
             echo "<tbody>";
 
             if (count($data)) {
-              foreach ($data as $row) {
+              foreach ($data as $key => $value) {
                 echo "<tr>";
                 if ($_GET['detail'] == 'achievement') {
-                  echo "<td>" . $row['idteam'] . "</td>";
-                  echo "<td>" . $row['team_name'] . "</td>";
-                  echo "<td>" . $row['achievement_name'] . "</td>";
-                  echo "<td>" . $row['achievement_desc'] . "</td>";
-                  echo "<td>" . $row['achievement_date'] . "</td>";
-
-                  // echo "<td><a href='editteam.php?id=$idteam' class='edit'>Edit</a></td>";
-                  // echo "<td><a href='deleteteam.php?id=$idteam' class='delete'>Delete</a></td>";
+                  echo "<td data-label='Idteam'>" . $value['idteam'] . "</td>";
+                  echo "<td data-label='Team name'>" . $value['team_name'] . "</td>";
+                  echo "<td data-label='Achievement Name'>" . $value['achievement_name'] . "</td>";
+                  echo "<td data-label='Achievement Description'>" . $value['achievement_desc'] . "</td>";
+                  echo "<td data-label='Achievement Date'>" . $value['achievement_date'] . "</td>";
                 } else {
-                  echo "<td>" . $row['idteam'] . "</td>";
-                  echo "<td>" . $row['team_name'] . "</td>";
-                  echo "<td>" . $row['event_name'] . "</td>";
-                  echo "<td>" . $row['event_desc'] . "</td>";
-                  echo "<td>" . $row['held_on'] . "</td>";
-                  echo "<td class='action'><form action='actions/team.php' method='get'>
-                  <input type='hidden' name='idteam' value='" . $row['idteam'] . "'>
-                  <input type='hidden' name='idevent' value='" . $row['idevent'] . "'>
-                  <button type='submit' class='delete' id='" . $row['idteam'] . "'>Delete</button>
-                  </form></td>";
-                  // echo "<td><a href='deleteteam.php?idteam=".$row['idteam']."&idevent=".$row['idteam']."' class='delete'>Delete</a></td>";
+                  echo "<td data-label='Idteam'>" . $value['idteam'] . "</td>";
+                  echo "<td data-label='Team name'>" . $value['team_name'] . "</td>";
+                  echo "<td data-label='Event name'>" . $value['event_name'] . "</td>";
+                  echo "<td data-label='Event description'>" . $value['event_desc'] . "</td>";
+                  echo "<td data-label='Held on'>" . $value['held_on'] . "</td>";
+                  echo "<td class='action'>
+                    <form action='actions/team.php' method='get'>
+                      <input type='hidden' name='idteam' value='" . $value['idteam'] . "'>
+                      <input type='hidden' name='idevent' value='" . $value['idevent'] . "'>
+                      <button type='submit' class='delete' id='" . $value['idteam'] . "'>Delete</button>
+                    </form>
+                  </td>";
                 }
                 echo "</tr>";
               }
@@ -471,9 +460,9 @@ $currentPage = $tableData['currentPage'];
   </div>
 
   <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
 
-      $(window).on("click", function (event) {
+      $(window).on("click", function(event) {
         const insertModal = $("#insertModal")[0];
         const updateModal = $("#updateModal")[0];
         if (event.target === insertModal) {
@@ -484,11 +473,11 @@ $currentPage = $tableData['currentPage'];
         }
       })
 
-      $("#insertButton").on("click", function () {
+      $("#insertButton").on("click", function() {
         $("#insertModal").css("display", "block");
         console.log("Insert button clicked");
       });
-      $(".update").on("click", function () {
+      $(".update").on("click", function() {
         console.log("Update button clicked");
         var row = $(this).closest("tr");
         var totalColumns = row.find("td").length;
@@ -496,9 +485,9 @@ $currentPage = $tableData['currentPage'];
         var fields = <?php echo json_encode($fields); ?>;
 
         // Collect each column data except the last two columns (edit & delete)
-        row.find("td").not(".action").each(function () {
+        row.find("td").not(".action").each(function() {
           // Check if the cell contains an <img> element
-          if ($(this).find("img").length > 0 || $(this).text() == "No Image" ) {
+          if ($(this).find("img").length > 0 || $(this).text() == "No Image") {
             // Skip this cell as it contains an image
             return;
           }
@@ -517,7 +506,7 @@ $currentPage = $tableData['currentPage'];
           data: {
             values: rowData
           },
-          success: function (response) {
+          success: function(response) {
             $("body").css("cursor", "default");
             console.log("Session updated:", response);
             const data = JSON.parse(response);
@@ -525,7 +514,7 @@ $currentPage = $tableData['currentPage'];
             if (data.status === 'success') {
               const fields = <?php echo json_encode($fields); ?>;
               console.log(fields);
-              $.each(fields, function (index, field) {
+              $.each(fields, function(index, field) {
                 const inputElement = $('#update_' + field);
 
                 if (inputElement.length) {
@@ -541,14 +530,14 @@ $currentPage = $tableData['currentPage'];
             }
           },
 
-          error: function (xhr, status, error) {
+          error: function(xhr, status, error) {
             console.error("Error:", error);
             $("body").css("cursor", "default");
           }
         });
       });
 
-      $(".close").on("click", function () {
+      $(".close").on("click", function() {
         $(".modal").css("display", "none");
       });
     });
