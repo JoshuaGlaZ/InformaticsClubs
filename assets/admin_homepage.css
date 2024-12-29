@@ -183,6 +183,8 @@ th, td {
   padding: 12px;
   text-align: left;
   border: 1px solid #4B5363; 
+  overflow: hidden;      
+  white-space: normal;
 }
 
 th {
@@ -207,26 +209,16 @@ tbody tr:hover {
 }
 
 td.action {
-  padding: 12px 4px;
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  gap: 8px;
+  padding: 1rem 0.5rem;
 }
-
 
 td .update,
 td .delete,
 td a.detail,
 td button[type=submit] {
-  flex: 1;
-  max-width: 10rem;
-}
-
-td.action form {
-  display: flex; 
-  justify-content: center;
-  flex: 1;
+  max-width: 200px;         
+  min-width: 150px;    
+  height: auto;
 }
 
 td button,
@@ -628,10 +620,6 @@ td a.detail:hover {
     border-bottom: 1px solid #4B5363;
   }
 
-  td:last-child {
-    border-bottom: none;
-  }
-
   td:before {
     content: attr(data-label);
     position: absolute;
@@ -644,10 +632,11 @@ td a.detail:hover {
 
   td.action {
     padding: 1rem 0.75rem;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    justify-content: center;
+    display: inline-flex;  
+    justify-content: center;    
+    width: calc(50%);   
+    box-sizing: border-box;    
+    vertical-align: top;     
   }
 
   td.action:before {
@@ -672,8 +661,12 @@ td a.detail:hover {
   
   td.action form {
     display: flex; 
-    flex: 1;
-    margin: 0; 
+    justify-content: center;
+    flex: 1 1 150px;          
+  }
+
+  td:last-child, td:nth-last-child(2) {
+    border-bottom: none;
   }
 
   .pagination-container {
@@ -740,6 +733,22 @@ td a.detail:hover {
   td {
     padding: 0.75rem;
     padding-top: 2rem;
+  }
+
+  td.action {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    width: auto;
+  }
+  
+  td:nth-last-child(2) {
+    border-bottom: 1px solid #4B5363;
+  }
+  
+  td:last-child {
+    border-bottom: none;
   }
 
   td:before {
