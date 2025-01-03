@@ -209,6 +209,8 @@ tbody tr:hover {
 }
 
 td.action {
+  text-align: center; 
+  vertical-align: middle;
   padding: 1rem 0.5rem;
 }
 
