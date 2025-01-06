@@ -3,7 +3,7 @@ require_once("controllers/team.php");
 session_start();
 // $sql = "SELECT * from team";
 // $result = $conn->query($sql);
-echo '<input type="hidden" id="secret_id" name="idmember" value="'. $_SESSION['idmember'] . '">';
+echo '<input type="hidden" id="secret_id" name="idmember" value="' . $_SESSION['idmember'] . '">';
 $team = new Team();
 $teams = $team->getTeams();
 ?>
@@ -48,31 +48,29 @@ $teams = $team->getTeams();
     </div>
     </div>
   </nav>
-
-  <?php if (isset($_SESSION['username'])): ?>
-    <!-- Choose Team Section -->
-    <div id="team-apply" class="scrollable-panel">
-      <?php while ($row = $teams->fetch_assoc()): ?>
-        <div class="card">
-          <div class="img-block">
-            <img src="gambar/<?php echo $row['idteam'] ?>.jpg" class="card-img">
-          </div>
-          <div class="card-content">
-            <h2 class="card-title"><?php echo $row['name']; ?></h2> <!-- php simpan nama team di variable   -->
-            <p class="card-description">Come and Join Team <?php echo $row['name']; ?> and be the Champion of the World </p>
+  <!-- Choose Team Section -->
+  <div id="team-apply" class="scrollable-panel">
+    <?php while ($row = $teams->fetch_assoc()): ?>
+      <div class="card">
+        <div class="img-block">
+          <img src="gambar/<?php echo $row['idteam'] ?>.jpg" class="card-img">
+        </div>
+        <div class="card-content">
+          <h2 class="card-title"><?php echo $row['name']; ?></h2>
+          <p class="card-description">Come and Join Team <?php echo $row['name']; ?> and be the Champion of the World</p>
+          <?php if (isset($_SESSION['username'])): ?>
             <button class="card-button proposalButton" data-member-id="<?php echo $_SESSION['idmember']; ?>"
               data-team-id="<?php echo $row['idteam']; ?>" data-team-name="<?php echo $row['name']; ?>">Join</button>
-          </div>
+          <?php endif; ?>
         </div>
-      <?php endwhile; ?>
-    </div>
+      </div>
+    <?php endwhile; ?>
+  </div>
 
-    <!-- Approved Team Section -->
-    <div id="approved-team" class="scrollable-panel" style="display: none;">
-      <h2>Your Approved Team</h2>
-
-    </div>
-  <?php endif ?>
+  <!-- Approved Team Section -->
+  <div id="approved-team" class="scrollable-panel" style="display: none;">
+    <h2>Your Approved Team</h2>
+  </div>
 
   <!-- Proposal Modal -->
   <div id="proposalModal" class="modal" style="display:none">
