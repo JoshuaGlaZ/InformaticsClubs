@@ -223,7 +223,9 @@ body {
 }
 
 .navbar .nav-btn label {
-  display: block;
+  display: flex;
+  flex-direction: column; 
+  align-items: center; 
   cursor: pointer;
   width: 65px;
   height: 65px;
@@ -233,7 +235,7 @@ body {
   height: 5px;
   width: 50px;
   display: block;
-  margin: 10px auto;
+  margin: auto;
   position: relative;
   background-color: #fff;
   transition: 0.3s ease;
@@ -757,6 +759,10 @@ i::after {
     padding: 2em;
   }
 
+  .navbar .navbar-content {
+    width: 75%;
+  }
+
   .navbar .nav-btn {
     display: block;
     position: absolute;
@@ -814,6 +820,11 @@ i::after {
 
   .scrollable-panel .img-block {
     width: auto;
+  }
+
+  .scrollable-panel .card-img {
+    width: 8em;
+    height: 8em;
   }
 
   .scrollable-panel .card-title {
