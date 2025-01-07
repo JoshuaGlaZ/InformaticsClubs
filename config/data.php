@@ -1,7 +1,7 @@
 <?php
 
 	define("SERVER", "localhost");
-	define("DATABASE", "esport");
+	define("DATABASE", "fullstack");
 	define("USER", "root");
 	define("PASS", "");
 

@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.34, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: esport
+-- Host: 127.0.0.1    Database: fullstack
 -- ------------------------------------------------------
 -- Server version	5.5.5-10.4.20-MariaDB
 
@@ -141,7 +141,7 @@ CREATE TABLE `join_proposal` (
   KEY `fk_join_proposal_team1_idx` (`idteam`),
   CONSTRAINT `fk_join_proposal_member1` FOREIGN KEY (`idmember`) REFERENCES `member` (`idmember`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_join_proposal_team1` FOREIGN KEY (`idteam`) REFERENCES `team` (`idteam`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -150,7 +150,7 @@ CREATE TABLE `join_proposal` (
 
 LOCK TABLES `join_proposal` WRITE;
 /*!40000 ALTER TABLE `join_proposal` DISABLE KEYS */;
-INSERT INTO `join_proposal` VALUES (1,2,3,'saya ingin join','approved'),(2,3,3,'kepengen aja','approved'),(3,3,7,'lorem','rejected'),(4,4,8,'hmm','waiting'),(5,3,8,'16-10\r\n','waiting'),(8,1,8,'testtest','rejected'),(9,2,8,'hmmmm hmmmmm','waiting'),(10,1,14,'gggg','waiting'),(12,2,10,'fff','waiting'),(15,7,17,'wew','waiting');
+INSERT INTO `join_proposal` VALUES (1,2,3,'saya ingin join','approved'),(2,3,3,'kepengen aja','approved'),(3,3,7,'lorem','approved'),(4,4,8,'hmm','waiting'),(5,3,8,'16-10\r\n','waiting'),(8,1,8,'testtest','approved'),(9,2,8,'hmmmm hmmmmm','waiting'),(10,1,14,'gggg','waiting'),(12,2,10,'fff','waiting'),(15,7,17,'wew','rejected'),(16,8,8,'Saya ingin bergabung pada team MLO yang keren','approved');
 /*!40000 ALTER TABLE `join_proposal` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -169,7 +169,7 @@ CREATE TABLE `member` (
   `password` varchar(255) DEFAULT NULL,
   `profile` enum('admin','member') DEFAULT NULL,
   PRIMARY KEY (`idmember`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -178,7 +178,7 @@ CREATE TABLE `member` (
 
 LOCK TABLES `member` WRITE;
 /*!40000 ALTER TABLE `member` DISABLE KEYS */;
-INSERT INTO `member` VALUES (1,'admin','','admin','$2y$10$tXl9jQAJulNKhYx.PrT4r.qU9bM6LBpde5VShdHrV.m6gEqHjSsLC','admin'),(2,'A','111','usera','$2y$10$jlHbq2Ig7fm72G/elHL8Cuv6S5KAb2HGkI3OMJgzqJHnCd15aCt8G','member'),(3,'B','222','userb','$2y$10$jlHbq2Ig7fm72G/elHL8Cuv6S5KAb2HGkI3OMJgzqJHnCd15aCt8G','member'),(4,'C','333','userc','$2y$10$jlHbq2Ig7fm72G/elHL8Cuv6S5KAb2HGkI3OMJgzqJHnCd15aCt8G','member'),(5,'D','444','userd','$2y$10$jlHbq2Ig7fm72G/elHL8Cuv6S5KAb2HGkI3OMJgzqJHnCd15aCt8G','member'),(6,'E','555','usere','$2y$10$6zzPUqPDfXmbzYrl9Re7dOdUVobeJiqGJt5JumibpKKTYPQOi42..','member'),(7,'dsaf','ddd','ddd','$2y$10$STqM625s.J9IekO3/7SN1eou/UZVxlFDSDwaX.0POE1JGTotHyEQO','member');
+INSERT INTO `member` VALUES (1,'admin','','admin','$2y$10$tXl9jQAJulNKhYx.PrT4r.qU9bM6LBpde5VShdHrV.m6gEqHjSsLC','admin'),(2,'A','111','usera','$2y$10$jlHbq2Ig7fm72G/elHL8Cuv6S5KAb2HGkI3OMJgzqJHnCd15aCt8G','member'),(3,'B','222','userb','$2y$10$jlHbq2Ig7fm72G/elHL8Cuv6S5KAb2HGkI3OMJgzqJHnCd15aCt8G','member'),(4,'C','333','userc','$2y$10$jlHbq2Ig7fm72G/elHL8Cuv6S5KAb2HGkI3OMJgzqJHnCd15aCt8G','member'),(5,'D','444','userd','$2y$10$jlHbq2Ig7fm72G/elHL8Cuv6S5KAb2HGkI3OMJgzqJHnCd15aCt8G','member'),(6,'E','555','usere','$2y$10$6zzPUqPDfXmbzYrl9Re7dOdUVobeJiqGJt5JumibpKKTYPQOi42..','member'),(7,'dsaf','ddd','ddd','$2y$10$STqM625s.J9IekO3/7SN1eou/UZVxlFDSDwaX.0POE1JGTotHyEQO','member'),(8,'Fio','Austin','fiorello','$2y$10$PDun4O40OT0jRXmhAzRAOe09bKqwHafCZnp6fva1ZzvsVB6SG0ONW','member');
 /*!40000 ALTER TABLE `member` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -196,7 +196,7 @@ CREATE TABLE `team` (
   PRIMARY KEY (`idteam`),
   KEY `fk_team_game1_idx` (`idgame`),
   CONSTRAINT `fk_team_game1` FOREIGN KEY (`idgame`) REFERENCES `game` (`idgame`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -205,7 +205,7 @@ CREATE TABLE `team` (
 
 LOCK TABLES `team` WRITE;
 /*!40000 ALTER TABLE `team` DISABLE KEYS */;
-INSERT INTO `team` VALUES (3,3,'OOO'),(7,2,'Rtu'),(8,2,'MLO'),(9,3,'OPQER'),(10,3,'T-1'),(11,1,'T-2'),(14,1,'MXC'),(17,1,'DDD'),(18,1,'DDDD'),(20,2,'RRRR'),(21,2,'ollll');
+INSERT INTO `team` VALUES (3,3,'OOO'),(7,2,'Rtu'),(8,2,'MLO'),(9,3,'OPQER'),(10,3,'T-1'),(11,1,'T-2'),(14,1,'MXC'),(17,1,'DDD'),(18,1,'DDDD'),(20,2,'RRRR');
 /*!40000 ALTER TABLE `team` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -234,7 +234,7 @@ CREATE TABLE `team_members` (
 
 LOCK TABLES `team_members` WRITE;
 /*!40000 ALTER TABLE `team_members` DISABLE KEYS */;
-INSERT INTO `team_members` VALUES (3,2,'saya ingin join'),(3,3,'kepengen aja');
+INSERT INTO `team_members` VALUES (3,2,'saya ingin join'),(3,3,'kepengen aja'),(7,3,'lorem'),(8,1,'testtest'),(8,8,'Saya ingin bergabung pada team MLO yang keren');
 /*!40000 ALTER TABLE `team_members` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -247,4 +247,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-12-11 11:14:55
+-- Dump completed on 2025-01-07 18:24:30
